@@ -1,0 +1,81 @@
+# 🔹 Compiled files
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# 🔹 User-specific files
+.vscode/
+.idea/
+*.user
+*.suo
+*.vs/
+*.sln.cache
+*.sln.docstates
+
+# 🔹 Logs and debugging
+*.log
+*.tlog
+*.bak
+*.swp
+
+# 🔹 Config and secrets (⚠️ Ne jamais versionner les secrets !)
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# 🔹 Entity Framework Migrations
+Migrations/
+*.mdf
+*.ldf
+
+# 🔹 Dependencies
+packages/
+node_modules/
+wwwroot/lib/
+
+# 🔹 JetBrains (Rider, Resharper)
+*.DotSettings.user
+
+
+
+# Compiled files
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# User-specific files
+.vscode/
+.idea/
+*.user
+*.suo
+*.vs/
+*.sln.cache
+*.sln.docstates
+
+# Logs and debugging
+*.log
+*.tlog
+*.bak
+*.swp
+
+# Config and secrets
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# Entity Framework
+Migrations/
+*.mdf
+*.ldf
+
+# Dependencies
+packages/
+node_modules/
+wwwroot/lib/
+
+# JetBrains (Rider, Resharper)
+*.DotSettings.user
