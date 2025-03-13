@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postegres_db_CESIZen
+    restart: always
+    environment:
+      POSTGRES_USER: CesiZenAdm
+      POSTGRES_PASSWORD: CesiZenAdm59!
+      POSTGRES_DB: CesiZenDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
