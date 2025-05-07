@@ -49,50 +49,28 @@ export class ArticleListComponent implements OnInit {
 
   loadArticles(): void {
     this.loading = true;
-
-    if (this.isAdmin) {
-      this.articleService.getAllArticles()
-        .subscribe({
-          next: (data) => {
-            // Vérifier que data est un tableau
-            if (Array.isArray(data)) {
-              this.articles = data;
-            } else {
-              console.error('Les données reçues ne sont pas un tableau:', data);
-              this.articles = [];
-              this.error = 'Format de données incorrect';
-            }
-            this.loading = false;
-          },
-          error: (error: any) => {
-            this.error = 'Erreur lors du chargement des articles';
-            console.error(error);
-            this.loading = false;
-            this.articles = []; // S'assurer que articles est un tableau vide en cas d'erreur
+    
+    // Utiliser uniquement getArticles pour les deux cas
+    this.articleService.getArticles()
+      .subscribe({
+        next: (data) => {
+          // Vérifier que data est un tableau
+          if (Array.isArray(data)) {
+            this.articles = data;
+          } else {
+            console.error('Les données reçues ne sont pas un tableau:', data);
+            this.articles = [];
+            this.error = 'Format de données incorrect';
           }
-        });
-    } else {
-      this.articleService.getArticles()
-        .subscribe({
-          next: (data) => {
-            // Vérifier que data est un tableau
-            if (Array.isArray(data)) {
-              this.articles = data;
-            } else {
-              console.error('Les données reçues ne sont pas un tableau:', data);
-              this.articles = [];
-              this.error = 'Format de données incorrect';
-            }
-            this.loading = false;
-          },
-          error: (error: any) => {
-            this.error = 'Erreur lors du chargement des articles';
-            console.error(error);
-            this.loading = false;
-            this.articles = []; // S'assurer que articles est un tableau vide en cas d'erreur
-          }
-        });
-    }
+          this.loading = false;
+        },
+        error: (error: any) => {
+          this.error = 'Erreur lors du chargement des articles';
+          console.error(error);
+          this.loading = false;
+          this.articles = []; // S'assurer que articles est un tableau vide en cas d'erreur
+        }
+      });
   }
 
   viewArticle(id: number): void {
@@ -119,11 +97,11 @@ export class ArticleListComponent implements OnInit {
   }
 
   editArticle(id: number): void {
-    this.router.navigate(['/articles/edit', id]);
+    this.router.navigate(['/admin/articles/edit', id]);
   }
 
   createArticle(): void {
-    this.router.navigate(['/articles/create']);
+    this.router.navigate(['/admin/articles/create']);
   }
 
   deleteArticle(id: number): void {
