@@ -1,0 +1,11 @@
+/* src/app/app.component.css */
+.full-height {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.with-header-footer {
+  min-height: calc(100vh - 76px - 330px); /* Ajuster selon les hauteurs de votre header/footer */
+  padding-top: 76px; /* Hauteur du header fixe */
+}
