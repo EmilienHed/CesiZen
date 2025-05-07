@@ -17,7 +17,7 @@ export class ArticleListComponent implements OnInit {
   loading = false;
   error = '';
   isAdmin = false;
-  
+
   // Propriétés pour le modal
   selectedArticle: Article | null = null;
   showModal = false;
@@ -53,27 +53,43 @@ export class ArticleListComponent implements OnInit {
     if (this.isAdmin) {
       this.articleService.getAllArticles()
         .subscribe({
-          next: (data: Article[]) => {
-            this.articles = data;
+          next: (data) => {
+            // Vérifier que data est un tableau
+            if (Array.isArray(data)) {
+              this.articles = data;
+            } else {
+              console.error('Les données reçues ne sont pas un tableau:', data);
+              this.articles = [];
+              this.error = 'Format de données incorrect';
+            }
             this.loading = false;
           },
           error: (error: any) => {
             this.error = 'Erreur lors du chargement des articles';
             console.error(error);
             this.loading = false;
+            this.articles = []; // S'assurer que articles est un tableau vide en cas d'erreur
           }
         });
     } else {
       this.articleService.getArticles()
         .subscribe({
-          next: (data: Article[]) => {
-            this.articles = data;
+          next: (data) => {
+            // Vérifier que data est un tableau
+            if (Array.isArray(data)) {
+              this.articles = data;
+            } else {
+              console.error('Les données reçues ne sont pas un tableau:', data);
+              this.articles = [];
+              this.error = 'Format de données incorrect';
+            }
             this.loading = false;
           },
           error: (error: any) => {
             this.error = 'Erreur lors du chargement des articles';
             console.error(error);
             this.loading = false;
+            this.articles = []; // S'assurer que articles est un tableau vide en cas d'erreur
           }
         });
     }
@@ -103,11 +119,11 @@ export class ArticleListComponent implements OnInit {
   }
 
   editArticle(id: number): void {
-    this.router.navigate(['/admin/articles/edit', id]);
+    this.router.navigate(['/articles/edit', id]);
   }
 
   createArticle(): void {
-    this.router.navigate(['/admin/articles/create']);
+    this.router.navigate(['/articles/create']);
   }
 
   deleteArticle(id: number): void {
