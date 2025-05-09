@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@angular/animations": "^19.2.10",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.2.0"
+  }
+}

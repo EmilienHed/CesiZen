@@ -1,0 +1,91 @@
+.admin-dashboard {
+  padding: 2rem 0;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: var(--bs-primary);
+}
+
+.lead {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+h1.card-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--bs-dark);
+}
+
+h3.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}
+
+.admin-dashboard .card-icon {
+  font-size: 3rem;
+  color: #0d6efd;
+  text-align: center;
+}
+
+.admin-dashboard .stats-icon {
+  font-size: 2.5rem;
+  color: #0d6efd;
+}
+
+.admin-dashboard .stats-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.admin-dashboard .stats-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-dashboard .stats-item {
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard .stats-item:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-5px);
+}
+
+.admin-dashboard .card {
+  overflow: hidden;
+}
+
+.admin-dashboard .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+}
