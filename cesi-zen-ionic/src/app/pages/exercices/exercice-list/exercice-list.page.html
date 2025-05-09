@@ -1,0 +1,57 @@
+<!-- src/app/pages/exercises/exercise-list/exercise-list.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Exercices Respiratoires
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="header-container">
+    <h1>Exercices de Respiration</h1>
+    <p>La cohérence cardiaque est une technique de respiration qui permet de réguler votre rythme cardiaque et de réduire le stress. Choisissez un exercice pour commencer.</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadExercises()">Réessayer</ion-button>
+  </div>
+
+  <ion-list *ngIf="exercises.length > 0" class="exercise-list">
+    <ion-item *ngFor="let exercise of exercises" detail="false" class="exercise-item" (click)="startExercise(exercise.id)">
+      <div class="exercise-content">
+        <h2>{{ exercise.name }}</h2>
+        <div class="timing-container">
+          <div class="timing">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <span>{{ exercise.inspirationDuration }}s</span>
+          </div>
+          <div class="timing" *ngIf="exercise.holdDuration > 0">
+            <ion-icon name="pause-outline"></ion-icon>
+            <span>{{ exercise.holdDuration }}s</span>
+          </div>
+          <div class="timing">
+            <ion-icon name="arrow-down-outline"></ion-icon>
+            <span>{{ exercise.expirationDuration }}s</span>
+          </div>
+        </div>
+        <p class="description">{{ exercise.description }}</p>
+        <ion-button class="start-button">
+          Commencer l'exercice
+          <ion-icon name="play" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="exercises.length === 0 && !error" class="empty-container">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Chargement des exercices...</p>
+  </div>
+</ion-content>

@@ -1,0 +1,50 @@
+<!-- src/app/pages/articles/article-list/article-list.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Articles
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="header-container">
+    <h1>Articles sur la santé mentale</h1>
+    <p>Découvrez nos articles pour mieux comprendre et gérer votre santé mentale au quotidien.</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadArticles()">Réessayer</ion-button>
+  </div>
+
+  <div *ngIf="articles.length === 0 && !error" class="empty-container">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Chargement des articles...</p>
+  </div>
+
+  <div class="article-grid">
+    <div *ngFor="let article of articles" class="article-card" (click)="viewArticle(article.id)">
+      <div class="article-image" *ngIf="article.imageUrl">
+        <img [src]="article.imageUrl" [alt]="article.title">
+      </div>
+      <div class="article-image placeholder" *ngIf="!article.imageUrl">
+        <ion-icon name="book-outline"></ion-icon>
+      </div>
+      <div class="article-content">
+        <div class="article-meta">
+          <span class="category" *ngIf="article.categoryName">{{ article.categoryName }}</span>
+          <span class="date">{{ formatDate(article.createdAt) }}</span>
+        </div>
+        <h2 class="article-title">{{ article.title }}</h2>
+        <p class="article-preview">{{ getPreview(article.content) }}</p>
+        <span class="read-more">Lire l'article</span>
+      </div>
+    </div>
+  </div>
+</ion-content>
