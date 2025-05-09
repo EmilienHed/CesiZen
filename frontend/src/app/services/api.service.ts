@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {UserListComponent} from '../../components/user-list/user-list.component';
-import {User} from '../../Models/user.model';
+import {User} from '../Models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,4 +23,6 @@ export class ApiService {
 /*  createUser(user: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/Users`, user);
   }*/
+
+
 }

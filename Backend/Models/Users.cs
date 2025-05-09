@@ -1,39 +1,7 @@
-/*using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace CesiZen.Models
-{
-
-    public class User
-    {
-        [Key] // Déclare la clé primaire
-        public int IdUtilisateur { get; set; }
-
-        [Required] public string Nom { get; set; }
-
-        [Required] public string Prenom { get; set; }
-
-        [Required]
-        [EmailAddress] // Vérifie le format email
-        public string Email { get; set; }
-
-        [Required] public string MotDePasse { get; set; } // Hashé en base de données
-
-        public DateTime? DateNaissance { get; set; }
-
-        [Required] public string Role { get; set; } // ENUM : "Visiteur", "Utilisateur", "Administrateur"
-
-        public DateTime DateCreation { get; set; } = DateTime.Now; // Valeur par défaut
-
-        public DateTime? DateDerniereConnexion { get; set; }
-    }
-}*/
-
-
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CesiZen.Models
 {
@@ -42,25 +10,51 @@ namespace CesiZen.Models
         [Key] // Clé primaire
         public int IdUtilisateur { get; set; }
 
-        [Required] public string Nom { get; set; }
+        [Required] 
+        public string Nom { get; set; }
 
-        [Required] public string Prenom { get; set; }
+        [Required] 
+        public string Prenom { get; set; }
 
         [Required]
         [EmailAddress] // Vérifie le format email
         public string Email { get; set; }
 
-        [Required] public string MotDePasse { get; set; } // Hashé en base de données
+        [Required] 
+        [JsonIgnore] // Ne pas inclure le mot de passe dans la réponse JSON
+        public string MotDePasse { get; set; }
 
-        public DateTime? DateNaissance { get; set; }
+        // Méthode pour hasher un mot de passe avec BCrypt
+        public static string HashPassword(string MotDePasse)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(MotDePasse);
+        }
 
-        [Required] public string Role { get; set; } // ENUM : "Visiteur", "Utilisateur", "Administrateur"
+        // Vérifier si un mot de passe correspond au hash
+        public static bool VerifyPassword(string MotDePasse, string hash)
+        {
+            return BCrypt.Net.BCrypt.Verify(MotDePasse, hash);
+        }
 
-        public DateTime DateCreation { get; set; } = DateTime.Now; // Valeur par défaut
+        public string? DateNaissance { get; set; }
+        
+        public int RoleId { get; set; }
+        
+        [JsonIgnore] // Ignorer cette propriété lors de la sérialisation pour éviter les références circulaires
+        public virtual Role Role { get; set; }
 
+        public DateTime DateCreation { get; set; } = DateTime.UtcNow; // Valeur par défaut
         public DateTime? DateDerniereConnexion { get; set; }
 
-        // Relation avec ExerciceRespiratoire (Un User peut avoir plusieurs exercices)
-        public virtual List<ExerciceRespiratoire> ExercicesRespiratoires { get; set; } = new List<ExerciceRespiratoire>();
+        // Nouveaux champs pour la réinitialisation du mot de passe
+        [JsonIgnore] // Ne pas inclure le token dans la réponse JSON
+        public string? ResetToken { get; set; }
+        
+        [JsonIgnore] // Ne pas inclure la date d'expiration dans la réponse JSON
+        public DateTime? ResetTokenExpiry { get; set; }
+
+        // Relation avec les exercices de respiration
+        [JsonIgnore] // Ignorer cette propriété lors de la sérialisation pour éviter les références circulaires
+        public virtual List<RespirationExercise> RespirationExercises { get; set; } = new List<RespirationExercise>();
     }
 }

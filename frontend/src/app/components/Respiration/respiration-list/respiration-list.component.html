@@ -1,1 +1,90 @@
-<p>respiration-list works!</p>
+<!--
+&lt;!&ndash; src/app/components/respiration/respiration-list.component.html &ndash;&gt;
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary">Exercices de Respiration</h1>
+      </div>
+
+      <p class="lead mb-4">
+        La cohérence cardiaque est une technique de respiration qui permet de réguler votre rythme cardiaque et de réduire le stress.
+        Choisissez parmi nos exercices prédéfinis ou configurez votre propre rythme respiratoire.
+      </p>
+
+      <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let exercise of exercises">
+          <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body">
+              <h5 class="card-title">{{ exercise.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                {{ exercise.inspirationDuration }}s -
+                {{ exercise.holdDuration }}s -
+                {{ exercise.expirationDuration }}s
+              </h6>
+              <p class="card-text">{{ exercise.description }}</p>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+              <button (click)="startExercise(exercise.id)" class="btn btn-primary w-100">
+                Commencer l'exercice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+<div class="zen-container">
+  <div class="zen-content">
+    <div class="zen-header">
+      <h1 class="zen-title">Exercices de Respiration</h1>
+      <p class="zen-lead">
+        La cohérence cardiaque est une technique de respiration qui permet de réguler votre rythme cardiaque et de réduire le stress.
+        Choisissez parmi nos exercices prédéfinis ou configurez votre propre rythme respiratoire.
+      </p>
+    </div>
+
+    <div *ngIf="loading" class="zen-loader">
+      <div class="zen-spinner"></div>
+    </div>
+
+    <div *ngIf="error" class="zen-error">
+      {{ error }}
+    </div>
+
+    <div class="zen-grid">
+      <div class="zen-card" *ngFor="let exercise of exercises">
+        <div class="zen-card-content">
+          <h2 class="zen-card-title">{{ exercise.name }}</h2>
+          <div class="zen-card-timing">
+            <span class="zen-badge zen-badge-inspire">{{ exercise.inspirationDuration }}s</span>
+            <span class="zen-badge zen-badge-hold">{{ exercise.holdDuration }}s</span>
+            <span class="zen-badge zen-badge-expire">{{ exercise.expirationDuration }}s</span>
+          </div>
+          <p class="zen-card-text">{{ exercise.description }}</p>
+        </div>
+        <div class="zen-card-footer">
+          <button (click)="startExercise(exercise.id)" class="zen-button">
+            Commencer l'exercice
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="zen-quote">
+      <p>"La respiration est le pont qui relie la vie à la conscience, qui unit votre corps à vos pensées."</p>
+    </div>
+  </div>
+</div>

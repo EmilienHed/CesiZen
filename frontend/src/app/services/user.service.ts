@@ -10,7 +10,7 @@ const API_URL = 'http://localhost:5016'; // Assurez-vous que c'est la bonne URL 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class UserService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   private isBrowser: boolean;
@@ -35,22 +35,12 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/Auth/login`, credentials)
-      .pipe(map(user => {
-        // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
-        if (this.isBrowser) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        }
-        this.currentUserSubject.next(user);
-        return user;
-      }));
-  }
 
   // Méthode d'inscription mise à jour pour correspondre à l'API backend
-  register(userData: UserCreateDto): Observable<any> {
+  register(userData: any): Observable<any> {
     return this.http.post<any>(`${API_URL}/api/Users/create`, userData);
   }
+
 
   // Récupérer les informations d'un utilisateur par ID
   getUserById(id: number): Observable<any> {
@@ -59,7 +49,38 @@ export class AuthService {
 
   // Récupérer la liste des utilisateurs (pour les admins)
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${API_URL}/api/Users`);
+    return this.http.get<any>(`${API_URL}/api/Users`).pipe(
+      map(response => {
+        console.log('Réponse brute de l\'API:', response);
+        
+        // Vérifier si la réponse a la structure attendue avec $values
+        if (response && response.$values) {
+          console.log('Utilisateurs extraits de $values:', response.$values);
+          return response.$values;
+        } else if (Array.isArray(response)) {
+          console.log('Réponse déjà sous forme de tableau:', response);
+          return response;
+        } else {
+          console.error('Format de réponse inattendu:', response);
+          return [];
+        }
+      })
+    );
+  }
+
+  // Mettre à jour un utilisateur (pour les admins)
+  updateUser(id: number, userData: any): Observable<any> {
+    return this.http.put<any>(`${API_URL}/api/Users/${id}`, userData);
+  }
+
+  // Supprimer un utilisateur (pour les admins)
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete<any>(`${API_URL}/api/Users/${id}`);
+  }
+
+  // Changer le mot de passe d'un utilisateur (pour les admins)
+  changeUserPassword(id: number, newPassword: string): Observable<any> {
+    return this.http.put<any>(`${API_URL}/api/Users/${id}/change-password`, { newPassword });
   }
 
   // Réinitialisation de mot de passe (à implémenter selon votre API backend)
@@ -89,4 +110,14 @@ export interface UserCreateDto {
   email: string;
   motDePasse: string;
   dateNaissance?: Date;
+  roleId: number;
+}
+
+// Interface pour le modèle de mise à jour d'utilisateur
+export interface UserUpdateDto {
+  nom?: string;
+  prenom?: string;
+  email?: string;
+  dateNaissance?: Date;
+  roleId?: number;
 }

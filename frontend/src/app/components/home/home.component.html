@@ -1,33 +1,151 @@
-<!-- src/app/components/home/home.component.html -->
-<div class="container-fluid home-container">
-  <div class="row align-items-center hero-section">
-    <div class="col-md-6 p-5">
-      <h1 class="display-4 mb-3">Bienvenue sur CESIZen</h1>
-      <h2 class="lead mb-4">L'application de votre santé mentale</h2>
-      <p class="mb-4">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien.</p>
-      <div class="d-flex gap-3">
-        <a routerLink="/respiration" class="btn btn-primary btn-lg">
-          Exercices de respiration
-        </a>
-        <a routerLink="/login" class="btn btn-outline-primary btn-lg">
-          Se connecter
-        </a>
+<div class="home-container">
+  <div class="container-fluid">
+    <!-- Section héro améliorée avec appel à l'action plus visible -->
+    <div class="row align-items-center hero-section" *ngIf="isBrowser" [@fadeInOut]="'in'">
+      <div class="col-lg-6 p-5 hero-content">
+        <div class="zen-badge"><i class="bi bi-heart-pulse me-2"></i>Bien-être & Harmonie</div>
+        <h1 class="hero-title">Bienvenue sur <span class="text-primary">CESIZen</span></h1>
+        <h2 class="hero-subtitle">Votre compagnon de santé mentale quotidien</h2>
+        <p class="hero-text">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien. Notre approche combine des exercices de respiration, de méditation et un journal personnel pour vous aider à retrouver sérénité et équilibre.</p>
+
+        <!-- Boutons améliorés plus visibles -->
+        <div class="cta-buttons">
+          <a *ngIf="isLoggedIn" routerLink="/respiration" class="btn btn-primary btn-lg shine-effect">
+            <i class="bi bi-lungs me-2"></i> Commencer maintenant
+          </a>
+          <a *ngIf="!isLoggedIn" routerLink="/login" [queryParams]="{returnUrl: '/respiration'}" class="btn btn-primary btn-lg shine-effect">
+            <i class="bi bi-lungs me-2"></i> Commencer maintenant
+          </a>
+          <a routerLink="/articles" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-journal-text me-2"></i> Journal
+          </a>
+<!--          &lt;!&ndash; Bouton d'administration visible uniquement pour les admin &ndash;&gt;
+          <a *ngIf="isAdmin" routerLink="/admin" class="btn btn-outline-danger btn-lg ms-2">
+            <i class="bi bi-shield-lock me-2"></i> Administration
+          </a>-->
+        </div>
+      </div>
+      <div class="col-lg-6 hero-image-container p-5" [@scaleIn]="'in'">
+        <div class="zen-image-frame floating">
+          <img src="assets/meditation.png" alt="Méditation" class="hero-image">
+        </div>
       </div>
     </div>
-    <div class="col-md-6 text-center p-5">
-      <img src="assets/meditation.svg" alt="Méditation" class="img-fluid hero-image">
+
+    <!-- Version sans animations pour SSR -->
+    <div class="row align-items-center hero-section" *ngIf="!isBrowser">
+      <div class="col-lg-6 p-5 hero-content">
+        <div class="zen-badge"><i class="bi bi-heart-pulse me-2"></i>Bien-être & Harmonie</div>
+        <h1 class="hero-title">Bienvenue sur <span class="text-primary">CESIZen</span></h1>
+        <h2 class="hero-subtitle">Votre compagnon de santé mentale quotidien</h2>
+        <p class="hero-text">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien. Notre approche combine des exercices de respiration, de méditation et un journal personnel pour vous aider à retrouver sérénité et équilibre.</p>
+
+        <!-- Boutons améliorés plus visibles -->
+        <div class="cta-buttons">
+          <a *ngIf="isLoggedIn" routerLink="/respiration" class="btn btn-primary btn-lg shine-effect">
+            <i class="bi bi-lungs me-2"></i> Commencer maintenant
+          </a>
+          <a *ngIf="!isLoggedIn" routerLink="/login" [queryParams]="{returnUrl: '/respiration'}" class="btn btn-primary btn-lg shine-effect">
+            <i class="bi bi-lungs me-2"></i> Commencer maintenant
+          </a>
+          <a routerLink="/articles" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-journal-text me-2"></i> Journal
+          </a>
+          <!-- Bouton d'administration visible uniquement pour les admin -->
+          <a *ngIf="isAdmin" routerLink="/admin" class="btn btn-outline-danger btn-lg ms-2">
+            <i class="bi bi-shield-lock me-2"></i> Administration
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-image-container p-5">
+        <div class="zen-image-frame floating">
+          <img src="assets/meditation.png" alt="Méditation" class="hero-image">
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row features-section">
-    <div class="col-12 text-center mb-5">
-      <h2 class="section-title">Nos fonctionnalités</h2>
+  <!-- Section de fonctionnalités améliorée -->
+  <div class="features-section" [class.animate-in]="featuresVisible && isBrowser">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title text-center">Nos fonctionnalités</h2>
+        <div class="section-subtitle">
+          Des outils simples mais puissants pour votre bien-être mental
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="icon-container">
+              <i class="bi bi-lungs"></i>
+            </div>
+            <h3>Exercices de cohérence</h3>
+            <p>Pratiquez la cohérence cardiaque pour réduire votre stress et retrouver votre calme intérieur en quelques minutes seulement.</p>
+            <!-- Bouton amélioré et plus visible -->
+            <a routerLink="/respiration" class="btn btn-outline-primary">
+              <strong>Découvrir les exercices</strong> <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="icon-container">
+              <i class="bi bi-journal-text"></i>
+            </div>
+            <h3>Journal personnel</h3>
+            <p>Suivez votre progression et prenez note de vos réflexions dans notre journal interactif pour un suivi personnalisé.</p>
+            <a routerLink="/articles" class="btn btn-outline-primary">
+              Découvrir <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+<!--        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="icon-container">
+              <i class="bi bi-puzzle"></i>
+            </div>
+            <h3>Méditation guidée</h3>
+            <p>Apprenez à méditer grâce à nos séances guidées qui vous aideront à développer votre pleine conscience et votre concentration.</p>
+            <a href="#" class="btn btn-outline-primary">
+              Bientôt disponible <i class="bi bi-clock ms-1"></i>
+            </a>
+          </div>
+        </div>-->
+      </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-      <div class="feature-card">
-        <div class="icon-container">
-          <i class="bi bi-lungs"></i>
+    <!-- Section de témoignage/citation améliorée -->
+    <div class="testimonial-section" [class.animate-in]="quoteVisible && isBrowser">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="zen-quote">
+              <p>"La respiration est le pont qui relie la vie à la conscience, qui unit votre corps à vos pensées."</p>
+              <div class="quote-author">— Thich Nhat Hanh</div>
+            </div>
+          </div>
         </div>
-        <h3>Exercices de respiration</h3>
-        <p>Pratiquez la cohérence cardiaque pour réduire votre stress
+      </div>
+    </div>
+
+    <!-- Nouvelle section pour appel à l'action final avec bouton amélioré -->
+    <div class="cta-section">
+      <div class="container text-center py-5">
+        <h2 class="cta-title">Prêt à commencer votre voyage vers la sérénité ?</h2>
+        <p class="cta-text">Rejoignez notre communauté et transformez votre quotidien dès aujourd'hui</p>
+        <div style="display: flex; align-items: center; justify-content: center;">
+        <a routerLink="/respiration" class="btn btn-primary btn-lg mt-3 shine-effect">
+          <i class="bi bi-emoji-smile me-2"></i> Débuter mon expérience CesiZen
+        </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton de retour en haut -->
+  <button *ngIf="showScrollTop && isBrowser" (click)="scrollToTop()" class="scroll-top-btn">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+</div>

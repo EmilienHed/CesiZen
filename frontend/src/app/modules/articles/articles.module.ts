@@ -11,9 +11,9 @@ import {ArticleFormComponent} from '../../components/article-form/article-form.c
 // Définissez les routes du module
 const routes: Routes = [
   { path: '', component: ArticleListComponent },
-  { path: ':id', component: ArticleDetailComponent },
   { path: 'create', component: ArticleFormComponent, canActivate: [AdminGuard] },
-  { path: 'edit/:id', component: ArticleFormComponent, canActivate: [AdminGuard] }
+  { path: 'edit/:id', component: ArticleFormComponent, canActivate: [AdminGuard] },
+  { path: ':id', component: ArticleDetailComponent }
 ];
 
 @NgModule({

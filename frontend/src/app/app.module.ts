@@ -1,23 +1,42 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { UserListComponent } from './components/user-list/user-list.component';
+import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RespirationListComponent } from './components/Respiration/respiration-list/respiration-list.component';
+import { RespirationPracticeComponent } from './components/Respiration/respiration-practice/respiration-practice.component';
+import { ArticleListComponent } from './components/article-list/article-list.component';
+import {ArticleDetailComponent} from './components/article-detail/article-detail.component';
+import {ArticleFormComponent} from './components/article-form/article-form.component';
 
 @NgModule({
   declarations: [
-    // autres composants ici
+    // Vide car vous semblez utiliser des composants autonomes (standalone)
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
+    RouterModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    AppComponent,
-    UserListComponent,
-    // autres modules ici
+    FormsModule,
+    CommonModule,
+    HomeComponent,
+    LoginComponent,
+    RespirationListComponent,
+    RespirationPracticeComponent,
+    // Ajout des nouveaux composants d'articles
+    ArticleListComponent,
+    ArticleDetailComponent,
+    ArticleFormComponent
   ],
-  providers: [
-    provideHttpClient(withFetch()),
-  ],
+  providers: [],
   //bootstrap: [AppComponent]
 })
 export class AppModule { }

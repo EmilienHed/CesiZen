@@ -20,8 +20,11 @@ export class ArticleService {
 
   // Méthode pour obtenir les en-têtes d'authentification
   private getAuthHeaders(): HttpHeaders {
-    const user = this.authService.currentUserValue;
-    const token = user ? user.token : null;
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('Aucun token d\'authentification trouvé');
+    }
+
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -43,24 +46,53 @@ export class ArticleService {
     }
   }
 
+  // Méthode pour extraire un article unique de la réponse API
+  private extractArticle(response: any): Article {
+    if (response && response.$values && response.$values.length > 0) {
+      return response.$values[0];
+    } else if (response && response.$id) {
+      // Si c'est un objet avec un $id, mais sans $values, retourner l'objet lui-même
+      return response;
+    } else {
+      return response;
+    }
+  }
+
   getArticles(): Observable<Article[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map(response => this.extractArticlesArray(response))
-    );
+    // Vérifier si l'utilisateur est admin
+    if (this.authService.isAdmin()) {
+      // Pour les admins, récupérer tous les articles
+      return this.http.get<any>(this.apiUrl).pipe(
+        map(response => this.extractArticlesArray(response))
+      );
+    } else {
+      // Pour les utilisateurs normaux, récupérer uniquement les articles actifs
+      return this.http.get<any>(`${this.apiUrl}/active`).pipe(
+        map(response => this.extractArticlesArray(response))
+      );
+    }
   }
 
   getAllArticles(): Observable<Article[]> {
     const options = {
       headers: this.getAuthHeaders()
     };
+    console.log('En-têtes pour getAllArticles:', options.headers);
+
     return this.http.get<any>(`${this.apiUrl}/all`, options).pipe(
-      map(response => this.extractArticlesArray(response))
+      map(response => {
+        console.log('Réponse brute de getAllArticles:', response);
+        return this.extractArticlesArray(response);
+      })
     );
   }
 
   getArticleById(id: number): Observable<Article> {
+    //console.log(`Récupération de l'article avec ID: ${id}, URL: ${this.apiUrl}/${id}`);
+
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       map(response => {
+        //console.log(`Réponse pour l'article ${id}:`, response);
         // Si la réponse a une structure particulière, extraire l'article
         if (response && response.$values && response.$values.length > 0) {
           return response.$values[0];
@@ -75,8 +107,19 @@ export class ArticleService {
     const options = {
       headers: this.getAuthHeaders()
     };
+    console.log('En-têtes pour createArticle:', options.headers);
     console.log('Données envoyées au serveur:', JSON.stringify(article, null, 2));
-    return this.http.post<Article>(this.apiUrl, article, options);
+
+    return this.http.post<any>(this.apiUrl, article, options).pipe(
+      map(response => {
+        console.log('Réponse de création d\'article:', response);
+        if (response && response.$values && response.$values.length > 0) {
+          return response.$values[0];
+        } else {
+          return response;
+        }
+      })
+    );
   }
 
   updateArticle(article: UpdateArticleDTO): Observable<Article> {
@@ -84,7 +127,19 @@ export class ArticleService {
       headers: this.getAuthHeaders()
     };
     console.log('Données de mise à jour envoyées au serveur:', JSON.stringify(article, null, 2));
-    return this.http.put<Article>(`${this.apiUrl}/${article.id}`, article, options);
+    console.log('URL API pour updateArticle:', `${this.apiUrl}/${article.id}`);
+    console.log('Headers:', options.headers);
+
+    return this.http.put<any>(`${this.apiUrl}/${article.id}`, article, options).pipe(
+      map(response => {
+        console.log('Réponse de mise à jour d\'article:', response);
+        if (response && response.$values && response.$values.length > 0) {
+          return response.$values[0];
+        } else {
+          return response;
+        }
+      })
+    );
   }
 
   deleteArticle(id: number): Observable<any> {

@@ -3,13 +3,13 @@ import { ArticleService } from '../../services/article.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Article } from '../../Models/articles.model';
-import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-article-list',
   templateUrl: './article-list.component.html',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, DatePipe],
+  imports: [NgIf, NgFor],
   styleUrls: ['./article-list.component.scss']
 })
 export class ArticleListComponent implements OnInit {

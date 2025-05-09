@@ -1,74 +1,61 @@
-.article-image {
-  height: 200px;
-  overflow: hidden;
+// Variables pour les couleurs zen
+$zen-green-light: #f0f7f0;
+$zen-green-medium: #7bb06e;
+$zen-green-dark: #3d6e3c;
+$zen-yellow-light: #fffbed;
+$zen-yellow-medium: #f8e3a3;
+$zen-yellow-dark: #e4b84d;
+$zen-text: #395038;
+$zen-text-light: #657764;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-}
-
-.zen-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-top: 4px solid var(--primary);
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-
-    .article-image img {
-      transform: scale(1.05);
-    }
-  }
-}
-
-.article-preview {
-  color: var(--gray-600);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 1rem;
-}
-
-.article-meta {
-  font-size: 0.85rem;
-}
-
-.admin-buttons {
-  button {
-    padding: 0.375rem 0.5rem;
-  }
-}
-
-// Styles généraux
+// Mise en page globale
 .zen-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  min-height: 100vh;
+  background-color: $zen-green-light;
+  padding: 2rem 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232b5876' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
+  linear-gradient(135deg, $zen-green-light 0%, #e8f4f4 100%);
 }
 
 .zen-content {
-  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
+// En-tête
 .zen-header {
-  margin-bottom: 2rem;
   text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, $zen-green-medium, $zen-yellow-medium);
+    border-radius: 3px;
+  }
 }
 
 .zen-title {
-  font-size: 2.5rem;
+  color: $zen-green-dark;
+  font-size: 2.2rem;
+  font-weight: 300;
   margin-bottom: 1rem;
-  color: var(--primary);
+  letter-spacing: 0.5px;
 }
 
 .zen-lead {
+  color: $zen-text;
   font-size: 1.1rem;
-  color: var(--gray-600);
+  line-height: 1.6;
   max-width: 800px;
   margin: 0 auto 2rem;
 }
@@ -77,17 +64,16 @@
 .zen-loader {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 200px;
+  margin: 3rem 0;
 }
 
 .zen-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: var(--primary);
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  border: 4px solid rgba($zen-green-medium, 0.2);
+  border-top-color: $zen-green-medium;
+  animation: spin 1s infinite linear;
 }
 
 @keyframes spin {
@@ -96,92 +82,85 @@
 
 // Message d'erreur
 .zen-error {
+  background-color: #fce8e8;
+  border-left: 4px solid #e74c3c;
+  color: #c0392b;
   padding: 1rem;
-  background-color: #f8d7da;
-  color: #721c24;
-  border-radius: 0.25rem;
-  margin-bottom: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
 }
 
 // Grille d'articles
 .zen-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
+  margin-bottom: 3rem;
 }
 
-// Carte d'article
+// Cartes d'articles
 .zen-card {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  border-top: 4px solid var(--primary);
+  border-top: 4px solid $zen-yellow-medium;
   height: 100%;
-  
+
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
   }
-  
+
   &.zen-card-inactive {
-    border-top-color: var(--gray-400);
+    border-top-color: #adb5bd;
     opacity: 0.8;
   }
 }
 
-.zen-card-image {
-  height: 200px;
-  overflow: hidden;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
-    transform: scale(1.05);
-  }
-}
-
 .zen-card-content {
-  padding: 1.5rem;
+  padding: 1.8rem;
   flex-grow: 1;
-}
-
-.zen-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  flex-direction: column;
 }
 
 .zen-card-title {
-  font-size: 1.25rem;
-  margin: 0;
-  color: var(--gray-800);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: $zen-green-dark;
+}
+
+.zen-card-timing {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
 }
 
 .zen-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
   font-weight: 500;
-  
+  background-color: $zen-green-light;
+  color: $zen-green-dark;
+
   &.zen-badge-inactive {
-    background-color: var(--gray-200);
-    color: var(--gray-600);
+    background-color: #f8f9fa;
+    color: #6c757d;
   }
 }
 
 .zen-card-text {
-  color: var(--gray-600);
-  margin-bottom: 1rem;
+  color: $zen-text-light;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -194,13 +173,13 @@
   flex-wrap: wrap;
   gap: 1rem;
   font-size: 0.85rem;
-  color: var(--gray-500);
+  color: $zen-text-light;
   margin-top: auto;
-  
+
   span {
     display: flex;
     align-items: center;
-    
+
     i {
       margin-right: 0.25rem;
     }
@@ -208,79 +187,60 @@
 }
 
 .zen-card-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--gray-100);
-}
-
-.zen-card-actions {
+  padding: 0 1.8rem 1.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
-// Boutons
+// Bouton
 .zen-button {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: none;
-  background-color: var(--primary);
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(to right, $zen-green-dark, $zen-green-medium);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba($zen-green-dark, 0.2);
+  white-space: nowrap;
+
   &:hover {
-    background-color: var(--primary-dark);
+    background: linear-gradient(to right, $zen-green-medium, $zen-yellow-dark);
+    box-shadow: 0 6px 12px rgba($zen-green-dark, 0.3);
   }
-  
-  &.zen-button-outline {
-    background-color: transparent;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-    
-    &:hover {
-      background-color: var(--primary-light);
-    }
-    
-    &.zen-button-warning {
-      border-color: var(--warning);
-      color: var(--warning);
-      
-      &:hover {
-        background-color: var(--warning-light);
-      }
-    }
-    
-    &.zen-button-danger {
-      border-color: var(--danger);
-      color: var(--danger);
-      
-      &:hover {
-        background-color: var(--danger-light);
-      }
-    }
+
+  &:active {
+    transform: translateY(2px);
   }
-  
-  &.zen-button-icon {
+
+  &.zen-button-sm {
     padding: 0.5rem;
-    border-radius: 4px;
-    background-color: transparent;
-    color: var(--gray-700);
-    
+    font-size: 0.9rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  &.zen-button-warning {
+    background: linear-gradient(to right, #fd7e14, #f0b775);
+
     &:hover {
-      background-color: var(--gray-100);
+      background: linear-gradient(to right, #f0b775, #fd7e14);
     }
-    
-    &.zen-button-warning:hover {
-      color: var(--warning);
-    }
-    
-    &.zen-button-danger:hover {
-      color: var(--danger);
+  }
+
+  &.zen-button-danger {
+    background: linear-gradient(to right, #dc3545, #eb6b7a);
+
+    &:hover {
+      background: linear-gradient(to right, #eb6b7a, #dc3545);
     }
   }
 }
@@ -290,10 +250,56 @@
   gap: 0.5rem;
 }
 
+// État vide
 .zen-empty {
   text-align: center;
   padding: 3rem 0;
-  color: var(--gray-500);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  margin: 2rem 0;
+
+  p {
+    color: $zen-text-light;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Citation de bas de page
+.zen-quote {
+  margin-top: 3rem;
+  text-align: center;
+
+  p {
+    display: inline-block;
+    padding: 1.2rem 2rem;
+    background-color: $zen-yellow-light;
+    border-radius: 8px;
+    border: 1px solid $zen-yellow-medium;
+    color: $zen-text;
+    font-style: italic;
+    position: relative;
+    max-width: 600px;
+    line-height: 1.6;
+
+    &:before, &:after {
+      content: '"';
+      font-size: 2rem;
+      color: $zen-yellow-medium;
+      position: absolute;
+      opacity: 0.5;
+    }
+
+    &:before {
+      top: 0;
+      left: 10px;
+    }
+
+    &:after {
+      bottom: -10px;
+      right: 10px;
+    }
+  }
 }
 
 // Modal
@@ -307,6 +313,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 }
 
 .zen-modal-overlay {
@@ -316,7 +328,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
 }
 
 .zen-modal-container {
@@ -325,65 +337,79 @@
   max-width: 800px;
   max-height: 90vh;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modal-in 0.3s ease;
-}
+  animation: modalSlideIn 0.4s ease;
+  border-top: 5px solid $zen-yellow-medium;
 
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
 .zen-modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--gray-100);
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  background-color: #f9fafb;
 }
 
 .zen-modal-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin: 0;
-  color: var(--gray-800);
+  color: $zen-green-dark;
   padding-right: 2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .zen-modal-close {
   background: none;
   border: none;
+  color: $zen-text-light;
   font-size: 1.25rem;
-  color: var(--gray-500);
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  line-height: 1;
-  
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
   &:hover {
-    color: var(--gray-800);
-    background-color: var(--gray-100);
+    background-color: #f2f2f2;
+    color: $zen-text;
   }
 }
 
 .zen-modal-body {
-  padding: 1.5rem;
+  padding: 2rem;
   overflow-y: auto;
-  max-height: calc(90vh - 130px);
+  max-height: calc(90vh - 150px);
 }
 
 .zen-modal-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--gray-100);
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: #f9fafb;
   display: flex;
   justify-content: flex-end;
 }
@@ -393,51 +419,100 @@
   .zen-article-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.2rem;
     font-size: 0.9rem;
-    color: var(--gray-500);
-    margin-bottom: 1.5rem;
-    
+    color: $zen-text-light;
+    margin-bottom: 2rem;
+
     span {
       display: flex;
       align-items: center;
-      
+
       i {
-        margin-right: 0.25rem;
+        margin-right: 0.4rem;
+        opacity: 0.7;
       }
     }
   }
-  
+
   .zen-article-image {
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
+    margin-bottom: 2rem;
+    border-radius: 12px;
     overflow: hidden;
-    
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
     img {
       width: 100%;
       max-height: 400px;
       object-fit: cover;
+      display: block;
     }
   }
-  
+
   .zen-article-content {
-    line-height: 1.6;
-    color: var(--gray-800);
-    
+    line-height: 1.8;
+    color: $zen-text;
+
     h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
+      color: $zen-green-dark;
+      margin-top: 1.8em;
+      margin-bottom: 0.8em;
+      font-weight: 600;
     }
-    
+
+    h2 {
+      font-size: 1.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
     p {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5em;
     }
-    
+
+    a {
+      color: $zen-green-medium;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $zen-green-dark;
+        text-decoration: underline;
+      }
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    blockquote {
+      border-left: 4px solid $zen-yellow-medium;
+      padding: 1rem 1.5rem;
+      background-color: $zen-yellow-light;
+      margin: 1.5rem 0;
+      font-style: italic;
+      border-radius: 0 8px 8px 0;
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
     img {
       max-width: 100%;
       height: auto;
       border-radius: 8px;
-      margin: 1rem 0;
+      margin: 1.5rem 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
   }
 }
@@ -445,25 +520,54 @@
 // Responsive
 @media (max-width: 768px) {
   .zen-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
-  .zen-modal-container {
-    width: 95%;
+
+  .zen-title {
+    font-size: 1.8rem;
   }
-  
-  .zen-card-actions {
+
+  .zen-card {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .zen-card-footer {
     flex-direction: column;
     gap: 1rem;
-    
+
     .zen-button {
       width: 100%;
     }
-    
+
     .zen-admin-actions {
       width: 100%;
       justify-content: space-between;
+    }
+  }
+
+  .zen-modal-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .zen-modal-header,
+  .zen-modal-body,
+  .zen-modal-footer {
+    padding: 1.25rem;
+  }
+
+  .zen-modal-title {
+    font-size: 1.4rem;
+  }
+
+  .zen-admin-actions {
+    flex-wrap: wrap;
+
+    .zen-button {
+      flex: 1;
+      min-width: 120px;
     }
   }
 }

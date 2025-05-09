@@ -1,1 +1,19 @@
-<p>footer works!</p>
+<footer class="footer py-3" aria-label="Pied de page">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <h5 class="footer-title mb-0"><span class="logo-text">CESI<span class="text-accent">Zen</span></span></h5>
+      </div>
+      <div class="col-md-6">
+        <ul class="footer-links d-flex justify-content-center mb-0" aria-label="Navigation rapide">
+          <li class="mx-2"><a routerLink="/" class="footer-link" aria-label="Aller à l'accueil"><i class="bi bi-house-door me-1"></i>Accueil</a></li>
+          <li class="mx-2"><a routerLink="/respiration" class="footer-link" aria-label="Aller aux exercices de respiration"><i class="bi bi-lungs me-1"></i>Exercices</a></li>
+          <li class="mx-2"><a routerLink="/articles" class="footer-link" aria-label="Aller aux articles"><i class="bi bi-journal-text me-1"></i>Articles</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <p class="copyright mb-0">&copy; {{currentYear}} CESIZen</p>
+      </div>
+    </div>
+  </div>
+</footer>
