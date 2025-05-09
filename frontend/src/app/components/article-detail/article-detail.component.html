@@ -1,0 +1,57 @@
+<div class="zen-practice-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8">
+        <div *ngIf="loading" class="zen-loader">
+          <div class="zen-spinner"></div>
+        </div>
+
+        <div *ngIf="error" class="zen-error">
+          {{ error }}
+        </div>
+
+        <button (click)="goBack()" class="zen-back-button">
+          <i class="bi bi-arrow-left"></i> Retour aux articles
+        </button>
+
+        <div *ngIf="article && !loading" class="zen-article-container">
+          <div class="zen-article-header">
+            <div class="zen-article-status" *ngIf="!article.isActive">
+              <span class="zen-badge zen-badge-inactive">Inactif</span>
+            </div>
+            <h1 class="zen-article-title">{{ article.title }}</h1>
+            <div class="zen-article-meta">
+              <span class="zen-meta-item"><i class="bi bi-person"></i> {{ article.userName }}</span>
+              <span class="zen-meta-item"><i class="bi bi-calendar3"></i> {{ article.createdAt | date:'longDate'}}</span>
+              <span class="zen-meta-item" *ngIf="article.categoryName"><i class="bi bi-tag"></i> {{ article.categoryName }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="article.imageUrl" class="zen-article-featured-image">
+            <img [src]="article.imageUrl" [alt]="article.title">
+          </div>
+
+          <div class="zen-article-content" [innerHTML]="article.content"></div>
+
+          <div *ngIf="isAdmin" class="zen-article-admin-actions">
+            <button (click)="editArticle()" class="zen-button zen-button-outline zen-button-sm">
+              <i class="bi bi-pencil"></i> Modifier
+            </button>
+            <button *ngIf="article.isActive" (click)="deactivateArticle()" class="zen-button zen-button-outline zen-button-warning zen-button-sm">
+              <i class="bi bi-eye-slash"></i> Désactiver
+            </button>
+            <button (click)="deleteArticle()" class="zen-button zen-button-outline zen-button-danger zen-button-sm">
+              <i class="bi bi-trash"></i> Supprimer
+            </button>
+          </div>
+        </div>
+
+        <div class="zen-article-navigation">
+          <button (click)="goBack()" class="zen-button zen-button-primary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste des articles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

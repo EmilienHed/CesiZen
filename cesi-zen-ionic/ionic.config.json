@@ -1,0 +1,7 @@
+{
+  "name": "CesiZenIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

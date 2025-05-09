@@ -1,0 +1,95 @@
+<div class="admin-dashboard container-fluid mt-4">
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body p-4">
+          <h1 class="card-title d-flex align-items-center">
+            <i class="bi bi-shield-lock me-3 text-primary"></i>
+            Tableau de bord d'administration
+          </h1>
+          <p class="lead mt-3">Bienvenue, <span class="fw-bold">{{ currentUser?.prenom }} {{ currentUser?.nom }}</span></p>
+          <p class="text-muted">Vous avez accès à toutes les fonctionnalités d'administration de CesiZen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <!-- Carte de gestion des utilisateurs -->
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column p-4">
+          <div class="card-icon mb-3">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <h3 class="card-title mb-3">Gestion des utilisateurs</h3>
+          <p class="card-text flex-grow-1 text-muted">Administrez les comptes utilisateurs, modifiez les informations personnelles et gérez les accès.</p>
+          <button class="btn btn-primary mt-3 d-flex align-items-center justify-content-center" (click)="navigateToUserManagement()">
+            <i class="bi bi-person-gear me-2"></i>
+            Gérer les utilisateurs
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte de gestion des articles -->
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column p-4">
+          <div class="card-icon mb-3">
+            <i class="bi bi-journal-text"></i>
+          </div>
+          <h3 class="card-title mb-3">Gestion des articles</h3>
+          <p class="card-text flex-grow-1 text-muted">Créez, modifiez et supprimez des articles du journal pour tous les utilisateurs.</p>
+          <button class="btn btn-primary mt-3 d-flex align-items-center justify-content-center" (click)="navigateToArticleManagement()">
+            <i class="bi bi-pencil-square me-2"></i>
+            Gérer les articles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques rapides -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body p-4">
+          <h3 class="card-title mb-4">
+            <i class="bi bi-graph-up me-2 text-primary"></i>
+            Statistiques rapides
+          </h3>
+          <div class="row g-4 text-center">
+            <div class="col-md-4">
+              <div class="stats-item">
+                <div class="stats-icon mb-2">
+                  <i class="bi bi-person-check text-success"></i>
+                </div>
+                <h4 class="stats-value">{{ users?.length || '0' }}</h4>
+                <p class="stats-label text-muted">Utilisateurs actifs</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stats-item">
+                <div class="stats-icon mb-2">
+                  <i class="bi bi-file-earmark-text text-info"></i>
+                </div>
+                <h4 class="stats-value">{{ articles?.length || '0' }}</h4>
+                <p class="stats-label text-muted">Articles publiés</p>
+              </div>
+            </div>
+<!--            <div class="col-md-4">
+              <div class="stats-item">
+                <div class="stats-icon mb-2">
+                  <i class="bi bi-calendar-check text-warning"></i>
+                </div>
+                <h4 class="stats-value">{{ lastLogin || 'Jamais' }}</h4>
+                <p class="stats-label text-muted">Dernière connexion</p>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

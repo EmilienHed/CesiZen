@@ -1,0 +1,135 @@
+<div class="zen-practice-container" style="overflow: hidden;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 p-3">
+        <div *ngIf="loading" class="zen-loader">
+          <div class="zen-spinner"></div>
+        </div>
+
+        <div *ngIf="error" class="zen-error">
+          {{ error }}
+        </div>
+
+        <div class="zen-form-card p-4" *ngIf="!loading">
+          <div class="zen-form-header mb-4">
+            <h1 class="zen-form-title">{{ isEditMode ? 'Modifier' : 'Créer' }} un article</h1>
+            <p class="zen-form-subtitle">Partagez vos connaissances sur la santé mentale avec la communauté.</p>
+          </div>
+
+          <div [formGroup]="articleForm">
+            <div class="zen-form-group">
+              <label for="title" class="zen-form-label">Titre <span class="zen-required">*</span></label>
+              <div class="zen-input-container">
+                <span class="zen-input-icon"><i class="bi bi-type-h1"></i></span>
+                <input
+                  type="text"
+                  id="title"
+                  formControlName="title"
+                  class="zen-form-control"
+                  [ngClass]="{'zen-invalid': articleForm.get('title')?.invalid && articleForm.get('title')?.touched}"
+                  placeholder="Titre de votre article"
+                >
+              </div>
+              <div class="zen-error-message" *ngIf="articleForm.get('title')?.errors?.['required'] && articleForm.get('title')?.touched">
+                Le titre est requis.
+              </div>
+              <div class="zen-error-message" *ngIf="articleForm.get('title')?.errors?.['maxlength'] && articleForm.get('title')?.touched">
+                Le titre ne doit pas dépasser 100 caractères.
+              </div>
+            </div>
+
+            <div class="zen-form-group">
+              <label for="categoryId" class="zen-form-label">Catégorie</label>
+              <div class="zen-input-container">
+                <span class="zen-input-icon"><i class="bi bi-tag"></i></span>
+                <select
+                  id="categoryId"
+                  formControlName="categoryId"
+                  class="zen-form-control"
+                >
+                  <option [ngValue]="null">-- Aucune catégorie --</option>
+                  <option *ngFor="let category of categories" [ngValue]="category.id">
+                    {{ category.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="zen-form-group">
+              <label for="imageUrl" class="zen-form-label">URL de l'image</label>
+              <div class="zen-input-container">
+                <span class="zen-input-icon"><i class="bi bi-image"></i></span>
+                <input
+                  type="text"
+                  id="imageUrl"
+                  formControlName="imageUrl"
+                  class="zen-form-control"
+                  [ngClass]="{'zen-invalid': articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched}"
+                  placeholder="https://exemple.com/image.jpg"
+                >
+              </div>
+              <div class="zen-error-message" *ngIf="articleForm.get('imageUrl')?.errors?.['maxlength'] && articleForm.get('imageUrl')?.touched">
+                L'URL de l'image ne doit pas dépasser 255 caractères.
+              </div>
+              <small class="zen-form-help">
+                URL d'une image illustrant l'article (optionnel)
+              </small>
+            </div>
+
+            <div class="zen-form-group">
+              <label for="content" class="zen-form-label">Contenu <span class="zen-required">*</span></label>
+              <textarea
+                id="content"
+                formControlName="content"
+                class="zen-form-control zen-editor"
+                rows="10"
+                [ngClass]="{'zen-invalid': articleForm.get('content')?.invalid && articleForm.get('content')?.touched}"
+                placeholder="Rédigez votre article ici..."
+              ></textarea>
+              <div class="zen-error-message" *ngIf="articleForm.get('content')?.errors?.['required'] && articleForm.get('content')?.touched">
+                Le contenu est requis.
+              </div>
+              <small class="zen-form-help">
+                Vous pouvez utiliser la syntaxe HTML pour mettre en forme votre contenu.
+              </small>
+            </div>
+
+            <div class="zen-form-group" *ngIf="isEditMode">
+              <div class="zen-toggle-container">
+                <label class="zen-toggle">
+                  <input type="checkbox" formControlName="isActive">
+                  <span class="zen-toggle-slider"></span>
+                </label>
+                <span class="zen-toggle-label">Article actif</span>
+              </div>
+              <small class="zen-form-help">
+                Désactivez cette option pour masquer l'article sans le supprimer.
+              </small>
+            </div>
+
+            <!-- Boutons alignés à droite -->
+            <div class="mt-5">
+                <button
+                  type="button"
+                  class="zen-button zen-button-outline pe-3 me-3"
+                  (click)="cancel()"
+                >
+                  <i class="bi bi-arrow-left pe-3 me-2"></i>
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  class="zen-button zen-button-primary"
+                  (click)="onSubmit()"
+                >
+                  <i class="bi bi-check-circle me-2"></i>
+                  <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+                  {{ isEditMode ? 'Mettre à jour' : 'Publier' }} l'article
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

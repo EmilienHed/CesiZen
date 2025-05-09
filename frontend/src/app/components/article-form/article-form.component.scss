@@ -1,0 +1,552 @@
+// Variables
+@use "sass:color";
+$zen-green-light: #f0f7f0;
+$zen-green-medium: #7bb06e;
+$zen-green-dark: #3d6e3c;
+$zen-yellow-light: #fffbed;
+$zen-yellow-medium: #f8e3a3;
+$zen-yellow-dark: #e4b84d;
+$zen-text: #395038;
+$zen-text-light: #657764;
+
+// Container global
+.zen-practice-container {
+  padding: 2rem 0;
+  min-height: calc(100vh - 76px);
+  background: linear-gradient(135deg, #f2f9ea 0%, #e8f4f4 100%);
+  position: relative;
+  overflow-x: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--accent), var(--secondary));
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Cpath d='M30,50 Q50,80 70,50 Q50,20 30,50 Z' fill='none' stroke='%234F8A8B' stroke-width='1' opacity='0.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    transform: rotate(45deg);
+    z-index: 0;
+    opacity: 0.2;
+  }
+}
+
+// Loader
+.zen-loader {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.zen-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid rgba($zen-green-medium, 0.2);
+  border-top-color: $zen-green-medium;
+  animation: spin 1s infinite linear;
+
+  &.zen-spinner-sm {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+    margin-right: 0.5rem;
+    display: inline-block;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Message d'erreur
+.zen-error {
+  background-color: #fce8e8;
+  border-left: 4px solid #e74c3c;
+  color: #c0392b;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+}
+
+.zen-error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+// Card du formulaire
+.zen-form-card {
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+  border: none;
+  animation: fadeIn 0.6s ease-out;
+  margin-bottom: 2rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, $zen-green-dark 0%, $zen-yellow-dark 100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// En-tête du formulaire
+.zen-form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, $zen-green-medium, $zen-yellow-medium);
+    border-radius: 3px;
+  }
+}
+
+.zen-form-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: $zen-green-dark;
+  letter-spacing: -0.5px;
+}
+
+.zen-form-subtitle {
+  color: $zen-text-light;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+// Groupes de formulaire
+.zen-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.zen-form-label {
+  display: block;
+  font-weight: 600;
+  color: $zen-text;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.zen-required {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+
+.zen-input-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.zen-input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $zen-text-light;
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+.zen-form-control {
+  width: 100%;
+  border: 1px solid #e9ecef;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-size: 1rem;
+  height: 50px;
+  font-weight: 500;
+  color: $zen-text;
+  background-color: white;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $zen-green-medium;
+  }
+
+  &.zen-invalid {
+    border-color: #e74c3c;
+  }
+
+  &.zen-editor {
+    min-height: 250px;
+    padding: 1rem;
+    resize: vertical;
+    font-family: inherit;
+    height: auto;
+  }
+
+  &::placeholder {
+    color: rgba($zen-text-light, 0.6);
+  }
+}
+
+select.zen-form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23657764' d='M7.247 12.64 2.451 7.158C1.885 6.513 2.345 5.5 3.204 5.5h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 1rem) center;
+}
+
+textarea.zen-form-control {
+  padding-left: 1rem;
+
+  & + .zen-input-icon {
+    top: 1rem;
+    transform: none;
+  }
+}
+
+.zen-form-help {
+  display: block;
+  color: $zen-text-light;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+// Toggle switch
+.zen-toggle-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.zen-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 1rem;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .zen-toggle-slider {
+      background-color: $zen-green-medium;
+    }
+
+    &:checked + .zen-toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    &:focus + .zen-toggle-slider {
+      box-shadow: 0 0 1px $zen-green-medium;
+    }
+  }
+}
+
+.zen-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+
+  &:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+}
+
+.zen-toggle-label {
+  font-weight: 500;
+  color: $zen-text;
+}
+
+// Boutons d'action
+.zen-form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.zen-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(to right, $zen-green-dark, $zen-green-medium);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba($zen-green-dark, 0.2);
+  white-space: nowrap;
+  min-width: 150px;
+  text-decoration: none;
+  
+  &:hover {
+    background: linear-gradient(to right, $zen-green-medium, $zen-yellow-dark);
+    box-shadow: 0 6px 12px rgba($zen-green-dark, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(2px);
+  }
+  
+  &.zen-button-sm {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  &.zen-button-primary {
+    background: linear-gradient(to right, $zen-green-dark, $zen-green-medium);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(to right, $zen-green-medium, $zen-yellow-dark);
+    }
+  }
+
+  &.zen-button-warning {
+    background: linear-gradient(to right, #fd7e14, #f0b775);
+
+    &:hover {
+      background: linear-gradient(to right, #f0b775, #fd7e14);
+    }
+  }
+
+  &.zen-button-danger {
+    background: linear-gradient(to right, #dc3545, #eb6b7a);
+
+    &:hover {
+      background: linear-gradient(to right, #eb6b7a, #dc3545);
+    }
+  }
+  
+  &.zen-button-outline {
+    background: transparent;
+    color: $zen-green-medium;
+    border: 1px solid $zen-green-medium;
+    box-shadow: none;
+
+    &:hover {
+      background-color: rgba($zen-green-light, 0.7);
+      color: $zen-green-dark;
+      box-shadow: 0 4px 10px rgba($zen-green-dark, 0.1);
+    }
+  }
+  
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
+
+// Adaptations responsive
+@media (max-width: 768px) {
+  .zen-practice-container {
+    padding: 1rem 0;
+  }
+  
+  .zen-form-card {
+    padding: 1rem;
+  }
+  
+  .zen-form-title {
+    font-size: 1.5rem;
+  }
+  
+  .zen-form-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .zen-form-control {
+    height: 45px;
+  }
+  
+  .zen-form-control.zen-editor {
+    min-height: 200px;
+  }
+  
+  .zen-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Styles personnalisés pour les boutons Bootstrap
+.btn {
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease-out;
+  min-width: 150px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 576px) {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.custom-btn-primary {
+  background-color: $zen-green-dark !important;
+  border-color: $zen-green-dark !important;
+  box-shadow: 0 4px 15px rgba($zen-green-dark, 0.3) !important;
+  
+  &:hover, &:focus, &:active {
+    background-color: color.adjust($zen-green-dark, $lightness: -5%) !important;
+    border-color: color.adjust($zen-green-dark, $lightness: -5%) !important;
+    box-shadow: 0 6px 20px rgba($zen-green-dark, 0.4) !important;
+  }
+}
+
+.custom-btn {
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  i {
+    font-size: 1.1rem;
+  }
+  
+  &:focus {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}
+
+.btn-outline-secondary {
+  color: $zen-text;
+  border-color: #ced4da;
+  
+  &:hover, &:focus {
+    background-color: #f8f9fa;
+    color: $zen-text;
+    border-color: #ced4da;
+  }
+}
+
+// Style spécifique pour le conteneur des boutons
+.justify-content-end {
+  display: flex;
+  justify-content: flex-end !important;
+  width: 100%;
+}
+
+// Boutons stylisés façon zen
+.zen-style-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.7rem 1.2rem;
+  border: 1px solid $zen-green-medium;
+  color: $zen-green-medium;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: rgba($zen-green-light, 0.7);
+    color: $zen-green-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba($zen-green-dark, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.zen-style-primary-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.7rem 1.2rem;
+  background: linear-gradient(to right, $zen-green-dark, $zen-green-medium);
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba($zen-green-dark, 0.2);
+  
+  &:hover {
+    background: linear-gradient(to right, $zen-green-medium, $zen-yellow-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba($zen-green-dark, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+}
