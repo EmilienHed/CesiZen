@@ -1,0 +1,61 @@
+<!-- src/app/pages/profile/profile.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadUserProfile()">Réessayer</ion-button>
+  </div>
+
+  <div *ngIf="user" class="profile-container">
+    <div class="profile-header">
+      <div class="avatar">
+        <ion-icon name="person"></ion-icon>
+      </div>
+      <h1>{{ user.prenom }} {{ user.nom }}</h1>
+      <p>{{ user.email }}</p>
+    </div>
+
+    <div class="profile-section">
+      <h2>Informations personnelles</h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <ion-item class="custom-item">
+          <ion-label position="floating">Prénom</ion-label>
+          <ion-input type="text" formControlName="prenom"></ion-input>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+        </ion-item>
+        <div class="error-message" *ngIf="profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched">
+          <span *ngIf="profileForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
+        </div>
+
+        <ion-item class="custom-item">
+          <ion-label position="floating">Nom</ion-label>
+          <ion-input type="text" formControlName="nom"></ion-input>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+        </ion-item>
+        <div class="error-message" *ngIf="profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched">
+          <span *ngIf="profileForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+        </div>
+
+        <ion-button expand="block" type="submit" [disabled]="profileForm.invalid" class="update-button">
+          Mettre à jour le profil
+        </ion-button>
+      </form>
+    </div>
+
+    <div class="profile-section">
+      <h2>Paramètres du compte</h2>
+
+      <ion-button expand="block" color="danger" fill="outline" class="logout-button" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Déconnexion
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

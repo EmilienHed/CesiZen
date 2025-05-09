@@ -1,0 +1,45 @@
+<!-- src/app/pages/articles/article-detail/article-detail.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/articles"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="article">{{ article.title }}</ion-title>
+    <ion-title *ngIf="!article">Article</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadArticle(+route.snapshot.paramMap.get('id')!)">Réessayer</ion-button>
+  </div>
+
+  <div *ngIf="article && !loading" class="article-container">
+    <div class="article-header">
+      <h1 class="article-title">{{ article.title }}</h1>
+
+      <div class="article-meta">
+        <div class="meta-item">
+          <ion-icon name="person-outline"></ion-icon>
+          <span>{{ article.userName }}</span>
+        </div>
+        <div class="meta-item">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>{{ formatDate(article.createdAt) }}</span>
+        </div>
+        <div class="meta-item" *ngIf="article.categoryName">
+          <ion-icon name="bookmark-outline"></ion-icon>
+          <span>{{ article.categoryName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-image" *ngIf="article.imageUrl">
+      <img [src]="article.imageUrl" [alt]="article.title">
+    </div>
+
+    <div class="article-content" [innerHTML]="safeContent"></div>
+  </div>
+</ion-content>

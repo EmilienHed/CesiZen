@@ -1,0 +1,95 @@
+<!-- src/app/pages/exercises/exercise-detail/exercise-detail.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/exercises"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="exercise">{{ exercise.name }}</ion-title>
+    <ion-title *ngIf="!exercise">Exercice</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="alert-circle"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadExercise(+route.snapshot.paramMap.get('id')!)">Réessayer</ion-button>
+  </div>
+
+  <div *ngIf="exercise && !loading" class="exercise-container">
+    <div *ngIf="!isRunning" class="exercise-info">
+      <h1>{{ exercise.name }}</h1>
+      <p class="description">{{ exercise.description }}</p>
+
+      <div class="timing-container">
+        <div class="timing-card">
+          <ion-icon name="arrow-up-outline"></ion-icon>
+          <div class="timing-text">
+            <h3>Inspiration</h3>
+            <p>{{ exercise.inspirationDuration }} secondes</p>
+          </div>
+        </div>
+
+        <div class="timing-card" *ngIf="exercise.holdDuration > 0">
+          <ion-icon name="pause-outline"></ion-icon>
+          <div class="timing-text">
+            <h3>Rétention</h3>
+            <p>{{ exercise.holdDuration }} secondes</p>
+          </div>
+        </div>
+
+        <div class="timing-card">
+          <ion-icon name="arrow-down-outline"></ion-icon>
+          <div class="timing-text">
+            <h3>Expiration</h3>
+            <p>{{ exercise.expirationDuration }} secondes</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cycles-control">
+        <h3>Nombre de cycles</h3>
+        <div class="cycles-buttons">
+          <ion-button [color]="totalCycles === 3 ? 'primary' : 'light'" (click)="setCycles(3)">3</ion-button>
+          <ion-button [color]="totalCycles === 5 ? 'primary' : 'light'" (click)="setCycles(5)">5</ion-button>
+          <ion-button [color]="totalCycles === 10 ? 'primary' : 'light'" (click)="setCycles(10)">10</ion-button>
+        </div>
+      </div>
+
+      <ion-button expand="block" class="start-button" (click)="startExercise()">
+        Commencer l'exercice
+      </ion-button>
+    </div>
+
+    <div *ngIf="isRunning" class="practice-container">
+      <div class="breath-circle"
+           [ngStyle]="{'transform': 'scale(' + (circleSize/100) + ')'}"
+           [ngClass]="{
+             'inspire': currentState === breathStateEnum.Inspire,
+             'hold': currentState === breathStateEnum.Hold,
+             'expire': currentState === breathStateEnum.Expire
+           }">
+        <div class="state-text">{{ currentState }}</div>
+        <div class="timer">{{ secondsRemaining }}</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="cycle-text">Cycle {{ cycleCount }}/{{ totalCycles }}</div>
+        <div class="progress-bar">
+          <div class="progress" [style.width]="(cycleCount / totalCycles * 100) + '%'"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <ion-button (click)="pauseExercise()" fill="outline">
+          <ion-icon name="pause"></ion-icon>
+          Pause
+        </ion-button>
+        <ion-button (click)="stopExercise()" color="danger" fill="outline">
+          <ion-icon name="stop"></ion-icon>
+          Arrêter
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
