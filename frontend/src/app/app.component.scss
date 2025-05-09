@@ -1,0 +1,24 @@
+/* src/app/app.component.scss */
+
+/* Structure de base pour occuper toute la hauteur de la page */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Style pour les pages avec header et footer */
+.with-header-footer {
+  flex: 1;
+  margin-top: 3.5rem; /* Espace pour le header absolu */
+  padding-bottom: 1rem;
+  background-color: #f8f9fa;
+}
+
+/* Style pour les pages d'authentification (pleine hauteur sans padding) */
+.full-height {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}

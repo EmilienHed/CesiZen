@@ -1,1 +1,381 @@
-/* You can add global styles to this file, and also import other style files */
+/* styles.css ou styles.scss global */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
+
+:root {
+  --primary: #4F8A8B;
+  --primary-dark: #3D6D6E;
+  --secondary: #FBD46D;
+  --accent: #07BEB8;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --danger: #F44336;
+  --light: #F4F9F9;
+  --dark: #222831;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-600: #6c757d;
+  --gray-800: #343a40;
+
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-sm: 4px;
+
+  --transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1;
+  padding-top: 1rem; /* Modifié car le header n'est plus fixe */
+  padding-bottom: 1rem;
+}
+
+.container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Buttons */
+.btn {
+  border-radius: var(--radius);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: var(--transition);
+  text-transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+  /*background-color: var(--primary);*/
+  border-color: var(--primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.display-4 {
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* Section styles */
+.hero-section {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(244,249,249,0.9) 100%);
+  border-radius: var(--radius-lg);
+  margin: 1rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.features-section {
+  padding: 3rem 1rem;
+}
+
+.section-title {
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* Feature cards */
+.feature-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  height: 100%;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.icon-container {
+  width: 70px;
+  height: 70px;
+  background: var(--light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: var(--primary);
+}
+
+.icon-container i {
+  font-size: 2rem;
+}
+
+/* Hero image */
+.hero-image {
+  max-width: 80%;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+}
+
+/* Custom link styles */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Utility classes */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-secondary {
+  color: var(--secondary) !important;
+}
+
+.bg-light {
+  background-color: var(--light) !important;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-unstyled li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    text-align: center;
+  }
+
+  .hero-image {
+    margin-top: 2rem;
+  }
+
+  .d-flex.gap-3 {
+    justify-content: center;
+  }
+}
+
+/* Styles pour la section d'administration */
+.admin-dashboard .card,
+.user-management .card,
+.user-form .card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.admin-dashboard .card-icon {
+  font-size: 2.5rem;
+  color: #0d6efd;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.admin-dashboard .card-title,
+.user-management .card-title,
+.user-form .card-title {
+  font-weight: 600;
+  color: #212529;
+}
+
+.user-management .table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.user-management .table td {
+  vertical-align: middle;
+}
+
+.user-management .btn-group .btn {
+  border-radius: 4px;
+  margin-right: 3px;
+}
+
+.user-form .form-section-title {
+  color: #495057;
+  font-size: 1.2rem;
+}
+
+.user-form hr {
+  margin-top: 0.5rem;
+  opacity: 0.1;
+}
+
+.user-form .form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Animation pour les alertes */
+.alert {
+  animation: fadeIn 0.3s ease-in-out;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style pour les badges de rôle */
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+  padding: 6px 10px;
+  font-weight: 500;
+}
+
+.badge.bg-primary {
+  background-color: #0d6efd !important;
+  padding: 6px 10px;
+  font-weight: 500;
+}
+
+/* Amélioration des boutons */
+.btn {
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  transform: translateY(-2px);
+}
+
+/* Style pour les inputs */
+.form-control, .form-select {
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Style pour le spinner de chargement */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #0d6efd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-management .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .admin-dashboard .card-icon {
+    font-size: 2rem;
+  }
+}

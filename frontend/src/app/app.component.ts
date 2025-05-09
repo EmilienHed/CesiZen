@@ -1,17 +1,40 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { UserListComponent } from './components/user-list/user-list.component';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, UserListComponent, HttpClientModule],
-  template: '<app-user-list></app-user-list>',
-  //templateUrl: './user-list.component.html',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   standalone: true,
-  styleUrls: ['./app.component.css']
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    HeaderComponent,
+    FooterComponent
+  ]
 })
-export class AppComponent {
-  title = 'frontend';
+export class AppComponent implements OnInit {
+  isAuthPage: boolean = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    // S'abonner aux événements de changement de route
+    this.router.events.pipe(
+      filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      // Vérifier si l'URL actuelle est une page d'authentification
+      // Ajouter '/register' pour inclure la page d'inscription
+      this.isAuthPage = event.urlAfterRedirects === '/login' || event.urlAfterRedirects === '/inscription';
+    });
+
+    // Vérifier l'URL initiale
+    const currentUrl = this.router.url;
+    this.isAuthPage = currentUrl === '/login' || currentUrl === '/inscription';
+  }
 }

@@ -1,0 +1,111 @@
+<div class="zen-container">
+  <div class="zen-content">
+    <div class="zen-header">
+      <h1 class="zen-title">Articles sur la santé mentale</h1>
+      <p class="zen-lead">
+        Découvrez nos articles pour mieux comprendre et gérer votre santé mentale au quotidien.
+      </p>
+      <button *ngIf="isAdmin" (click)="createArticle()" class="zen-button">
+        <i class="bi bi-plus-circle"></i> Nouvel article
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="zen-loader">
+      <div class="zen-spinner"></div>
+    </div>
+
+    <div *ngIf="error" class="zen-error">
+      {{ error }}
+    </div>
+
+    <div class="zen-grid">
+      <div class="zen-card" *ngFor="let article of articles" [class.zen-card-inactive]="!article.isActive">
+        <div class="zen-card-content">
+          <h2 class="zen-card-title">{{ article.title }}</h2>
+          <div class="zen-card-timing" *ngIf="article.categoryName">
+            <span class="zen-badge">{{ article.categoryName }}</span>
+            <span *ngIf="!article.isActive" class="zen-badge zen-badge-inactive">Inactif</span>
+          </div>
+          <p class="zen-card-text">{{ getPreview(article.content) }}</p>
+          <div class="zen-card-meta">
+            <span><i class="bi bi-person"></i> {{ article.userName }}</span>
+            <span><i class="bi bi-calendar3"></i> {{ formatDate(article.createdAt) }}</span>
+          </div>
+        </div>
+        <div class="zen-card-footer">
+          <button (click)="viewArticle(article.id!)" class="zen-button">
+            Lire l'article
+          </button>
+          <div *ngIf="isAdmin" class="zen-admin-actions">
+            <button (click)="editArticle(article.id!)" class="zen-button zen-button-sm">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button *ngIf="article.isActive" (click)="deactivateArticle(article.id!)" class="zen-button zen-button-sm zen-button-warning">
+              <i class="bi bi-eye-slash"></i>
+            </button>
+            <button (click)="deleteArticle(article.id!)" class="zen-button zen-button-sm zen-button-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="articles.length === 0 && !loading" class="zen-empty">
+      <p>Aucun article disponible pour le moment.</p>
+      <button *ngIf="isAdmin" (click)="createArticle()" class="zen-button">
+        <i class="bi bi-plus-circle"></i> Créer un article
+      </button>
+    </div>
+
+    <div class="zen-quote">
+      <p>"La santé mentale est un état de bien-être dans lequel une personne peut se réaliser, surmonter les tensions normales de la vie et contribuer à la vie de sa communauté."</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour afficher les détails de l'article -->
+<div *ngIf="showModal" class="zen-modal">
+  <div class="zen-modal-overlay" (click)="closeModal()"></div>
+  <div class="zen-modal-container">
+    <div class="zen-modal-header">
+      <h2 class="zen-modal-title">
+        {{ selectedArticle?.title }}
+        <span *ngIf="selectedArticle && !selectedArticle.isActive" class="zen-badge zen-badge-inactive">Inactif</span>
+      </h2>
+      <button (click)="closeModal()" class="zen-modal-close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="zen-modal-body">
+      <div *ngIf="selectedArticle" class="zen-article">
+        <div class="zen-article-meta">
+          <span><i class="bi bi-person"></i> {{ selectedArticle.userName }}</span>
+          <span><i class="bi bi-calendar3"></i> {{ formatDate(selectedArticle.createdAt) }}</span>
+          <span *ngIf="selectedArticle.categoryName"><i class="bi bi-tag"></i> {{ selectedArticle.categoryName }}</span>
+        </div>
+
+        <div *ngIf="selectedArticle.imageUrl" class="zen-article-image">
+          <img [src]="selectedArticle.imageUrl" [alt]="selectedArticle.title">
+        </div>
+
+        <div class="zen-article-content" [innerHTML]="selectedArticle.content"></div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedArticle && isAdmin" class="zen-modal-footer">
+      <div class="zen-admin-actions">
+        <button (click)="editArticle(selectedArticle.id!)" class="zen-button">
+          <i class="bi bi-pencil"></i> Modifier
+        </button>
+        <button *ngIf="selectedArticle.isActive" (click)="deactivateArticle(selectedArticle.id!)" class="zen-button zen-button-warning">
+          <i class="bi bi-eye-slash"></i> Désactiver
+        </button>
+        <button (click)="deleteArticle(selectedArticle.id!)" class="zen-button zen-button-danger">
+          <i class="bi bi-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

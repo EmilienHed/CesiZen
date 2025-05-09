@@ -6,7 +6,14 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using CesiZen.Data;
 using Microsoft.Extensions.Configuration;
-using Microsoft.OpenApi.Models; // Ajouté pour Swagger
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using CesiZen.Services; // Pour les services d'email
+using CesiZen.Interfaces; // Ajout pour l'interface IArticleService
+using System;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +29,31 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Ajouter Swagger pour générer la documentation de l'API
+// Configurer les options de sérialisation JSON pour gérer les références circulaires
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
+// Ajouter l'authentification JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+// Ajouter Swagger avec support pour JWT
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -30,6 +61,32 @@ builder.Services.AddSwaggerGen(options =>
         Title = "CesiZen API",
         Version = "v1",
         Description = "API pour gérer les utilisateurs et les exercices respiratoires"
+    });
+
+    // ✅ Configuration pour l'auth via JWT dans Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Entrez le token JWT comme ceci : Bearer {votre_token}"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
     });
 });
 
@@ -42,25 +99,31 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-builder.Services.AddControllers();
+// Injection des services
+builder.Services.AddScoped<IAuthService, AuthService>();
+// Ajout du service d'articles
+builder.Services.AddScoped<IArticleService, ArticleService>();
+// Ajouter cette ligne dans ConfigureServices ou dans le builder.Services
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
-// Activer Swagger et l'UI dans l'environnement de développement
+// Activer Swagger en dev
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(); // Active Swagger
+    app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CesiZen API v1"); // Le fichier JSON généré par Swagger
-        c.RoutePrefix = string.Empty; // Cela rend Swagger accessible sur la racine de l'URL (par exemple http://localhost:5000/)
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CesiZen API v1");
+        c.RoutePrefix = string.Empty;
     });
 }
 
-// Activer CORS
+// Middleware
 app.UseCors("AllowAngular");
 
+app.UseAuthentication(); // ✅ Auth JWT activée ici
 app.UseAuthorization();
-app.MapControllers();
 
+app.MapControllers();
 app.Run();

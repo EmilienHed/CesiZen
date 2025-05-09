@@ -1,0 +1,141 @@
+<!--
+&lt;!&ndash; src/app/components/login/login.component.html &ndash;&gt;
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Connexion à CESIZen</h2>
+    <p class="login-subtitle">L'application de votre santé mentale</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors?.['required']">L'email est requis</div>
+          <div *ngIf="f['email'].errors?.['email']">Veuillez entrer une adresse email valide</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors?.['required']">Le mot de passe est requis</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Se connecter
+        </button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">{{error}}</div>
+    </form>
+
+    <div class="login-footer">
+      <p>Vous n'avez pas de compte ? <a routerLink="/register">S'inscrire</a></p>
+    </div>
+  </div>
+</div>
+-->
+
+
+
+<div class="login-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="login-card">
+          <div class="text-center mb-4">
+            <h2 class="login-title">Connexion à <span class="text-primary">CESIZen</span></h2>
+            <p class="login-subtitle">L'application de votre santé mentale</p>
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+            <div class="form-group mb-3">
+              <label for="email" class="form-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                  placeholder="Votre adresse email"
+                  autocomplete="email"
+                />
+              </div>
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback d-block">
+                <div *ngIf="f['email'].errors?.['required']">L'email est requis</div>
+                <div *ngIf="f['email'].errors?.['email']">Veuillez entrer une adresse email valide</div>
+              </div>
+            </div>
+
+            <div class="form-group mb-4">
+              <div class="d-flex justify-content-between">
+                <label for="password" class="form-label">Mot de passe</label>
+                <a routerLink="/forgot-password" class="forgot-password">Mot de passe oublié?</a>
+              </div>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input
+                  [type]="hidePassword ? 'password' : 'text'"
+                  id="password"
+                  formControlName="password"
+                  class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+                  placeholder="Votre mot de passe"
+                  autocomplete="current-password"
+                />
+                <button
+                  type="button"
+                  class="input-group-text password-toggle"
+                  (click)="togglePasswordVisibility()"
+                >
+                  <i class="bi" [ngClass]="hidePassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+              <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
+                <div *ngIf="f['password'].errors?.['required']">Le mot de passe est requis</div>
+              </div>
+            </div>
+
+            <div class="form-check mb-4">
+              <input type="checkbox" class="form-check-input" id="rememberMe" formControlName="rememberMe">
+              <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
+            </div>
+
+            <div class="form-group">
+              <button [disabled]="loading" class="btn btn-primary w-100 btn-lg">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                Se connecter
+              </button>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger mt-3">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{error}}
+            </div>
+          </form>
+
+          <div class="login-footer text-center mt-4">
+            <p>Vous n'avez pas de compte ? <a routerLink="/inscription" class="register-link">S'inscrire</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

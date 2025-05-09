@@ -5,9 +5,7 @@ import { ApiService } from '../../services/services/api.service';
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, RouterOutlet],
   templateUrl: './user-list.component.html',
-  standalone: true,
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
