@@ -25,23 +25,19 @@ export const routes: Routes = [
   {
     path: 'respiration/practice/:id',
     component: RespirationPracticeComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'respiration',
     loadChildren: () => import('./modules/respiration/respiration.module').then(m => m.RespirationModule),
-    canActivate: [AuthGuard]
   },
   // Routes pour les articles
   {
     path: 'articles',
     component: ArticleListComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'articles/:id',
     component: ArticleDetailComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: 'admin/articles/create',

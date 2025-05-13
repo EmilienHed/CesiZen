@@ -41,11 +41,12 @@ CesiZen est une application web permettant de gérer des articles avec un systè
    ```
 
 2. Configurez la base de données dans `appsettings.json` :
-   ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Host=localhost;Database=cesizen;Username=postgres;Password=votre_mot_de_passe"
-   }
-   ```
+Remplacez les informations par celles qui se trouvent dans le docker-compose.yml
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=cesizen;Username=postgres;Password=votre_mot_de_passe"
+}
+```
 
 3. Appliquez les migrations pour créer la base de données :
    ```bash
@@ -156,8 +157,8 @@ Les administrateurs peuvent en plus :
 
 L'application utilise un système de rôles pour gérer les droits d'accès :
 
-- **Utilisateur** (roleId = 1) : Accès en lecture aux articles actifs uniquement
-- **Admin** (roleId = 2) : Accès complet à tous les articles et fonctionnalités d'administration
+- **Admin** (roleId = 1) : Accès complet à tous les articles et fonctionnalités d'administration
+- **Utilisateur** (roleId = 2) : Accès en lecture aux articles actifs uniquement
 
 Les articles inactifs (IsActive = false) sont invisibles pour les utilisateurs normaux, mais restent visibles pour les administrateurs.
 

@@ -1,13 +1,17 @@
-// src/app/pages/exercises/exercise-list/exercise-list.page.ts
+// src/app/pages/exercices/exercice-list/exercice-list.page.ts
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RespirationService, RespirationExercise } from '../../../services/respiration.service';
-import { LoadingController } from '@ionic/angular';
+import { RespirationService } from '../../../services/respiration.service';
+import { RespirationExercise } from '../../../models/respiration-exercise.model';
+import { LoadingController, IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-exercise-list',
-  templateUrl: './exercise-list.page.html',
-  styleUrls: ['./exercise-list.page.scss'],
+  templateUrl: './exercice-list.page.html',
+  styleUrls: ['./exercice-list.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class ExerciseListPage implements OnInit {
   exercises: RespirationExercise[] = [];

@@ -45,17 +45,43 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
+    console.log('Tentative de connexion avec:', credentials);
+    console.log('URL de l\'API:', `${this.apiUrl}/login`);
+    
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
-        tap(user => {
-          this.storage.set('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+        tap({
+          next: (user) => {
+            console.log('Connexion réussie:', user);
+            this.storage.set('currentUser', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+          },
+          error: (error) => {
+            console.error('Erreur de connexion:', error);
+          }
         })
       );
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/api/Users/create`, userData);
+    console.log('Tentative d\'inscription avec:', userData);
+    console.log('URL de l\'API:', `${environment.apiUrl}/api/Users/create`);
+    return this.http.post<any>(`${environment.apiUrl}/api/Users/create`, userData).pipe(
+      tap({
+        next: (response) => {
+          console.log('Inscription réussie:', response);
+        },
+        error: (error) => {
+          console.error('Erreur d\'inscription:', error);
+          console.error('Détails de l\'erreur:', {
+            status: error.status,
+            statusText: error.statusText,
+            message: error.message,
+            url: error.url
+          });
+        }
+      })
+    );
   }
 
   logout(): Observable<void> {

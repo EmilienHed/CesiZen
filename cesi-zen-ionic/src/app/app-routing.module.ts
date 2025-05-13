@@ -6,20 +6,35 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'tabs',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/auth/login/auth/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/auth/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/auth/login/auth/register/register.module').then(m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule)
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'articles',
+    loadChildren: () => import('./pages/articles/articles.module').then(m => m.ArticlesPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'exercices',
+    loadChildren: () => import('./pages/exercices/exercices.module').then(m => m.ExercicesPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profil',
+    loadChildren: () => import('./pages/profil/profil.module').then(m => m.ProfilPageModule),
     canActivate: [AuthGuard]
   }
 ];
