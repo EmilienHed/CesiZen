@@ -10,11 +10,11 @@ const routes: Routes = [
     children: [
       {
         path: 'exercises',
-        loadChildren: () => import('../exercises/exercise-list/exercise-list.module').then(m => m.ExerciseListPageModule)
+        loadChildren: () => import('../exercices/exercice-list/exercice-list.module').then(m => m.ExerciceListPageModule)
       },
       {
         path: 'exercises/:id',
-        loadChildren: () => import('../exercises/exercise-detail/exercise-detail.module').then(m => m.ExerciseDetailPageModule)
+        loadChildren: () => import('../exercices/exercice-detail/exercice-detail.module').then(m => m.ExerciceDetailPageModule)
       },
       {
         path: 'articles',

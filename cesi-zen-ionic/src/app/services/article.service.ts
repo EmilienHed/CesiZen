@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Article } from '../models/article.model';
 import { environment } from '../../environments/environment';
+import {Article} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,10 @@ export class ArticleService {
         map((response: any) => {
           if (response && response.$values) {
             return response.$values;
+          } else if (Array.isArray(response)) {
+            return response;
           }
-          return response;
+          return [response];
         })
       );
   }
@@ -31,10 +33,12 @@ export class ArticleService {
     return this.http.get<any>(`${this.apiUrl}/${id}`)
       .pipe(
         map((response: any) => {
-          if (response && response.$values && response.$values.length > 0) {
-            return response.$values[0];
+          if (response && response.$values) {
+            return response.$values;
+          } else if (Array.isArray(response)) {
+            return response;
           }
-          return response;
+          return [response];
         })
       );
   }

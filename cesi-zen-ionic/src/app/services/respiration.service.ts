@@ -1,4 +1,3 @@
-
 // src/app/services/respiration.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -21,8 +20,10 @@ export class RespirationService {
         map((response: any) => {
           if (response && response.$values) {
             return response.$values;
+          } else if (Array.isArray(response)) {
+            return response;
           }
-          return response;
+          return [response];
         })
       );
   }
@@ -31,10 +32,12 @@ export class RespirationService {
     return this.http.get<RespirationExercise>(`${this.apiUrl}/${id}`)
       .pipe(
         map((response: any) => {
-          if (response && response.$values && response.$values.length > 0) {
-            return response.$values[0];
+          if (response && response.$values) {
+            return response.$values;
+          } else if (Array.isArray(response)) {
+            return response;
           }
-          return response;
+          return [response];
         })
       );
   }
@@ -45,8 +48,10 @@ export class RespirationService {
         map((response: any) => {
           if (response && response.$values) {
             return response.$values;
+          } else if (Array.isArray(response)) {
+            return response;
           }
-          return response;
+          return [response];
         })
       );
   }

@@ -2,14 +2,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
-import { Article } from '../../../models/article.model';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, IonicModule } from '@ionic/angular';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Article } from '../../../models/article.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-article-detail',
   templateUrl: './article-detail.page.html',
   styleUrls: ['./article-detail.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class ArticleDetailPage implements OnInit {
   article: Article | null = null;
@@ -18,7 +21,7 @@ export class ArticleDetailPage implements OnInit {
   error = '';
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private articleService: ArticleService,
     private loadingController: LoadingController,
     private sanitizer: DomSanitizer

@@ -1,28 +1,12 @@
 // src/app/models/user.model.ts
 export interface User {
-  idUtilisateur: number;
-  nom: string;
-  prenom: string;
+  id: number;
   email: string;
-  motDePasse?: string;
-  dateNaissance?: string;
-  roleId: number;
-  dateCreation: string;
-  dateDerniereConnexion?: string;
-}
-
-// src/app/models/auth.model.ts
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  token: string;
-  userId: number;
-  userName: string;
-  role: string;
-  expiration: Date;
+  firstName: string;
+  lastName: string;
+  dateOfBirth?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // src/app/models/respiration-exercise.model.ts

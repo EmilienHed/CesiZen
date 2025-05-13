@@ -3,12 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
 import { Article } from '../../../models/article.model';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-article-list',
   templateUrl: './article-list.page.html',
   styleUrls: ['./article-list.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class ArticleListPage implements OnInit {
   articles: Article[] = [];

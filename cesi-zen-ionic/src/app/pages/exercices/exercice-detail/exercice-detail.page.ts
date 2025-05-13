@@ -1,11 +1,12 @@
-
-// src/app/pages/exercises/exercise-detail/exercise-detail.page.ts
+// src/app/pages/exercices/exercice-detail/exercice-detail.page.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RespirationService, RespirationExercise } from '../../../services/respiration.service';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { RespirationService } from '../../../services/respiration.service';
+import { LoadingController, AlertController, IonicModule } from '@ionic/angular';
 import { Subscription, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { RespirationExercise } from "../../../models/respiration-exercise.model";
+import { CommonModule } from '@angular/common';
 
 enum BreathState {
   Ready = 'Prêt',
@@ -17,8 +18,10 @@ enum BreathState {
 
 @Component({
   selector: 'app-exercise-detail',
-  templateUrl: './exercise-detail.page.html',
-  styleUrls: ['./exercise-detail.page.scss'],
+  templateUrl: './exercice-detail.page.html',
+  styleUrls: ['./exercice-detail.page.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule]
 })
 export class ExerciseDetailPage implements OnInit, OnDestroy {
   exercise: RespirationExercise | null = null;
@@ -42,7 +45,7 @@ export class ExerciseDetailPage implements OnInit, OnDestroy {
   }
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private respirationService: RespirationService,
     private loadingController: LoadingController,
     private alertController: AlertController

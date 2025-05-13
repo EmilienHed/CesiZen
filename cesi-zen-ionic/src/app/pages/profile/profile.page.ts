@@ -1,15 +1,18 @@
 // src/app/pages/profile/profile.page.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, IonicModule]
 })
 export class ProfilePage implements OnInit {
   profileForm: FormGroup;
