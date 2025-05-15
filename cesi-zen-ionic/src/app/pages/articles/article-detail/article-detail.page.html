@@ -10,10 +10,15 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="loading" class="ion-padding ion-text-center">
+    <ion-spinner name="circular"></ion-spinner>
+    <p>Chargement de l'article...</p>
+  </div>
+
   <div *ngIf="error" class="error-container">
     <ion-icon name="alert-circle"></ion-icon>
     <p>{{ error }}</p>
-    <ion-button (click)="loadArticle(+route.snapshot.paramMap.get('id')!)">Réessayer</ion-button>
+    <ion-button (click)="retryLoading()">Réessayer</ion-button>
   </div>
 
   <div *ngIf="article && !loading" class="article-container">
@@ -43,3 +48,12 @@
     <div class="article-content" [innerHTML]="safeContent"></div>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="goBack()">
+      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      Retour aux articles
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

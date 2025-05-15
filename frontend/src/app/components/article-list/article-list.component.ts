@@ -49,7 +49,7 @@ export class ArticleListComponent implements OnInit {
 
   loadArticles(): void {
     this.loading = true;
-    
+
     // Utiliser uniquement getArticles pour les deux cas
     this.articleService.getArticles()
       .subscribe({

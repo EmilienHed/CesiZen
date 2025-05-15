@@ -1,6 +1,6 @@
 // src/app/pages/articles/article-list/article-list.page.ts
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
 import { Article } from '../../../models/article.model';
 import { LoadingController, IonicModule } from '@ionic/angular';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './article-list.page.html',
   styleUrls: ['./article-list.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, RouterLink]
 })
 export class ArticleListPage implements OnInit {
   articles: Article[] = [];

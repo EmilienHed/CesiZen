@@ -1,68 +1,86 @@
 // src/app/pages/articles/article-detail/article-detail.page.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
-import { LoadingController, IonicModule } from '@ionic/angular';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { AuthService } from '../../../services/auth.service';
 import { Article } from '../../../models/article.model';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-article-detail',
   templateUrl: './article-detail.page.html',
   styleUrls: ['./article-detail.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ArticleDetailPage implements OnInit {
   article: Article | null = null;
   safeContent: SafeHtml = '';
   loading = false;
   error = '';
+  isAdmin = false;
 
   constructor(
-    public route: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
     private articleService: ArticleService,
-    private loadingController: LoadingController,
+    private authService: AuthService,
     private sanitizer: DomSanitizer
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.isAdmin = this.authService.isAdmin();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      await this.loadArticle(+id);
+      this.loadArticle(+id);
     } else {
       this.error = 'Aucun article spécifié.';
     }
   }
 
-  async loadArticle(id: number) {
-    const loading = await this.loadingController.create({
-      message: 'Chargement de l\'article...',
-      spinner: 'circles'
-    });
-    await loading.present();
-
+  loadArticle(id: number) {
+    this.loading = true;
+    this.error = '';
+    
     this.articleService.getArticleById(id).subscribe({
-      next: (data) => {
+      next: (data: Article) => {
+        console.log('Article reçu:', data);
         this.article = data;
-        if (this.article && this.article.content) {
+        if (this.article?.content) {
           this.safeContent = this.sanitizer.bypassSecurityTrustHtml(this.article.content);
         }
-        loading.dismiss();
+        this.loading = false;
       },
-      error: (error) => {
-        this.error = 'Impossible de charger l\'article. Veuillez réessayer.';
-        console.error(error);
-        loading.dismiss();
+      error: (error: any) => {
+        console.error('Erreur lors du chargement de l\'article:', error);
+        this.error = error.message || 'Erreur lors du chargement de l\'article. Veuillez réessayer.';
+        this.loading = false;
       }
     });
   }
 
-  formatDate(dateString: string | Date): string {
-    if (!dateString) return '';
+  retryLoading() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadArticle(+id);
+    }
+  }
 
+  formatDate(dateString: string | Date | undefined): string {
+    if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/tabs/articles']);
   }
 }

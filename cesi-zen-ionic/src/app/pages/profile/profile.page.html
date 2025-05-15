@@ -17,7 +17,7 @@
       <div class="avatar">
         <ion-icon name="person"></ion-icon>
       </div>
-      <h1>{{ user.prenom }} {{ user.nom }}</h1>
+      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
       <p>{{ user.email }}</p>
     </div>
 
@@ -27,20 +27,20 @@
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <ion-item class="custom-item">
           <ion-label position="floating">Prénom</ion-label>
-          <ion-input type="text" formControlName="prenom"></ion-input>
+          <ion-input type="text" formControlName="firstName"></ion-input>
           <ion-icon name="person-outline" slot="start"></ion-icon>
         </ion-item>
-        <div class="error-message" *ngIf="profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched">
-          <span *ngIf="profileForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
+        <div class="error-message" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+          <span *ngIf="profileForm.get('firstName')?.errors?.['required']">Le prénom est requis</span>
         </div>
 
         <ion-item class="custom-item">
           <ion-label position="floating">Nom</ion-label>
-          <ion-input type="text" formControlName="nom"></ion-input>
+          <ion-input type="text" formControlName="lastName"></ion-input>
           <ion-icon name="person-outline" slot="start"></ion-icon>
         </ion-item>
-        <div class="error-message" *ngIf="profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched">
-          <span *ngIf="profileForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+        <div class="error-message" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+          <span *ngIf="profileForm.get('lastName')?.errors?.['required']">Le nom est requis</span>
         </div>
 
         <ion-button expand="block" type="submit" [disabled]="profileForm.invalid" class="update-button">

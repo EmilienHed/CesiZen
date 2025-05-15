@@ -1,205 +1,249 @@
-/* src/app/pages/exercises/exercise-detail/exercise-detail.page.scss */
-.error-container {
-  padding: 30px;
+/* Variables pour réutiliser les valeurs communes */
+:host {
+  --card-radius: 12px;
+  --btn-radius: 8px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --space-md: 1rem;
+  --space-lg: 2rem;
+}
+
+/* Conteneurs */
+.error-container, .practice-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+}
 
-  ion-icon {
-    font-size: 50px;
-    color: var(--ion-color-danger);
-    margin-bottom: 10px;
-  }
+.error-container {
+  justify-content: center;
+  padding: var(--space-lg);
+  color: var(--ion-color-danger);
 
-  p {
-    color: var(--ion-color-medium);
-    margin-bottom: 20px;
-  }
+  ion-icon { font-size: 3rem; margin-bottom: var(--space-md); }
+  p { margin-bottom: var(--space-md); }
 }
 
 .exercise-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
+  padding: var(--space-md);
 }
 
+/* Informations sur l'exercice */
 .exercise-info {
   h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ion-color-primary);
-    margin-bottom: 10px;
-    text-align: center;
+    font-size: 2rem;
+    margin-bottom: var(--space-md);
+    color: var(--ion-color-dark);
   }
 
   .description {
+    font-size: 1.1rem;
+    line-height: 1.6;
     color: var(--ion-color-medium);
-    margin-bottom: 30px;
-    text-align: center;
-    font-size: 16px;
+    margin-bottom: var(--space-lg);
   }
 }
 
+/* Cartes de timing */
 .timing-container {
-  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .timing-card {
+  background: var(--ion-color-light);
+  border-radius: var(--card-radius);
+  padding: var(--space-md);
   display: flex;
   align-items: center;
-  background-color: white;
-  border-radius: 16px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  gap: var(--space-md);
+  box-shadow: var(--shadow-sm);
 
   ion-icon {
-    font-size: 24px;
+    font-size: 2rem;
     color: var(--ion-color-primary);
-    padding: 10px;
-    background-color: rgba(var(--ion-color-primary-rgb), 0.1);
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-
-  .timing-text {
-    h3 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ion-color-dark);
-      margin: 0 0 5px 0;
-    }
-
-    p {
-      font-size: 14px;
-      color: var(--ion-color-medium);
-      margin: 0;
-    }
   }
 }
 
+.timing-text {
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+  }
+}
+
+/* Contrôle des cycles */
 .cycles-control {
-  background-color: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: var(--space-lg);
 
   h3 {
-    font-size: 16px;
-    font-weight: 600;
+    margin-bottom: var(--space-md);
     color: var(--ion-color-dark);
-    margin: 0 0 15px 0;
-    text-align: center;
-  }
-
-  .cycles-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-
-    ion-button {
-      --border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      --padding-start: 0;
-      --padding-end: 0;
-    }
   }
 }
 
-.start-button {
-  --border-radius: 10px;
-  height: 50px;
-  font-weight: 600;
-  font-size: 16px;
-  --box-shadow: 0 4px 10px rgba(var(--ion-color-primary-rgb), 0.3);
-}
-
-.practice-container {
+.cycles-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  height: 100%;
+  gap: var(--space-md);
+  justify-content: center;
+
+  ion-button {
+    --border-radius: var(--btn-radius);
+    min-width: 60px;
+  }
+}
+
+/* Bouton de démarrage */
+.start-button {
+  --border-radius: var(--card-radius);
+  --padding-top: var(--space-md);
+  --padding-bottom: var(--space-md);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Conteneur d'exercice */
+.practice-container {
+  padding: var(--space-lg) var(--space-md);
+}
+
+/* Cercle de respiration */
+@keyframes breathAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .breath-circle {
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
+  background: var(--ion-color-light);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease;
-  margin-bottom: 40px;
-  background-color: var(--ion-color-primary);
-  color: white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  transition: transform 0.3s ease-out;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  animation: breathAnimation 2s infinite ease-in-out alternate;
 
   &.inspire {
-    background: linear-gradient(135deg, #4CAF50, #8BC34A);
-    animation: pulse 2s infinite alternate;
+    background: var(--ion-color-primary-tint);
+    border: 4px solid var(--ion-color-primary);
   }
 
   &.hold {
-    background: linear-gradient(135deg, #FFC107, #FFEB3B);
-    animation: pulse 2s infinite alternate;
+    background: var(--ion-color-warning-tint);
+    border: 4px solid var(--ion-color-warning);
   }
 
   &.expire {
-    background: linear-gradient(135deg, var(--ion-color-primary), #03A9F4);
-    animation: pulse 2s infinite alternate;
-  }
-
-  .state-text {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-
-  .timer {
-    font-size: 48px;
-    font-weight: 700;
+    background: var(--ion-color-success-tint);
+    border: 4px solid var(--ion-color-success);
   }
 }
 
-@keyframes pulse {
-  from { box-shadow: 0 0 20px rgba(var(--ion-color-primary-rgb), 0.5); }
-  to { box-shadow: 0 0 30px rgba(var(--ion-color-primary-rgb), 0.8); }
+.state-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
+@keyframes pulseAnimation {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.timer {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--ion-color-dark);
+  text-shadow: var(--shadow-sm);
+  font-family: 'Roboto Mono', monospace;
+  position: relative;
+  min-width: 80px;
+  text-align: center;
+
+  &::after {
+    content: 'secondes';
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: var(--ion-color-medium);
+    white-space: nowrap;
+  }
+
+  &.pulse {
+    animation: pulseAnimation 1s infinite ease-in-out;
+    color: var(--ion-color-danger);
+  }
+}
+
+/* Barre de progression */
 .progress-container {
   width: 100%;
-  margin-bottom: 30px;
+  max-width: 400px;
+  margin-bottom: var(--space-lg);
+}
 
-  .cycle-text {
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ion-color-dark);
-    margin-bottom: 10px;
-  }
+.cycle-text {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--ion-color-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
 
-  .progress-bar {
-    height: 10px;
-    background-color: rgba(var(--ion-color-medium-rgb), 0.2);
-    border-radius: 5px;
-    overflow: hidden;
-
-    .progress {
-      height: 100%;
-      background-color: var(--ion-color-primary);
-      border-radius: 5px;
-      transition: width 0.5s ease;
-    }
+  ion-icon {
+    font-size: 1.2rem;
+    color: var(--ion-color-primary);
   }
 }
 
+.progress-bar {
+  height: 8px;
+  background: var(--ion-color-light);
+  border-radius: 4px;
+  overflow: hidden;
+
+  .progress {
+    height: 100%;
+    background: var(--ion-color-primary);
+    transition: width 0.3s ease-out;
+  }
+}
+
+/* Contrôles */
 .controls {
   display: flex;
-  gap: 20px;
+  gap: var(--space-md);
 
   ion-button {
-    --border-radius: 10px;
-    font-weight: 600;
+    --border-radius: var(--btn-radius);
+    min-width: 120px;
   }
 }

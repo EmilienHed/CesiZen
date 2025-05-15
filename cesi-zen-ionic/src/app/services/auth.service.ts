@@ -47,7 +47,7 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<LoginResponse> {
     console.log('Tentative de connexion avec:', credentials);
     console.log('URL de l\'API:', `${this.apiUrl}/login`);
-    
+
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap({
@@ -93,6 +93,32 @@ export class AuthService {
     );
   }
 
+  // Ajoutez cette méthode à votre AuthService
+
+// Ajoutez cette méthode à votre AuthService
+  isAdmin(): boolean {
+    const user = this.currentUserValue;
+    if (!user) {
+      console.log('isAdmin: pas d\'utilisateur connecté');
+      return false;
+    }
+
+    console.log('isAdmin - user:', user);
+    console.log('isAdmin - roleId:', user.roleId);
+    console.log('isAdmin - role:', user.role);
+
+    // Vérifier si l'utilisateur a le roleId Admin (2) ou le rôle 'Admin' (pour rétrocompatibilité)
+    if (user.roleId === 2) {
+      return true;
+    }
+
+    // Rétrocompatibilité si roleId n'est pas défini mais role l'est
+    if (user.roleId === undefined && user.role === 'Admin') {
+      return true;
+    }
+
+    return false;
+  }
   isLoggedIn(): boolean {
     return !!this.currentUserValue;
   }
