@@ -1,4 +1,4 @@
-/* src/app/pages/exercises/exercise-list/exercise-list.page.scss */
+/* src/app/pages/exercices/exercice-list/exercice-list.page.scss */
 .header-container {
   padding: 20px;
   text-align: center;
@@ -33,38 +33,33 @@
   }
 }
 
-.exercise-list {
-  padding: 10px;
+.exercise-grid {
+  padding: 16px;
 }
 
-.exercise-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  --padding-end: 0;
-  margin-bottom: 16px;
-  --background: transparent;
-  --border-color: transparent;
-  --ripple-color: transparent;
-}
-
-.exercise-content {
-  width: 100%;
-  background-color: white;
+.exercise-card {
+  margin: 0;
   border-radius: 16px;
-  padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 
-  h2 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ion-color-primary);
-    margin-bottom: 15px;
+  &:hover {
+    transform: translateY(-4px);
   }
 
-  .description {
-    color: var(--ion-color-medium);
-    margin-bottom: 15px;
-    font-size: 14px;
+  ion-card-header {
+    padding: 16px;
+  }
+
+  ion-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+
+  ion-card-content {
+    padding: 16px;
   }
 }
 
@@ -72,6 +67,7 @@
   display: flex;
   margin-bottom: 15px;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .timing {
@@ -93,10 +89,15 @@
   }
 }
 
+.description {
+  color: var(--ion-color-medium);
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .start-button {
   --border-radius: 8px;
-  --padding-start: 20px;
-  --padding-end: 20px;
   margin-top: 10px;
   font-weight: 600;
   font-size: 14px;

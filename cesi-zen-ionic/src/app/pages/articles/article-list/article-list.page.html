@@ -29,7 +29,7 @@
   </div>
 
   <div class="article-grid">
-    <div *ngFor="let article of articles" class="article-card" (click)="viewArticle(article.id)">
+    <div *ngFor="let article of articles" class="article-card">
       <div class="article-image" *ngIf="article.imageUrl">
         <img [src]="article.imageUrl" [alt]="article.title">
       </div>
@@ -43,7 +43,13 @@
         </div>
         <h2 class="article-title">{{ article.title }}</h2>
         <p class="article-preview">{{ getPreview(article.content) }}</p>
-        <span class="read-more">Lire l'article</span>
+        <ion-button
+          fill="clear"
+          [routerLink]="['/tabs/articles', article.id]"
+          class="read-more-button">
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+          Lire l'article
+        </ion-button>
       </div>
     </div>
   </div>

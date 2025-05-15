@@ -28,8 +28,8 @@ export class ProfilePage implements OnInit {
     private alertController: AlertController
   ) {
     this.profileForm = this.formBuilder.group({
-      nom: ['', Validators.required],
-      prenom: ['', Validators.required]
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required]
     });
   }
 
@@ -50,21 +50,25 @@ export class ProfilePage implements OnInit {
     });
     await loading.present();
 
-    this.userService.getUserById(currentUser.userId).subscribe({
-      next: (data) => {
-        this.user = data;
+    try {
+      const userData = await this.userService.getUserById(currentUser.userId).toPromise();
+      console.log('Données utilisateur reçues:', userData);
+      
+      if (userData) {
+        this.user = userData;
         this.profileForm.patchValue({
-          nom: this.user.nom,
-          prenom: this.user.prenom
+          firstName: userData.firstName,
+          lastName: userData.lastName
         });
-        loading.dismiss();
-      },
-      error: (error) => {
-        this.error = 'Impossible de charger le profil. Veuillez réessayer.';
-        console.error(error);
-        loading.dismiss();
+      } else {
+        this.error = 'Impossible de récupérer les données utilisateur';
       }
-    });
+    } catch (error) {
+      console.error('Erreur lors du chargement du profil:', error);
+      this.error = 'Impossible de charger le profil. Veuillez réessayer.';
+    } finally {
+      loading.dismiss();
+    }
   }
 
   async onSubmit() {
@@ -86,33 +90,33 @@ export class ProfilePage implements OnInit {
 
     const userData = {
       ...this.user,
-      nom: this.profileForm.value.nom,
-      prenom: this.profileForm.value.prenom
+      firstName: this.profileForm.value.firstName,
+      lastName: this.profileForm.value.lastName
     };
 
-    this.userService.updateUser(currentUser.userId, userData).subscribe({
-      next: async () => {
-        loading.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Profil mis à jour',
-          message: 'Votre profil a été mis à jour avec succès.',
-          buttons: ['OK']
-        });
-        await alert.present();
-      },
-      error: async (error) => {
-        loading.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Erreur',
-          message: 'Une erreur s\'est produite lors de la mise à jour du profil. Veuillez réessayer.',
-          buttons: ['OK']
-        });
-        await alert.present();
-        console.error(error);
-      }
-    });
+    try {
+      await this.userService.updateUser(currentUser.userId, userData).toPromise();
+      
+      const alert = await this.alertController.create({
+        header: 'Profil mis à jour',
+        message: 'Votre profil a été mis à jour avec succès.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      
+      // Recharger les données utilisateur après la mise à jour
+      await this.loadUserProfile();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+      const alert = await this.alertController.create({
+        header: 'Erreur',
+        message: 'Une erreur s\'est produite lors de la mise à jour du profil. Veuillez réessayer.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    } finally {
+      loading.dismiss();
+    }
   }
 
   async logout() {
