@@ -55,26 +55,26 @@
               </div>
             </div>
 
-            <div class="zen-form-group">
-              <label for="imageUrl" class="zen-form-label">URL de l'image</label>
-              <div class="zen-input-container">
-                <span class="zen-input-icon"><i class="bi bi-image"></i></span>
-                <input
-                  type="text"
-                  id="imageUrl"
-                  formControlName="imageUrl"
-                  class="zen-form-control"
-                  [ngClass]="{'zen-invalid': articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched}"
-                  placeholder="https://exemple.com/image.jpg"
-                >
-              </div>
-              <div class="zen-error-message" *ngIf="articleForm.get('imageUrl')?.errors?.['maxlength'] && articleForm.get('imageUrl')?.touched">
-                L'URL de l'image ne doit pas dépasser 255 caractères.
-              </div>
-              <small class="zen-form-help">
-                URL d'une image illustrant l'article (optionnel)
-              </small>
-            </div>
+  <!--            <div class="zen-form-group">
+                <label for="imageUrl" class="zen-form-label">URL de l'image</label>
+                <div class="zen-input-container">
+                  <span class="zen-input-icon"><i class="bi bi-image"></i></span>
+                  <input
+                    type="text"
+                    id="imageUrl"
+                    formControlName="imageUrl"
+                    class="zen-form-control"
+                    [ngClass]="{'zen-invalid': articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched}"
+                    placeholder="https://exemple.com/image.jpg"
+                  >
+                </div>
+                <div class="zen-error-message" *ngIf="articleForm.get('imageUrl')?.errors?.['maxlength'] && articleForm.get('imageUrl')?.touched">
+                  L'URL de l'image ne doit pas dépasser 255 caractères.
+                </div>
+                <small class="zen-form-help">
+                  URL d'une image illustrant l'article (optionnel)
+                </small>
+              </div>-->
 
             <div class="zen-form-group">
               <label for="content" class="zen-form-label">Contenu <span class="zen-required">*</span></label>
