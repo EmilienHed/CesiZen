@@ -1,17 +1,37 @@
-// src/app/services/category.service.ts
+// src/app/services/categorie.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import {Category} from '../Models/categorie.model';
+import { Category } from '../Models/categorie.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  // URL de l'API directement définie ici
-  private apiUrl = 'http://localhost:5016/api/categories';  // Adaptez selon votre configuration
+  // URL de l'API directement définie ici - URL en minuscules
+  private apiUrl = 'http://localhost:5016/api/categories';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
+
+  // Méthode pour obtenir les en-têtes d'authentification
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('Aucun token d\'authentification trouvé');
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
+
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   // Méthode pour extraire le tableau de catégories de la réponse de l'API
   private extractCategoriesArray(response: any): Category[] {
@@ -47,14 +67,23 @@ export class CategoryService {
   }
 
   createCategory(category: Category): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl, category);
+    const options = {
+      headers: this.getAuthHeaders()
+    };
+    return this.http.post<Category>(this.apiUrl, category, options);
   }
 
   updateCategory(category: Category): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/${category.id}`, category);
+    const options = {
+      headers: this.getAuthHeaders()
+    };
+    return this.http.put<Category>(`${this.apiUrl}/${category.id}`, category, options);
   }
 
   deleteCategory(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    const options = {
+      headers: this.getAuthHeaders()
+    };
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, options);
   }
 }

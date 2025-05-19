@@ -1,4 +1,4 @@
-// src/app/Models/article-dto.model.ts
+// src/app/Models/articles-dto.model.ts
 export interface ArticleDTO {
   title: string;
   content: string;

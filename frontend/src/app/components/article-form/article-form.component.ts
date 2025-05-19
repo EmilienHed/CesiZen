@@ -53,18 +53,16 @@ export class ArticleFormComponent implements OnInit {
     console.log('Current user:', this.currentUser);
 
     if (!this.authService.isAdmin()) {
+      console.log('L\'utilisateur n\'est pas administrateur, redirection vers la page d\'accueil');
       this.router.navigate(['/']);
       return;
     }
 
     const id = this.route.snapshot.paramMap.get('id');
-    //console.log('ID depuis les paramètres de route:', id);
     this.isEditMode = !!id;
-    //console.log('Mode édition?', this.isEditMode);
 
     if (id) {
       this.articleId = +id;
-      //console.log('articleId défini à:', this.articleId);
       this.loadArticle(+id);
     }
 
@@ -73,23 +71,24 @@ export class ArticleFormComponent implements OnInit {
 
   loadArticle(id: number): void {
     this.loading = true;
-    //console.log('Chargement de l\'article avec ID:', id);
+    console.log('Chargement de l\'article avec ID:', id);
 
     this.articleService.getArticleById(id)
       .subscribe({
         next: (article: Article) => {
-          //console.log('Article récupéré:', article);
+          console.log('Article récupéré:', article);
           this.articleForm.patchValue({
             title: article.title,
             content: article.content,
             categoryId: article.categoryId,
-            isActive: article.isActive
+            isActive: article.isActive,
+            imageUrl: article.imageUrl || ''
           });
-          //console.log('Formulaire mis à jour avec les valeurs de l\'article');
+          console.log('Formulaire mis à jour avec les valeurs de l\'article');
           this.loading = false;
         },
         error: (error: any) => {
-          this.error = 'Erreur lors du chargement de l\'article';
+          this.error = 'Erreur lors du chargement de l\'article: ' + (error.error?.message || error.statusText || 'Erreur inconnue');
           console.error('Erreur détaillée lors du chargement de l\'article:', error);
           this.loading = false;
         }
@@ -101,10 +100,11 @@ export class ArticleFormComponent implements OnInit {
       .subscribe({
         next: (categories: Category[]) => {
           this.categories = categories;
+          console.log('Catégories chargées:', categories);
         },
         error: (error: any) => {
-          this.error = 'Erreur lors du chargement des catégories';
-          console.error(error);
+          this.error = 'Erreur lors du chargement des catégories: ' + (error.error?.message || error.statusText || 'Erreur inconnue');
+          console.error('Erreur détaillée lors du chargement des catégories:', error);
         }
       });
   }
@@ -123,6 +123,16 @@ export class ArticleFormComponent implements OnInit {
       return;
     }
 
+    // Si le formulaire n'est pas valide, marquer tous les champs comme touchés
+    if (!this.articleForm.valid) {
+      Object.keys(this.articleForm.controls).forEach(key => {
+        const control = this.articleForm.get(key);
+        control?.markAsTouched();
+      });
+      this.error = 'Veuillez corriger les erreurs du formulaire avant de soumettre.';
+      return;
+    }
+
     // Indiquer que la soumission est en cours
     this.submitting = true;
     this.error = '';
@@ -134,6 +144,7 @@ export class ArticleFormComponent implements OnInit {
       const content = this.articleForm.value.content || 'Contenu à remplir';
       const categoryId = this.articleForm.value.categoryId || null;
       const isActive = this.articleForm.value.isActive !== undefined ? this.articleForm.value.isActive : true;
+      const imageUrl = this.articleForm.value.imageUrl || '';
 
       // En mode édition
       if (this.isEditMode && this.articleId) {
@@ -146,7 +157,7 @@ export class ArticleFormComponent implements OnInit {
           categoryId,
           userId,
           isActive,
-          imageUrl: this.articleForm.value.imageUrl || ''
+          imageUrl
         };
 
         this.articleService.updateArticle(updateData)
@@ -156,8 +167,9 @@ export class ArticleFormComponent implements OnInit {
               this.router.navigate(['/articles']);
             },
             error: (error) => {
-              this.error = 'Erreur lors de la mise à jour';
-              console.error(error);
+              console.error('Erreur complète lors de la mise à jour:', error);
+              this.error = 'Erreur lors de la mise à jour: ' +
+                (error.error?.message || error.statusText || 'Erreur inconnue');
               this.submitting = false;
             }
           });
@@ -167,8 +179,16 @@ export class ArticleFormComponent implements OnInit {
         console.log('Mode création');
 
         const createData: ArticleDTO = {
-          title, content, categoryId, userId, isActive
+          title,
+          content,
+          categoryId,
+          userId,
+          isActive,
+          imageUrl
         };
+
+        console.log('Données à envoyer au serveur:', createData);
+        console.log('Token d\'authentification présent:', !!this.authService.getToken());
 
         this.articleService.createArticle(createData)
           .subscribe({
@@ -177,15 +197,16 @@ export class ArticleFormComponent implements OnInit {
               this.router.navigate(['/articles']);
             },
             error: (error) => {
-              this.error = 'Erreur lors de la création';
-              console.error(error);
+              console.error('Erreur complète lors de la création:', error);
+              this.error = 'Erreur lors de la création: ' +
+                (error.error?.message || error.statusText || 'Erreur inconnue');
               this.submitting = false;
             }
           });
       }
-    } catch (err) {
-      this.error = 'Une erreur est survenue';
-      console.error(err);
+    } catch (err: any) {
+      this.error = 'Une erreur est survenue: ' + (err.message || 'Erreur inconnue');
+      console.error('Exception dans onSubmit:', err);
       this.submitting = false;
     }
 
@@ -194,22 +215,5 @@ export class ArticleFormComponent implements OnInit {
 
   cancel(): void {
     this.router.navigate(['/articles']);
-  }
-
-  // Méthode temporaire pour tester la connexion et l'authentification
-  testAuth(): void {
-    console.log('Test d\'authentification');
-    console.log('Utilisateur actuel:', this.currentUser);
-    console.log('Token:', this.authService.getToken());
-
-    // Tester l'accès à l'API
-    this.articleService.getAllArticles().subscribe({
-      next: (articles) => {
-        console.log('Articles récupérés avec succès:', articles);
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des articles:', error);
-      }
-    });
   }
 }

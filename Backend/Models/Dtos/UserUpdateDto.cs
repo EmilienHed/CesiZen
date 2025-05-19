@@ -19,4 +19,4 @@ namespace CesiZen.Models.DTOs
         [Required]
         public int RoleId { get; set; }
     }
-} 
+}
