@@ -9,7 +9,7 @@ using CesiZen.DTOs;
 
 namespace CesiZen.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")] // Changé pour utiliser des minuscules
     [ApiController]
     public class CategoriesController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace CesiZen.Controllers
             _categoryService = categoryService;
         }
 
-        // GET: api/Categories
+        // GET: api/categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
@@ -28,7 +28,7 @@ namespace CesiZen.Controllers
             return Ok(categories);
         }
 
-        // GET: api/Categories/dropdown
+        // GET: api/categories/dropdown
         [HttpGet("dropdown")]
         public async Task<ActionResult<IEnumerable<CategorySimpleDTO>>> GetCategoriesForDropdown()
         {
@@ -52,7 +52,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Categories/all
+        // GET: api/categories/all
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
@@ -61,7 +61,7 @@ namespace CesiZen.Controllers
             return Ok(categories);
         }
 
-        // GET: api/Categories/5
+        // GET: api/categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
@@ -75,7 +75,7 @@ namespace CesiZen.Controllers
             return Ok(category);
         }
 
-        // POST: api/Categories
+        // POST: api/categories
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Category>> CreateCategory(Category category)
@@ -89,7 +89,7 @@ namespace CesiZen.Controllers
             return CreatedAtAction(nameof(GetCategory), new { id = createdCategory.Id }, createdCategory);
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/categories/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
@@ -114,7 +114,7 @@ namespace CesiZen.Controllers
             return Ok(updatedCategory);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/categories/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
@@ -129,7 +129,7 @@ namespace CesiZen.Controllers
             return NoContent();
         }
 
-        // PUT: api/Categories/deactivate/5
+        // PUT: api/categories/deactivate/5
         [HttpPut("deactivate/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeactivateCategory(int id)

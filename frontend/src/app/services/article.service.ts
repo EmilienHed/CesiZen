@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 })
 export class ArticleService {
   private baseUrl = 'http://localhost:5016'; // Assurez-vous que c'est la bonne URL de votre backend
-  private apiUrl = `${this.baseUrl}/api/articles`; // Ajout du préfixe 'api/'
+  private apiUrl = `${this.baseUrl}/api/articles`; // Url en minuscules
 
   constructor(
     private http: HttpClient,
@@ -23,6 +23,10 @@ export class ArticleService {
     const token = this.authService.getToken();
     if (!token) {
       console.error('Aucun token d\'authentification trouvé');
+      // Retourner des en-têtes de base même sans token
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
     }
 
     return new HttpHeaders({
@@ -88,11 +92,8 @@ export class ArticleService {
   }
 
   getArticleById(id: number): Observable<Article> {
-    //console.log(`Récupération de l'article avec ID: ${id}, URL: ${this.apiUrl}/${id}`);
-
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
       map(response => {
-        //console.log(`Réponse pour l'article ${id}:`, response);
         // Si la réponse a une structure particulière, extraire l'article
         if (response && response.$values && response.$values.length > 0) {
           return response.$values[0];

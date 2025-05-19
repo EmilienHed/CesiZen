@@ -8,4 +8,4 @@ namespace CesiZen.Models.DTOs
         [MinLength(6, ErrorMessage = "Le mot de passe doit contenir au moins 6 caractères")]
         public string NewPassword { get; set; }
     }
-} 
+}

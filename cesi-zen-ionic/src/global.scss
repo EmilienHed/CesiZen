@@ -35,3 +35,142 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Styles globaux */
+:root {
+  --zen-spacing-xs: 4px;
+  --zen-spacing-sm: 8px;
+  --zen-spacing-md: 16px;
+  --zen-spacing-lg: 24px;
+  --zen-spacing-xl: 32px;
+}
+
+/* Classes utilitaires */
+.zen-container {
+  padding: var(--zen-spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.zen-card {
+  background: white;
+  border-radius: var(--ion-border-radius);
+  padding: var(--zen-spacing-md);
+  margin: var(--zen-spacing-md) 0;
+  box-shadow: var(--ion-box-shadow);
+}
+
+.zen-title {
+  color: var(--ion-color-primary);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: var(--zen-spacing-md);
+}
+
+.zen-subtitle {
+  color: var(--ion-color-secondary);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: var(--zen-spacing-sm);
+}
+
+.zen-text {
+  color: var(--ion-text-color);
+  line-height: 1.6;
+}
+
+/* Animations */
+.zen-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Styles pour les boutons */
+.zen-button {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --color: white;
+  --border-radius: 8px;
+  --padding-start: var(--zen-spacing-md);
+  --padding-end: var(--zen-spacing-md);
+  --padding-top: var(--zen-spacing-sm);
+  --padding-bottom: var(--zen-spacing-sm);
+  font-weight: 500;
+  text-transform: none;
+}
+
+.zen-button-secondary {
+  --background: var(--ion-color-secondary);
+  --background-hover: var(--ion-color-secondary-shade);
+  --color: black;
+}
+
+/* Styles pour les listes */
+.zen-list {
+  background: transparent;
+  padding: var(--zen-spacing-sm);
+}
+
+.zen-item {
+  --background: white;
+  --border-radius: var(--ion-border-radius);
+  margin: var(--zen-spacing-xs) 0;
+  --padding-start: var(--zen-spacing-md);
+  --padding-end: var(--zen-spacing-md);
+}
+
+/* Styles pour les icônes */
+.zen-icon {
+  color: var(--ion-color-primary);
+  font-size: 24px;
+}
+
+/* Styles pour les badges */
+.zen-badge {
+  --background: var(--ion-color-accent);
+  --color: var(--ion-color-accent-contrast);
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Styles pour les inputs */
+.zen-input {
+  --background: white;
+  --border-radius: var(--ion-border-radius);
+  --padding-start: var(--zen-spacing-md);
+  --padding-end: var(--zen-spacing-md);
+  --placeholder-color: var(--ion-color-medium);
+  margin: var(--zen-spacing-xs) 0;
+}
+
+/* Styles pour les toolbars */
+.zen-toolbar {
+  --background: white;
+  --border-color: transparent;
+  --padding-start: var(--zen-spacing-md);
+  --padding-end: var(--zen-spacing-md);
+}
+
+/* Styles pour les segments */
+.zen-segment {
+  --background: white;
+  --border-radius: var(--ion-border-radius);
+  padding: var(--zen-spacing-xs);
+}
+
+.zen-segment-button {
+  --color: var(--ion-color-medium);
+  --color-checked: var(--ion-color-primary);
+  --indicator-color: var(--ion-color-primary);
+  font-weight: 500;
+}

@@ -10,7 +10,7 @@ using CesiZen.DTOs;
 
 namespace CesiZen.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/articles")] // Changé de [controller] à "articles" en minuscules
     [ApiController]
     public class ArticlesController : ControllerBase
     {
@@ -51,7 +51,7 @@ namespace CesiZen.Controllers
             };
         }
 
-        // GET: api/Articles
+        // GET: api/articles
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetArticles()
         {
@@ -71,7 +71,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Articles/active
+        // GET: api/articles/active
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetActiveArticles()
         {
@@ -90,7 +90,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Articles/all (gardé pour compatibilité)
+        // GET: api/articles/all (gardé pour compatibilité)
         [HttpGet("all")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetAllArticles()
@@ -110,7 +110,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Articles/5
+        // GET: api/articles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ArticleResponseDTO>> GetArticle(int id)
         {
@@ -135,7 +135,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Articles/category/5
+        // GET: api/articles/category/5
         [HttpGet("category/{categoryId}")]
         public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetArticlesByCategory(int categoryId)
         {
@@ -154,7 +154,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // GET: api/Articles/user/5
+        // GET: api/articles/user/5
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetArticlesByUser(int userId)
         {
@@ -173,7 +173,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // POST: api/Articles
+        // POST: api/articles
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ArticleResponseDTO>> CreateArticle([FromBody] CreateArticleDTO articleDto)
@@ -193,8 +193,8 @@ namespace CesiZen.Controllers
                     ImageUrl = articleDto.ImageUrl,
                     CategoryId = articleDto.CategoryId,
                     UserId = articleDto.UserId,
-                    IsActive = articleDto.IsActive
-                    // La date de création sera automatiquement définie dans le service
+                    IsActive = articleDto.IsActive,
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 var createdArticle = await _articleService.CreateArticleAsync(article);
@@ -212,7 +212,7 @@ namespace CesiZen.Controllers
             }
         }
         
-        // PUT: api/Articles/5
+        // PUT: api/articles/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateArticle(int id, [FromBody] UpdateArticleDTO articleDto)
@@ -241,7 +241,7 @@ namespace CesiZen.Controllers
                 existingArticle.ImageUrl = articleDto.ImageUrl;
                 existingArticle.CategoryId = articleDto.CategoryId;
                 existingArticle.IsActive = articleDto.IsActive;
-                // La date de mise à jour sera automatiquement définie dans le service
+                existingArticle.UpdatedAt = DateTime.UtcNow;
 
                 var updatedArticle = await _articleService.UpdateArticleAsync(existingArticle);
                 var responseDto = ConvertToDTO(updatedArticle);
@@ -257,7 +257,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // DELETE: api/Articles/5
+        // DELETE: api/articles/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteArticle(int id)
@@ -282,7 +282,7 @@ namespace CesiZen.Controllers
             }
         }
 
-        // PUT: api/Articles/deactivate/5
+        // PUT: api/articles/deactivate/5
         [HttpPut("deactivate/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeactivateArticle(int id)
