@@ -21,8 +21,8 @@ export class UserFormComponent implements OnInit {
   error = '';
   successMessage = '';
   roles = [
-    { id: 1, name: 'User' },
-    { id: 2, name: 'Admin' }
+    { id: 0, name: 'Admin' },
+    { id: 1, name: 'User' }
   ];
 
   constructor(

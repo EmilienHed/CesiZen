@@ -43,7 +43,8 @@ export class ArticleFormComponent implements OnInit {
       title: ['', [Validators.required, Validators.maxLength(100)]],
       content: ['', [Validators.required]],
       categoryId: [null],
-      isActive: [true]
+      isActive: [true],
+      imageUrl: ['']
     });
   }
 
@@ -140,7 +141,12 @@ export class ArticleFormComponent implements OnInit {
 
         const updateData: UpdateArticleDTO = {
           id: this.articleId,
-          title, content, categoryId, userId, isActive
+          title,
+          content,
+          categoryId,
+          userId,
+          isActive,
+          imageUrl: this.articleForm.value.imageUrl || ''
         };
 
         this.articleService.updateArticle(updateData)
