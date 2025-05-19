@@ -1,0 +1,30 @@
+# Fichiers et dossiers spécifiques aux tests .NET
+bin/
+obj/
+TestResults/
+
+# Fichiers de couverture de code
+*.coverage
+*.coveragexml
+coverage.*
+
+# Fichiers de bases de données en mémoire utilisées pour les tests
+*.db
+*.db-shm
+*.db-wal
+
+# Fichiers générés automatiquement par MSTest/xUnit
+[Tt]est[Rr]esult*/
+
+# Fichiers de configuration utilisateur
+*.user
+*.suo
+
+# Fichiers de packages
+packages/
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.swp
+*~.nib 

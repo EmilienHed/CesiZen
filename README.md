@@ -14,6 +14,9 @@ CesiZen est une application web permettant de gérer des articles avec un systè
 - [Structure du projet](#structure-du-projet)
 - [API](#api)
 - [Gestion des droits](#gestion-des-droits)
+- [Fonctionnalité de visibilité des articles inactifs](#fonctionnalité-de-visibilité-des-articles-inactifs)
+- [Fonctionnalité de réinitialisation de mot de passe](#fonctionnalité-de-réinitialisation-de-mot-de-passe)
+- [Fonctionnalité d'exercices de respiration](#fonctionnalité-dexercices-de-respiration)
 
 ## Fonctionnalités
 
@@ -22,6 +25,10 @@ CesiZen est une application web permettant de gérer des articles avec un systè
 - Gestion des articles (création, modification, suppression, désactivation)
 - Visibilité des articles contrôlée par statut d'activation
 - Interface d'administration pour les utilisateurs avec le rôle "Admin"
+- Réinitialisation de mot de passe par email avec token sécurisé
+- Gestion des catégories pour les articles
+- Exercices de respiration guidés pour la relaxation et la gestion du stress
+- Gestion des utilisateurs (création, modification, suppression)
 
 ## Prérequis
 
@@ -146,6 +153,48 @@ Les administrateurs peuvent en plus :
 | DELETE | /api/articles/{id} | Supprime un article | Admin |
 | PUT | /api/articles/deactivate/{id} | Désactive un article | Admin |
 
+### Endpoints Catégories
+
+| Méthode | URL | Description | Rôle requis |
+|---------|-----|-------------|-------------|
+| GET | /api/categories | Récupère les catégories actives | - |
+| GET | /api/categories/dropdown | Récupère une version simplifiée des catégories pour les menus déroulants | - |
+| GET | /api/categories/all | Récupère toutes les catégories (actives et inactives) | Admin |
+| GET | /api/categories/{id} | Récupère une catégorie par son ID | - |
+| POST | /api/categories | Crée une nouvelle catégorie | Admin |
+| PUT | /api/categories/{id} | Met à jour une catégorie | Admin |
+| DELETE | /api/categories/{id} | Supprime une catégorie | Admin |
+| PUT | /api/categories/deactivate/{id} | Désactive une catégorie | Admin |
+
+### Endpoints Utilisateurs
+
+| Méthode | URL | Description | Rôle requis |
+|---------|-----|-------------|-------------|
+| GET | /api/users | Récupère tous les utilisateurs | - |
+| GET | /api/users/{id} | Récupère un utilisateur par son ID | - |
+| POST | /api/users/create | Crée un nouvel utilisateur | - |
+| PUT | /api/users/{id} | Met à jour un utilisateur | - |
+| PUT | /api/users/{id}/change-password | Change le mot de passe d'un utilisateur | - |
+| DELETE | /api/users/{id} | Supprime un utilisateur | - |
+
+### Endpoints Réinitialisation de Mot de Passe
+
+| Méthode | URL | Description |
+|---------|-----|-------------|
+| POST | /api/password/forgot-password | Demande de réinitialisation de mot de passe |
+| POST | /api/password/reset-password | Réinitialisation du mot de passe avec le token |
+
+### Endpoints Exercices de Respiration
+
+| Méthode | URL | Description |
+|---------|-----|-------------|
+| GET | /api/respirationexercises | Récupère tous les exercices de respiration |
+| GET | /api/respirationexercises/{id} | Récupère un exercice de respiration par son ID |
+| GET | /api/respirationexercises/defaults | Récupère les exercices de respiration par défaut |
+| POST | /api/respirationexercises | Crée un nouvel exercice de respiration |
+| PUT | /api/respirationexercises/{id} | Met à jour un exercice de respiration |
+| DELETE | /api/respirationexercises/{id} | Supprime un exercice de respiration (sauf s'il est par défaut) |
+
 ### Authentification
 
 | Méthode | URL | Description |
@@ -191,3 +240,56 @@ Les administrateurs peuvent désactiver un article en :
 1. Accédant à la page de détail de l'article
 2. Cliquant sur le bouton "Désactiver"
 3. L'article reste visible pour les administrateurs mais devient invisible pour les utilisateurs normaux
+
+## Fonctionnalité de réinitialisation de mot de passe
+
+Cette fonctionnalité permet aux utilisateurs de réinitialiser leur mot de passe s'ils l'ont oublié.
+
+### Implémentation technique
+
+#### Backend
+
+- Le contrôleur `PasswordController` gère les endpoints suivants :
+  - `/api/password/forgot-password` : Génère un token de réinitialisation et l'envoie par email
+  - `/api/password/reset-password` : Valide le token et permet de définir un nouveau mot de passe
+
+#### Frontend
+
+- Formulaire de demande de réinitialisation de mot de passe
+- Page de réinitialisation de mot de passe avec validation du token
+
+### Utilisation
+
+1. L'utilisateur clique sur "Mot de passe oublié" sur la page de connexion
+2. L'utilisateur entre son adresse email et reçoit un lien de réinitialisation
+3. L'utilisateur clique sur le lien et définit un nouveau mot de passe
+
+## Fonctionnalité d'exercices de respiration
+
+Cette fonctionnalité propose des exercices de respiration pour aider à la relaxation et à la gestion du stress.
+
+### Implémentation technique
+
+#### Backend
+
+- Le contrôleur `RespirationExercisesController` gère les endpoints pour créer, lire, mettre à jour et supprimer des exercices de respiration
+- Certains exercices sont marqués comme "par défaut" et ne peuvent pas être supprimés
+
+#### Frontend
+
+- Interface utilisateur pour visualiser et suivre les exercices de respiration
+- Timer interactif pour guider l'utilisateur dans les phases d'inspiration, de rétention et d'expiration
+
+### Caractéristiques des exercices
+
+- Nom et description de l'exercice
+- Durée de l'inspiration (en secondes)
+- Durée de la rétention (en secondes)
+- Durée de l'expiration (en secondes)
+- Statut "par défaut" (uniquement pour les exercices prédéfinis)
+
+### Utilisation
+
+1. L'utilisateur accède à la section des exercices de respiration
+2. L'utilisateur sélectionne un exercice existant ou en crée un personnalisé
+3. L'utilisateur suit les instructions visuelles et le timer pour effectuer l'exercice
