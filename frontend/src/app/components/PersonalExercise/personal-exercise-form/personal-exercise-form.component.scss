@@ -1,0 +1,110 @@
+/* src/app/components/PersonalExercise/personal-exercise-form/personal-exercise-form.component.scss */
+.zen-practice-container {
+  padding: 2rem 0;
+  min-height: calc(100vh - 76px);
+  background: linear-gradient(135deg, #f2f9ea 0%, #e8f4f4 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-form-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #4F8A8B 0%, #FBD46D 100%);
+  }
+}
+
+/* Visualisation du rythme respiratoire */
+.zen-rhythm-preview {
+  display: flex;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.zen-rhythm-phase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5rem;
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  min-width: 60px;
+  text-align: center;
+}
+
+.zen-rhythm-inspire {
+  background-color: #3d6e3c;
+}
+
+.zen-rhythm-hold {
+  background-color: #e4b84d;
+}
+
+.zen-rhythm-expire {
+  background-color: #7bb06e;
+}
+
+/* Style pour les sliders */
+.form-range {
+  height: 0.75rem;
+
+  &::-webkit-slider-thumb {
+    background: #4F8A8B;
+  }
+
+  &::-moz-range-thumb {
+    background: #4F8A8B;
+  }
+
+  &::-ms-thumb {
+    background: #4F8A8B;
+  }
+}
+
+.form-label {
+  font-weight: 500;
+  color: #395038;
+}
+
+/* Boutons */
+.btn-primary {
+  background: linear-gradient(to right, #4F8A8B, #7bb06e);
+  border: none;
+  font-weight: 500;
+  padding: 0.8rem 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(to right, #3D6D6E, #3d6e3c);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-outline-secondary {
+  color: #395038;
+  border-color: #7bb06e;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #f0f7f0;
+    color: #3d6e3c;
+    transform: translateY(-2px);
+  }
+}
