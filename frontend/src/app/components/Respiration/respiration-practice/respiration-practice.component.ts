@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { RespirationExercise, RespirationService } from '../../../services/respiration.service';
+import { RespirationService } from '../../../services/respiration.service';
+import { RespirationExercise } from '../../../Models/respiration-exercise.model';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -51,7 +52,17 @@ export class RespirationPracticeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id === 'temp') {
+      // Charger l'exercice temporaire depuis le localStorage
+      const tempExercise = localStorage.getItem('tempExercise');
+      if (tempExercise) {
+        this.exercise = JSON.parse(tempExercise);
+        this.loading = false;
+      } else {
+        this.error = 'Exercice non trouvé';
+        this.loading = false;
+      }
+    } else if (id) {
       this.loadExercise(+id);
     } else {
       this.error = 'Aucun exercice spécifié';

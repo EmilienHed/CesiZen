@@ -46,7 +46,7 @@
   </div>
 </div>
 -->
-<div class="zen-container">
+<!--<div class="zen-container">
   <div class="zen-content">
     <div class="zen-header">
       <h1 class="zen-title">Exercices de Respiration</h1>
@@ -81,6 +81,63 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="zen-quote">
+      <p>"La respiration est le pont qui relie la vie à la conscience, qui unit votre corps à vos pensées."</p>
+    </div>
+  </div>
+</div>-->
+
+
+
+
+<div class="zen-container">
+  <div class="zen-content">
+    <div class="zen-header">
+      <h1 class="zen-title">Exercices de Respiration</h1>
+      <p class="zen-lead">
+        La cohérence cardiaque est une technique de respiration qui permet de réguler votre rythme cardiaque et de réduire le stress.
+        Choisissez parmi nos exercices prédéfinis ou configurez votre propre rythme respiratoire.
+      </p>
+
+      <button class="zen-button zen-button-primary" (click)="createCustomExercise()">
+        <i class="bi bi-plus-circle"></i> Créer un exercice personnalisé
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="zen-loader">
+      <div class="zen-spinner"></div>
+    </div>
+
+    <div *ngIf="error" class="zen-error">
+      {{ error }}
+    </div>
+
+    <div class="zen-grid">
+      <div class="zen-card" *ngFor="let exercise of exercises">
+        <div class="zen-card-content">
+          <h2 class="zen-card-title">{{ exercise.name }}</h2>
+          <div class="zen-card-timing">
+            <span class="zen-badge zen-badge-inspire">{{ exercise.inspirationDuration }}s</span>
+            <span class="zen-badge zen-badge-hold" *ngIf="exercise.holdDuration > 0">{{ exercise.holdDuration }}s</span>
+            <span class="zen-badge zen-badge-expire">{{ exercise.expirationDuration }}s</span>
+          </div>
+          <p class="zen-card-text">{{ exercise.description }}</p>
+        </div>
+        <div class="zen-card-footer">
+          <button (click)="startExercise(exercise)" class="zen-button">
+            <i class="bi bi-play-circle"></i> Commencer l'exercice
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="exercises.length === 0 && !loading" class="zen-empty-state">
+      <div class="zen-empty-icon">
+        <i class="bi bi-wind"></i>
+      </div>
+      <p class="zen-empty-text">Aucun exercice disponible pour le moment.</p>
     </div>
 
     <div class="zen-quote">

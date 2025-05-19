@@ -1,118 +1,126 @@
 <div class="zen-practice-container">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6">
-        <div *ngIf="loading" class="text-center my-5">
-          <div class="zen-spinner" role="status">
-            <span class="visually-hidden">Chargement...</span>
-          </div>
+  <div class="zen-practice-content">
+    <div *ngIf="loading" class="zen-loader">
+      <div class="zen-spinner"></div>
+    </div>
+
+    <div *ngIf="error" class="zen-error">
+      {{ error }}
+    </div>
+
+    <div *ngIf="exercise && !loading" class="zen-practice-main">
+      <a routerLink="/respiration" class="zen-back-link">
+        <i class="bi bi-arrow-left"></i> Retour aux exercices
+      </a>
+
+      <div class="zen-practice-header">
+        <h1 class="zen-title">{{ exercise.name }}</h1>
+        <p class="zen-lead">{{ exercise.description }}</p>
+      </div>
+
+      <div class="zen-cycles-control">
+        <h3 class="zen-cycles-title">Nombre de cycles</h3>
+        <div class="zen-cycles-buttons">
+          <button
+            *ngFor="let count of [3, 5, 10]"
+            class="zen-cycle-btn"
+            [class.zen-cycle-btn-active]="totalCycles === count"
+            [disabled]="isRunning"
+            (click)="setCycles(count)">
+            {{ count }}
+          </button>
+        </div>
+      </div>
+
+      <div class="zen-breath-wrapper">
+        <div class="zen-progress-rings">
+          <div class="zen-progress-ring zen-progress-inspire" [style.opacity]="currentState === breathStateEnum.Inspire ? 1 : 0.3"></div>
+          <div class="zen-progress-ring zen-progress-hold" [style.opacity]="currentState === breathStateEnum.Hold ? 1 : 0.3"></div>
+          <div class="zen-progress-ring zen-progress-expire" [style.opacity]="currentState === breathStateEnum.Expire ? 1 : 0.3"></div>
         </div>
 
-        <div *ngIf="error" class="alert alert-danger">
-          {{ error }}
+        <div
+          class="zen-breath-circle"
+          [ngStyle]="{'transform': 'scale(' + (circleSize/100) + ')'}"
+          [ngClass]="{
+            'zen-inspire': currentState === breathStateEnum.Inspire,
+            'zen-hold': currentState === breathStateEnum.Hold,
+            'zen-expire': currentState === breathStateEnum.Expire,
+            'zen-paused': currentState === breathStateEnum.Paused
+          }">
+          <div class="zen-breath-state">
+            {{ currentState }}
+            <div *ngIf="currentState !== breathStateEnum.Paused" class="zen-seconds">
+              {{ secondsRemaining }}
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div *ngIf="exercise && !loading" class="text-center">
-          <div class="zen-practice-header">
-            <h1 class="zen-practice-title">{{ exercise.name }}</h1>
-            <p class="zen-practice-lead">{{ exercise.description }}</p>
+      <div class="zen-progress-container">
+        <div class="zen-progress-label">
+          <span>Progression: </span>
+          <strong>Cycle {{ cycleCount }}/{{ totalCycles }}</strong>
+        </div>
+        <div class="zen-progress">
+          <div
+            class="zen-progress-bar"
+            [style.width]="(cycleCount / totalCycles * 100) + '%'">
           </div>
+        </div>
+      </div>
 
-          <div class="zen-cycles-control mb-4">
-            <label class="form-label">Nombre de cycles</label>
-            <div class="btn-group">
-              <button
-                *ngFor="let count of [3, 5, 10]"
-                class="zen-cycle-btn"
-                [class.zen-cycle-btn-active]="totalCycles === count"
-                [class.zen-cycle-btn-inactive]="totalCycles !== count"
-                [disabled]="isRunning"
-                (click)="setCycles(count)">
-                {{ count }}
-              </button>
+      <div class="zen-controls">
+        <button
+          *ngIf="!isRunning"
+          class="zen-button zen-button-primary"
+          (click)="startExercise()">
+          <i class="bi bi-play-fill"></i> Commencer
+        </button>
+        <button
+          *ngIf="isRunning"
+          class="zen-button zen-button-secondary"
+          (click)="pauseExercise()">
+          <i class="bi bi-pause-fill"></i> Pause
+        </button>
+        <button
+          class="zen-button zen-button-outline"
+          [class.zen-button-danger]="isRunning"
+          (click)="stopExercise()">
+          <i class="bi bi-stop-fill"></i> Arrêter
+        </button>
+      </div>
+
+      <div class="zen-instructions">
+        <h3 class="zen-instructions-title">Instructions</h3>
+        <div class="zen-instruction-cards">
+          <div class="zen-instruction-card zen-inspire-card" [class.zen-active-card]="currentState === breathStateEnum.Inspire">
+            <div class="zen-instruction-icon">
+              <i class="bi bi-arrow-down-circle"></i>
+            </div>
+            <div class="zen-instruction-content">
+              <h5 class="zen-instruction-subtitle">Inspirez</h5>
+              <p class="zen-instruction-text">Respirez profondément par le nez pendant {{ exercise.inspirationDuration }} secondes</p>
             </div>
           </div>
 
-          <div class="zen-breath-container">
-            <div
-              class="zen-breath-circle"
-              [ngStyle]="{'transform': 'scale(' + (circleSize/100) + ')'}"
-              [ngClass]="{
-                'zen-inspire': currentState === breathStateEnum.Inspire,
-                'zen-hold': currentState === breathStateEnum.Hold,
-                'zen-expire': currentState === breathStateEnum.Expire
-              }">
-              <div class="zen-breath-state">
-                {{ currentState }}
-                <div *ngIf="currentState !== breathStateEnum.Paused" class="zen-seconds">
-                  {{ secondsRemaining }}s
-                </div>
-              </div>
+          <div *ngIf="exercise.holdDuration > 0" class="zen-instruction-card zen-hold-card" [class.zen-active-card]="currentState === breathStateEnum.Hold">
+            <div class="zen-instruction-icon">
+              <i class="bi bi-pause-circle"></i>
+            </div>
+            <div class="zen-instruction-content">
+              <h5 class="zen-instruction-subtitle">Retenez</h5>
+              <p class="zen-instruction-text">Retenez votre respiration pendant {{ exercise.holdDuration }} secondes</p>
             </div>
           </div>
 
-          <div class="zen-progress mb-4">
-            <div
-              class="zen-progress-bar"
-              role="progressbar"
-              [style.width]="(cycleCount / totalCycles * 100) + '%'"
-              [attr.aria-valuenow]="cycleCount"
-              aria-valuemin="0"
-              [attr.aria-valuemax]="totalCycles">
-              <span class="zen-progress-text">Cycle {{ cycleCount }}/{{ totalCycles }}</span>
+          <div class="zen-instruction-card zen-expire-card" [class.zen-active-card]="currentState === breathStateEnum.Expire">
+            <div class="zen-instruction-icon">
+              <i class="bi bi-arrow-up-circle"></i>
             </div>
-          </div>
-
-          <div class="zen-controls mb-4">
-            <button
-              *ngIf="!isRunning"
-              class="zen-control-btn zen-start-btn"
-              (click)="startExercise()">
-              <i class="bi bi-play-fill"></i> Commencer
-            </button>
-            <button
-              *ngIf="isRunning"
-              class="zen-control-btn zen-pause-btn"
-              (click)="pauseExercise()">
-              <i class="bi bi-pause-fill"></i> Pause
-            </button>
-            <button
-              class="zen-control-btn zen-stop-btn"
-              (click)="stopExercise()">
-              <i class="bi bi-stop-fill"></i> Arrêter
-            </button>
-          </div>
-
-          <div class="zen-instructions">
-            <h3 class="zen-instructions-title">Instructions</h3>
-            <div class="zen-instruction-card zen-inspire-card">
-              <div class="zen-instruction-icon">
-                <i class="bi bi-arrow-down-circle"></i>
-              </div>
-              <div class="zen-instruction-content">
-                <h5 class="zen-instruction-title">Inspirez</h5>
-                <p class="zen-instruction-text">Respirez profondément par le nez pendant {{ exercise.inspirationDuration }} secondes</p>
-              </div>
-            </div>
-
-            <div *ngIf="exercise.holdDuration > 0" class="zen-instruction-card zen-hold-card">
-              <div class="zen-instruction-icon">
-                <i class="bi bi-pause-circle"></i>
-              </div>
-              <div class="zen-instruction-content">
-                <h5 class="zen-instruction-title">Retenez</h5>
-                <p class="zen-instruction-text">Retenez votre respiration pendant {{ exercise.holdDuration }} secondes</p>
-              </div>
-            </div>
-
-            <div class="zen-instruction-card zen-expire-card">
-              <div class="zen-instruction-icon">
-                <i class="bi bi-arrow-up-circle"></i>
-              </div>
-              <div class="zen-instruction-content">
-                <h5 class="zen-instruction-title">Expirez</h5>
-                <p class="zen-instruction-text">Expirez lentement par la bouche pendant {{ exercise.expirationDuration }} secondes</p>
-              </div>
+            <div class="zen-instruction-content">
+              <h5 class="zen-instruction-subtitle">Expirez</h5>
+              <p class="zen-instruction-text">Expirez lentement par la bouche pendant {{ exercise.expirationDuration }} secondes</p>
             </div>
           </div>
         </div>
