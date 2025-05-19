@@ -3,10 +3,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
 import { LoadingController, AlertController, IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
+// Interface étendue pour gérer des structures utilisateur différentes
+interface ApiUser {
+  id?: number;
+  idUtilisateur?: number;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  prenom?: string;
+  nom?: string;
+  dateOfBirth?: Date;
+  dateNaissance?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  dateCreation?: Date;
+  roleId?: number;
+  [key: string]: any; // Pour les autres propriétés potentielles
+}
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +34,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
   profileForm: FormGroup;
-  user: User | null = null;
+  user: ApiUser | null = null;
   loading = false;
   error = '';
 
@@ -38,6 +55,18 @@ export class ProfilePage implements OnInit {
     await this.loadUserProfile();
   }
 
+  ionViewWillEnter() {
+    // Rafraîchir les données à chaque entrée dans la page
+    this.loadUserProfile();
+  }
+
+  async refreshProfile(event?: any) {
+    await this.loadUserProfile();
+    if (event) {
+      event.target.complete();
+    }
+  }
+
   async loadUserProfile() {
     const currentUser = this.authService.currentUserValue;
     if (!currentUser) {
@@ -52,15 +81,34 @@ export class ProfilePage implements OnInit {
     await loading.present();
 
     try {
-      const userData = await this.userService.getUserById(currentUser.userId).toPromise();
-      console.log('Données utilisateur reçues:', userData);
+      // Utiliser le service pour récupérer les données
+      const response = await this.userService.getUserById(currentUser.userId).toPromise();
       
-      if (userData) {
+      // Vérifier si la réponse existe
+      if (response) {
+        // Convertir la réponse en type ApiUser
+        const userData = response as ApiUser;
+        console.log('Données utilisateur reçues:', userData);
+        
         this.user = userData;
-        this.profileForm.patchValue({
-          firstName: userData.firstName,
-          lastName: userData.lastName
-        });
+        
+        // Remplir les champs du formulaire avec les valeurs existantes
+        // Pour l'API qui utilise prenom/nom
+        if (userData.prenom && userData.nom) {
+          this.profileForm.patchValue({
+            firstName: userData.prenom,
+            lastName: userData.nom
+          });
+        } 
+        // Pour l'API qui utilise firstName/lastName
+        else if (userData.firstName && userData.lastName) {
+          this.profileForm.patchValue({
+            firstName: userData.firstName,
+            lastName: userData.lastName
+          });
+        }
+        
+        console.log('Formulaire rempli avec:', this.profileForm.value);
       } else {
         this.error = 'Impossible de récupérer les données utilisateur';
       }
@@ -89,11 +137,19 @@ export class ProfilePage implements OnInit {
     });
     await loading.present();
 
-    const userData = {
-      ...this.user,
-      firstName: this.profileForm.value.firstName,
-      lastName: this.profileForm.value.lastName
-    };
+    // Créer un objet qui préserve les propriétés existantes de l'utilisateur
+    const userData = { ...this.user };
+    
+    // Mettre à jour les champs prenom/nom si l'API les utilise
+    if ('prenom' in userData) {
+      userData.prenom = this.profileForm.value.firstName;
+      userData.nom = this.profileForm.value.lastName;
+    } 
+    // Sinon, utiliser firstName/lastName
+    else {
+      userData.firstName = this.profileForm.value.firstName;
+      userData.lastName = this.profileForm.value.lastName;
+    }
 
     try {
       await this.userService.updateUser(currentUser.userId, userData).toPromise();

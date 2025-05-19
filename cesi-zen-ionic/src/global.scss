@@ -48,7 +48,7 @@
 /* Classes utilitaires */
 .zen-container {
   padding: var(--zen-spacing-md);
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -58,6 +58,12 @@
   padding: var(--zen-spacing-md);
   margin: var(--zen-spacing-md) 0;
   box-shadow: var(--ion-box-shadow);
+  transition: var(--ion-transition);
+}
+
+.zen-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .zen-title {
@@ -95,16 +101,32 @@
 
 /* Styles pour les boutons */
 .zen-button {
-  --background: var(--ion-color-primary);
-  --background-hover: var(--ion-color-primary-shade);
-  --color: white;
-  --border-radius: 8px;
-  --padding-start: var(--zen-spacing-md);
-  --padding-end: var(--zen-spacing-md);
-  --padding-top: var(--zen-spacing-sm);
-  --padding-bottom: var(--zen-spacing-sm);
-  font-weight: 500;
-  text-transform: none;
+  --background: linear-gradient(90deg, #A3D977 60%, #FFE066 100%);
+  --color: #1a1a1a;
+  --color-activated: #1a1a1a;
+  --color-focused: #1a1a1a;
+  --color-hover: #1a1a1a;
+  --background-activated: linear-gradient(90deg, #A3D977 60%, #FFE066 100%);
+  --background-focused: linear-gradient(90deg, #A3D977 60%, #FFE066 100%);
+  --background-hover: linear-gradient(90deg, #FFE066 60%, #A3D977 100%);
+  --ripple-color: rgba(163, 217, 119, 0.3);
+  border-radius: 18px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(163, 217, 119, 0.15);
+  padding: 0 18px;
+  min-width: 120px;
+  min-height: 40px;
+  margin-top: 12px;
+  transition: background 0.3s;
+  
+  --ion-text-color: #1a1a1a;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  letter-spacing: 0.5px;
+}
+
+.zen-button:hover, .zen-button:active, .zen-button:focus {
+  --background: linear-gradient(90deg, #FFE066 60%, #A3D977 100%);
+  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .zen-button-secondary {
@@ -125,6 +147,11 @@
   margin: var(--zen-spacing-xs) 0;
   --padding-start: var(--zen-spacing-md);
   --padding-end: var(--zen-spacing-md);
+  transition: var(--ion-transition);
+}
+
+.zen-item:hover {
+  --background: var(--ion-color-light);
 }
 
 /* Styles pour les icônes */
@@ -173,4 +200,224 @@
   --color-checked: var(--ion-color-primary);
   --indicator-color: var(--ion-color-primary);
   font-weight: 500;
+}
+
+/* Styles pour les cartes d'exercices */
+.exercise-card {
+  --background: white;
+  border-radius: var(--ion-border-radius);
+  margin: var(--zen-spacing-md) 0;
+  padding: var(--zen-spacing-md);
+  box-shadow: var(--ion-box-shadow);
+  transition: var(--ion-transition);
+}
+
+.exercise-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.exercise-title {
+  color: var(--ion-color-primary);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: var(--zen-spacing-sm);
+}
+
+.exercise-description {
+  color: var(--ion-text-color);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: var(--zen-spacing-md);
+}
+
+.exercise-duration {
+  color: var(--ion-color-secondary);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Styles pour les articles */
+.article-card {
+  --background: white;
+  border-radius: var(--ion-border-radius);
+  margin: var(--zen-spacing-md) 0;
+  padding: var(--zen-spacing-md);
+  box-shadow: var(--ion-box-shadow);
+  transition: var(--ion-transition);
+}
+
+.article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.article-title {
+  color: var(--ion-color-primary);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: var(--zen-spacing-sm);
+}
+
+.article-content {
+  color: var(--ion-text-color);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: var(--zen-spacing-md);
+}
+
+/* Styles pour le profil */
+.profile-header {
+  background: var(--ion-color-primary);
+  padding: var(--zen-spacing-lg);
+  color: white;
+  text-align: center;
+  border-radius: 0 0 var(--ion-border-radius) var(--ion-border-radius);
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto var(--zen-spacing-md);
+  border: 3px solid white;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: var(--zen-spacing-xs);
+}
+
+.profile-email {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Styles pour les animations de respiration */
+.breathing-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--ion-color-primary);
+  margin: var(--zen-spacing-xl) auto;
+  transition: all 4s ease-in-out;
+}
+
+.breathing-circle.inhale {
+  transform: scale(1.5);
+  background: var(--ion-color-accent);
+}
+
+.breathing-circle.hold {
+  transform: scale(1.5);
+  background: var(--ion-color-secondary);
+}
+
+.breathing-circle.exhale {
+  transform: scale(1);
+  background: var(--ion-color-primary);
+}
+
+/* Styles pour les notifications */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--ion-color-danger);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styles pour les modals */
+.zen-modal {
+  --border-radius: var(--ion-border-radius);
+  --box-shadow: var(--ion-box-shadow);
+  --height: auto;
+  --max-height: 90vh;
+}
+
+.zen-modal-content {
+  padding: var(--zen-spacing-md);
+}
+
+/* Styles pour les loadings */
+.zen-loading {
+  --background: rgba(255, 255, 255, 0.9);
+  --spinner-color: var(--ion-color-primary);
+}
+
+/* Styles pour les refreshers */
+.zen-refresher {
+  --ion-color-primary: var(--ion-color-primary);
+}
+
+/* Styles pour les infinite scroll */
+.zen-infinite-scroll {
+  --ion-color-primary: var(--ion-color-primary);
+}
+
+body, ion-app {
+  font-family: 'Unbounded', 'Roboto', Arial, sans-serif;
+  background: linear-gradient(120deg, #f7ffe0 0%, #e0ffe9 100%) !important;
+  min-height: 100vh;
+  color: var(--ion-text-color);
+}
+
+ion-content {
+  --background: transparent !important;
+}
+
+.zen-card {
+  background: white;
+  border-radius: var(--ion-border-radius);
+  box-shadow: var(--ion-box-shadow);
+  padding: var(--zen-spacing-md);
+}
+
+.zen-title {
+  font-family: 'Unbounded', 'Roboto', Arial, sans-serif;
+  color: var(--ion-color-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--zen-spacing-sm);
+}
+
+.zen-subtitle {
+  color: #7bbf6a;
+  font-size: 1.2rem;
+  margin-bottom: 1.5em;
+}
+
+.zen-text {
+  color: var(--ion-text-color);
+  font-size: 1rem;
+}
+
+.zen-fade-in {
+  animation: fadeInZen 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+@keyframes fadeInZen {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: none;}
+}
+
+// Styles pour le bouton FAB zen (admin)
+.zen-fab-button {
+  --background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-accent) 100%);
+  --color: #333;
+  --box-shadow: 0 4px 16px rgba(163, 217, 119, 0.25);
+  transition: all 0.3s ease;
+}
+
+.zen-fab-button:hover {
+  --background: linear-gradient(135deg, var(--ion-color-accent) 0%, var(--ion-color-primary) 100%);
+  --box-shadow: 0 6px 20px rgba(163, 217, 119, 0.35);
 }

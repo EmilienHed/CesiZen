@@ -2,8 +2,10 @@
 export interface User {
   id: number;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  prenom?: string;
+  nom?: string;
   dateOfBirth?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -28,6 +30,7 @@ export interface Article {
   imageUrl?: string;
   createdAt: Date | string;
   userName: string;
+  userId?: number;
   categoryName?: string;
   categoryId?: number;
   isActive: boolean;

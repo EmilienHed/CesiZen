@@ -1,18 +1,34 @@
 <!-- src/app/pages/profile/profile.page.html -->
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Profil</ion-title>
+<ion-header class="zen-header">
+  <ion-toolbar class="zen-toolbar">
+    <ion-title class="zen-title">Profil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refreshProfile()" class="zen-button">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="zen-container">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshProfile($event)">
+    <ion-refresher-content 
+      pullingIcon="arrow-down-outline" 
+      pullingText="Tirez pour rafraîchir" 
+      refreshingSpinner="circles" 
+      refreshingText="Chargement...">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <!-- Section pour les utilisateurs non connectés -->
-  <div *ngIf="!user" class="not-connected-container">
+  <div *ngIf="!user" class="not-connected-container zen-card">
     <div class="not-connected-content">
-      <ion-icon name="person-circle-outline" class="large-icon"></ion-icon>
-      <h2>Vous n'êtes pas connecté</h2>
-      <p>Connectez-vous pour accéder à votre profil et personnaliser votre expérience</p>
-      <ion-button expand="block" [routerLink]="['/login']" class="login-button">
+      <div class="avatar-placeholder">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </div>
+      <h2 class="zen-title">Vous n'êtes pas connecté</h2>
+      <p class="zen-text">Connectez-vous pour accéder à votre profil et personnaliser votre expérience</p>
+      <ion-button expand="block" [routerLink]="['/login']" class="zen-button">
         <ion-icon name="log-in-outline" slot="start"></ion-icon>
         Se connecter
       </ion-button>
@@ -21,19 +37,25 @@
 
   <!-- Section pour les utilisateurs connectés -->
   <div *ngIf="user" class="profile-container">
-    <div class="profile-header">
+    <div class="profile-header zen-card">
       <div class="avatar">
         <ion-icon name="person"></ion-icon>
       </div>
-      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
-      <p>{{ user.email }}</p>
+      <!-- Affichage du nom en fonction de la structure de données -->
+      <h1 class="zen-title" *ngIf="user.firstName && user.lastName">
+        {{ user.firstName }} {{ user.lastName }}
+      </h1>
+      <h1 class="zen-title" *ngIf="user.prenom && user.nom">
+        {{ user.prenom }} {{ user.nom }}
+      </h1>
+      <p class="zen-text">{{ user.email }}</p>
     </div>
 
-    <div class="profile-section">
-      <h2>Informations personnelles</h2>
+    <div class="profile-section zen-card">
+      <h2 class="zen-subtitle">Informations personnelles</h2>
 
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-        <ion-item class="custom-item">
+        <ion-item class="zen-input">
           <ion-label position="floating">Prénom</ion-label>
           <ion-input type="text" formControlName="firstName"></ion-input>
           <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -42,7 +64,7 @@
           <span *ngIf="profileForm.get('firstName')?.errors?.['required']">Le prénom est requis</span>
         </div>
 
-        <ion-item class="custom-item">
+        <ion-item class="zen-input">
           <ion-label position="floating">Nom</ion-label>
           <ion-input type="text" formControlName="lastName"></ion-input>
           <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -51,18 +73,18 @@
           <span *ngIf="profileForm.get('lastName')?.errors?.['required']">Le nom est requis</span>
         </div>
 
-        <ion-button expand="block" type="submit" [disabled]="profileForm.invalid" class="update-button">
+        <ion-button expand="block" type="submit" [disabled]="profileForm.invalid" class="zen-button">
+          <ion-icon name="save-outline" slot="start"></ion-icon>
           Mettre à jour le profil
         </ion-button>
       </form>
     </div>
 
-    <div class="profile-section">
-      <h2>Paramètres du compte</h2>
-
-      <ion-button expand="block" color="danger" fill="outline" class="logout-button" (click)="logout()">
+    <div class="profile-section zen-card">
+      <h2 class="zen-subtitle">Options du compte</h2>
+      <ion-button expand="block" fill="outline" class="zen-button danger" (click)="logout()">
         <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        Déconnexion
+        Se déconnecter
       </ion-button>
     </div>
   </div>

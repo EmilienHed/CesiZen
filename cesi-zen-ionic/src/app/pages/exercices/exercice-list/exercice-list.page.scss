@@ -1,117 +1,183 @@
 /* src/app/pages/exercices/exercice-list/exercice-list.page.scss */
-.header-container {
-  padding: 20px;
+.header-section {
   text-align: center;
+  padding: var(--zen-spacing-xl) 0;
+  margin-bottom: var(--zen-spacing-xl);
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-accent) 100%);
+  border-radius: var(--ion-border-radius);
+  color: white;
 
   h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ion-color-primary);
-    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: var(--zen-spacing-sm);
+    color: white;
   }
 
   p {
-    color: var(--ion-color-medium);
     font-size: 16px;
-    line-height: 1.5;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 var(--zen-spacing-md);
   }
 }
 
 .error-container {
-  padding: 30px;
   text-align: center;
+  padding: var(--zen-spacing-xl);
+  margin: var(--zen-spacing-md);
+  background: white;
+  border-radius: var(--ion-border-radius);
+  box-shadow: var(--ion-box-shadow);
 
   ion-icon {
-    font-size: 50px;
+    font-size: 48px;
     color: var(--ion-color-danger);
-    margin-bottom: 10px;
+    margin-bottom: var(--zen-spacing-md);
   }
 
   p {
-    color: var(--ion-color-medium);
-    margin-bottom: 20px;
+    margin-bottom: var(--zen-spacing-md);
+    color: var(--ion-text-color);
   }
 }
 
 .exercise-grid {
-  padding: 16px;
+  padding: var(--zen-spacing-md);
 }
 
 .exercise-card {
-  margin: 0;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
   ion-card-header {
-    padding: 16px;
+    padding: var(--zen-spacing-md);
   }
 
   ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: var(--zen-spacing-sm);
     font-size: 20px;
-    font-weight: 700;
     color: var(--ion-color-primary);
+
+    ion-icon {
+      font-size: 24px;
+    }
   }
 
   ion-card-content {
-    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--zen-spacing-md);
   }
 }
 
 .timing-container {
   display: flex;
-  margin-bottom: 15px;
-  gap: 15px;
-  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--zen-spacing-md);
+  background: var(--ion-color-light);
+  border-radius: var(--ion-border-radius);
+  margin-bottom: var(--zen-spacing-md);
 }
 
 .timing {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background-color: rgba(var(--ion-color-primary-rgb), 0.1);
-  padding: 6px 12px;
-  border-radius: 20px;
+  gap: var(--zen-spacing-xs);
 
-  ion-icon {
+  .timing-icon {
+    font-size: 24px;
     color: var(--ion-color-primary);
-    margin-right: 5px;
   }
 
-  span {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--ion-color-primary);
+  .timing-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ion-color-secondary);
   }
 }
 
-.description {
-  color: var(--ion-color-medium);
-  margin-bottom: 15px;
+.exercise-description {
+  color: var(--ion-text-color);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .start-button {
-  --border-radius: 8px;
-  margin-top: 10px;
-  font-weight: 600;
-  font-size: 14px;
+  margin-top: auto;
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+  --color: white;
+  font-weight: 500;
+
+  ion-icon {
+    margin-left: var(--zen-spacing-xs);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover ion-icon {
+    transform: translateX(4px);
+  }
 }
 
 .empty-container {
-  padding: 40px;
   text-align: center;
+  padding: var(--zen-spacing-xl);
+  margin: var(--zen-spacing-md);
+  background: white;
+  border-radius: var(--ion-border-radius);
+  box-shadow: var(--ion-box-shadow);
 
   ion-spinner {
-    margin-bottom: 15px;
+    margin-bottom: var(--zen-spacing-md);
   }
 
   p {
-    color: var(--ion-color-medium);
+    color: var(--ion-text-color);
+  }
+}
+
+@media (min-width: 768px) {
+  .header-section {
+    h1 {
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .exercise-card {
+    ion-card-title {
+      font-size: 22px;
+    }
+  }
+
+  .timing {
+    .timing-icon {
+      font-size: 28px;
+    }
+
+    .timing-value {
+      font-size: 18px;
+    }
+  }
+
+  .exercise-description {
+    font-size: 16px;
   }
 }
