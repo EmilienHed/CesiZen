@@ -1,2 +1,18 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+  --ion-color-primary: #A3D977;
+  --ion-color-primary-rgb: 163, 217, 119;
+  --ion-color-accent: #FFE066;
+  --ion-color-accent-rgb: 255, 224, 102;
+  --ion-color-on-accent: #333;
+  --ion-border-radius: 24px;
+  --zen-spacing-xl: 48px;
+  --zen-spacing-lg: 32px;
+  --zen-spacing-md: 24px;
+  --zen-spacing-sm: 12px;
+  --zen-spacing-xs: 6px;
+  --ion-box-shadow: 0 4px 24px rgba(163, 217, 119, 0.10), 0 1.5px 8px rgba(255, 224, 102, 0.10);
+  --ion-text-color: #333;
+}

@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -75,6 +76,11 @@ const routes: Routes = [
     path: 'profil',
     redirectTo: '/tabs/profile',
     pathMatch: 'full'
+  },
+  {
+    path: 'article-create',
+    loadComponent: () => import('./pages/articles/article-create/article-create.page').then(m => m.ArticleCreatePage),
+    canActivate: [AdminGuard]
   },
   {
     path: '**',

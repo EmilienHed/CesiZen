@@ -1,56 +1,61 @@
 <!-- src/app/pages/articles/article-list/article-list.page.html -->
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Articles
-    </ion-title>
+<ion-header class="zen-header">
+  <ion-toolbar class="zen-toolbar">
+    <ion-title class="zen-title">Articles</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+<ion-content class="zen-container" [scrollEvents]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" class="zen-refresher">
+    <ion-refresher-content pullingIcon="chevron-down-outline" pullingText="Tirez pour actualiser" refreshingSpinner="circles" refreshingText="Chargement..."></ion-refresher-content>
   </ion-refresher>
 
-  <div class="header-container">
-    <h1>Articles sur la santé mentale</h1>
-    <p>Découvrez nos articles pour mieux comprendre et gérer votre santé mentale au quotidien.</p>
+  <div class="header-section zen-fade-in">
+    <h1 class="zen-title">Santé & Bien-être</h1>
+    <p class="zen-subtitle">Découvrez nos articles pour mieux comprendre et gérer votre santé mentale au quotidien.</p>
   </div>
 
-  <div *ngIf="error" class="error-container">
-    <ion-icon name="alert-circle"></ion-icon>
-    <p>{{ error }}</p>
-    <ion-button (click)="loadArticles()">Réessayer</ion-button>
+  <div *ngIf="error" class="error-container zen-card">
+    <ion-icon name="alert-circle-outline" class="zen-icon"></ion-icon>
+    <p class="zen-text">{{ error }}</p>
+    <ion-button expand="block" fill="solid" class="zen-button error-retry-button" (click)="loadArticles()">
+      <strong>Réessayer</strong>
+      <ion-icon name="refresh-outline" slot="end"></ion-icon>
+    </ion-button>
   </div>
 
-  <div *ngIf="articles.length === 0 && !error" class="empty-container">
-    <ion-spinner name="circles"></ion-spinner>
-    <p>Chargement des articles...</p>
+  <div *ngIf="articles.length === 0 && !error" class="empty-container zen-card">
+    <ion-spinner name="crescent" class="zen-loading"></ion-spinner>
+    <p class="zen-text">Chargement des articles...</p>
   </div>
 
   <div class="article-grid">
-    <div *ngFor="let article of articles" class="article-card">
-      <div class="article-image" *ngIf="article.imageUrl">
-        <img [src]="article.imageUrl" [alt]="article.title">
-      </div>
-      <div class="article-image placeholder" *ngIf="!article.imageUrl">
-        <ion-icon name="book-outline"></ion-icon>
-      </div>
-      <div class="article-content">
+    <ion-card *ngFor="let article of articles; let i = index" class="article-card" [routerLink]="['/tabs/articles', article.id]" [style.--card-index]="i">
+      <ion-card-content>
         <div class="article-meta">
-          <span class="category" *ngIf="article.categoryName">{{ article.categoryName }}</span>
-          <span class="date">{{ formatDate(article.createdAt) }}</span>
+          <ion-badge *ngIf="article.categoryName" class="zen-badge">{{ article.categoryName || 'Général' }}</ion-badge>
+          <span class="article-date">{{ formatDate(article.createdAt) }}</span>
         </div>
         <h2 class="article-title">{{ article.title }}</h2>
         <p class="article-preview">{{ getPreview(article.content) }}</p>
-        <ion-button
-          fill="clear"
-          [routerLink]="['/tabs/articles', article.id]"
-          class="read-more-button">
+        <ion-button expand="block" fill="solid" class="read-more-button">
+          <strong>Lire l'article</strong>
           <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-          Lire l'article
         </ion-button>
-      </div>
-    </div>
+      </ion-card-content>
+      <ion-item-divider class="zen-divider"></ion-item-divider>
+    </ion-card>
+  </div>
+
+  <!-- Bouton pour créer un article (visible uniquement pour les admins) -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="showAddButton()">
+    <ion-fab-button class="zen-fab-button" routerLink="/article-create">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Indicateur de chargement en bas de page -->
+  <div *ngIf="loading" class="loading-indicator">
+    <ion-spinner name="dots" color="primary"></ion-spinner>
   </div>
 </ion-content>

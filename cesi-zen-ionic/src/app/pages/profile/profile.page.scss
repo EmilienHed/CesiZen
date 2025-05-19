@@ -16,57 +16,58 @@
 }
 
 .profile-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
+  padding: var(--zen-spacing-md);
 }
 
 .profile-header {
   text-align: center;
-  margin-bottom: 30px;
+  padding: var(--zen-spacing-xl);
+  margin-bottom: var(--zen-spacing-xl);
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-accent) 100%);
+  border-radius: var(--ion-border-radius);
+  color: white;
 
   .avatar {
     width: 100px;
     height: 100px;
-    background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+    margin: 0 auto var(--zen-spacing-md);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0 auto 15px;
+    justify-content: center;
 
     ion-icon {
       font-size: 48px;
-      color: var(--ion-color-primary);
+      color: white;
     }
   }
 
   h1 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--ion-color-dark);
-    margin-bottom: 5px;
+    font-size: 28px;
+    margin-bottom: var(--zen-spacing-sm);
+    color: white;
   }
 
   p {
-    color: var(--ion-color-medium);
     font-size: 16px;
+    opacity: 0.9;
   }
 }
 
 .profile-section {
-  background-color: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: var(--zen-spacing-lg);
+  margin-bottom: var(--zen-spacing-lg);
+  background: white;
+  border-radius: var(--ion-border-radius);
+  box-shadow: var(--ion-box-shadow);
 
   h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--ion-color-dark);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 20px;
+    color: var(--ion-color-primary);
+    margin-bottom: var(--zen-spacing-lg);
   }
 }
 
@@ -80,12 +81,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
+.zen-input {
+  --background: var(--ion-color-light);
+  --border-radius: var(--ion-border-radius);
+  --padding-start: var(--zen-spacing-md);
+  margin-bottom: var(--zen-spacing-md);
+
+  ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 20px;
+  }
+}
+
 .error-message {
   color: var(--ion-color-danger);
-  font-size: 13px;
-  margin-left: 16px;
-  margin-top: -10px;
-  margin-bottom: 15px;
+  font-size: 14px;
+  margin: -8px 0 var(--zen-spacing-md) var(--zen-spacing-md);
 }
 
 .update-button {
@@ -103,42 +114,65 @@
 }
 
 .not-connected-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
+  max-width: 500px;
+  margin: var(--zen-spacing-xl) auto;
+  padding: var(--zen-spacing-xl);
   text-align: center;
+  background: white;
+  border-radius: var(--ion-border-radius);
+  box-shadow: var(--ion-box-shadow);
 
-  .not-connected-content {
-    max-width: 400px;
-    width: 100%;
+  .avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto var(--zen-spacing-lg);
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-accent) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    .large-icon {
-      font-size: 5rem;
-      color: var(--ion-color-medium);
-      margin-bottom: 1rem;
+    ion-icon {
+      font-size: 64px;
+      color: white;
     }
+  }
 
-    h2 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--ion-color-dark);
-      margin-bottom: 1rem;
+  h2 {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+    margin-bottom: var(--zen-spacing-md);
+  }
+
+  p {
+    color: var(--ion-text-color);
+    margin-bottom: var(--zen-spacing-xl);
+  }
+}
+
+.zen-button {
+  margin-top: var(--zen-spacing-md);
+
+  &.danger {
+    --color: var(--ion-color-danger);
+    --border-color: var(--ion-color-danger);
+  }
+}
+
+@media (min-width: 768px) {
+  .profile-header {
+    h1 {
+      font-size: 32px;
     }
 
     p {
-      color: var(--ion-color-medium);
-      margin-bottom: 2rem;
-      line-height: 1.5;
+      font-size: 18px;
     }
+  }
 
-    .login-button {
-      --border-radius: 8px;
-      --padding-top: 1rem;
-      --padding-bottom: 1rem;
-      font-weight: 500;
+  .profile-section {
+    h2 {
+      font-size: 24px;
     }
   }
 }
