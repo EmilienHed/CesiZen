@@ -184,7 +184,7 @@
 /* Buttons avec effets améliorés - VERSION OPAQUE */
 .btn-primary {
   background: var(--zen-green-vibrant);  /* Couleur de fond solide */
-  color: white !important;
+  color: darkseagreen !important;
   border: none;
   border-radius: 30px;
   padding: 12px 24px;
@@ -620,6 +620,19 @@
 
   .ms-3 {
     margin-left: 0 !important;
+  }
+
+  .card-body .btn.btn-primary[routerlink="/respiration"] {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 250px;
+    background-color: #4a9440 !important;
+    color: white !important;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(74, 148, 64, 0.15);
   }
 }
 

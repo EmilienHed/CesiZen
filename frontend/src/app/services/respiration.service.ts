@@ -1,30 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { RespirationExercise, MOCK_EXERCISES } from '../Models/respiration-exercise.model';
+import { Observable } from 'rxjs';
+import { RespirationExercise } from '../Models/respiration-exercise.model';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RespirationService {
-  private exercises: RespirationExercise[] = MOCK_EXERCISES;
+  private apiUrl = 'http://localhost:5016/api/RespirationExercises';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getExercises(): Observable<RespirationExercise[]> {
-    return of(this.exercises);
+    return this.http.get<any>(this.apiUrl).pipe(
+      map(response => response.$values ?? response)
+    );
   }
 
   getExercise(id: number): Observable<RespirationExercise> {
-    const exercise = this.exercises.find(ex => ex.id === id);
-    return of(exercise!);
+    return this.http.get<RespirationExercise>(`${this.apiUrl}/${id}`);
   }
 
   createExercise(exercise: Omit<RespirationExercise, 'id'>): Observable<RespirationExercise> {
-    const newExercise = {
-      ...exercise,
-      id: this.exercises.length + 1
-    };
-    this.exercises.push(newExercise);
-    return of(newExercise);
+    return this.http.post<RespirationExercise>(this.apiUrl, exercise);
   }
 }
