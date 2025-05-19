@@ -65,10 +65,10 @@
           </div>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-            <div class="form-group mb-3">
+            <div class="form-group mb-4">
               <label for="email" class="form-label">Email</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <span class="input-group-text bg-white"><i class="bi bi-envelope text-muted"></i></span>
                 <input
                   type="email"
                   id="email"
@@ -86,12 +86,9 @@
             </div>
 
             <div class="form-group mb-4">
-              <div class="d-flex justify-content-between">
-                <label for="password" class="form-label">Mot de passe</label>
-                <a routerLink="/forgot-password" class="forgot-password">Mot de passe oublié?</a>
-              </div>
+              <label for="password" class="form-label">Mot de passe</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <span class="input-group-text bg-white"><i class="bi bi-lock text-muted"></i></span>
                 <input
                   [type]="hidePassword ? 'password' : 'text'"
                   id="password"
@@ -112,11 +109,6 @@
               <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
                 <div *ngIf="f['password'].errors?.['required']">Le mot de passe est requis</div>
               </div>
-            </div>
-
-            <div class="form-check mb-4">
-              <input type="checkbox" class="form-check-input" id="rememberMe" formControlName="rememberMe">
-              <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
             </div>
 
             <div class="form-group">

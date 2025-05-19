@@ -20,11 +20,9 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'tabs',
-
     children: [
       {
         path: 'articles',
@@ -44,7 +42,8 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
+        loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule),
+        canActivate: [AuthGuard]
       },
       {
         path: 'tabs/articles/:id',

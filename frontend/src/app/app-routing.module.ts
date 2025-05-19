@@ -14,6 +14,9 @@ import {ArticleFormComponent} from './components/article-form/article-form.compo
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
 import { UserFormComponent } from './components/admin/user-form/user-form.component';
+import { PersonalExerciseListComponent } from './components/PersonalExercise/personal-exercise-list/personal-exercise-list.component';
+import { PersonalExerciseFormComponent } from './components/PersonalExercise/personal-exercise-form/personal-exercise-form.component';
+import { PersonalExerciseDetailComponent } from './components/PersonalExercise/personal-exercise-detail/personal-exercise-detail.component';
 
 // Exporter les routes pour qu'elles soient utilisables dans d'autres fichiers
 export const routes: Routes = [
@@ -64,6 +67,27 @@ export const routes: Routes = [
     path: 'admin/users/edit/:id',
     component: UserFormComponent,
     canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'personal-exercises',
+    component: PersonalExerciseListComponent
+  },
+  {
+    path: 'personal-exercise/new',
+    component: PersonalExerciseFormComponent
+  },
+  {
+    path: 'personal-exercise/edit/:id',
+    component: PersonalExerciseFormComponent
+  },
+  {
+    path: 'personal-exercise/:id',
+    component: PersonalExerciseDetailComponent
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

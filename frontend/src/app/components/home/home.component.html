@@ -3,21 +3,20 @@
     <!-- Section héro améliorée avec appel à l'action plus visible -->
     <div class="row align-items-center hero-section" *ngIf="isBrowser" [@fadeInOut]="'in'">
       <div class="col-lg-6 p-5 hero-content">
+<!--
         <div class="zen-badge"><i class="bi bi-heart-pulse me-2"></i>Bien-être & Harmonie</div>
+-->
         <h1 class="hero-title">Bienvenue sur <span class="text-primary">CESIZen</span></h1>
         <h2 class="hero-subtitle">Votre compagnon de santé mentale quotidien</h2>
         <p class="hero-text">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien. Notre approche combine des exercices de respiration, de méditation et un journal personnel pour vous aider à retrouver sérénité et équilibre.</p>
 
         <!-- Boutons améliorés plus visibles -->
         <div class="cta-buttons">
-          <a *ngIf="isLoggedIn" routerLink="/respiration" class="btn btn-primary btn-lg shine-effect">
-            <i class="bi bi-lungs me-2"></i> Commencer maintenant
-          </a>
-          <a *ngIf="!isLoggedIn" routerLink="/login" [queryParams]="{returnUrl: '/respiration'}" class="btn btn-primary btn-lg shine-effect">
+          <a routerLink="/respiration" class="btn btn-primary btn-lg shine-effect">
             <i class="bi bi-lungs me-2"></i> Commencer maintenant
           </a>
           <a routerLink="/articles" class="btn btn-outline-primary btn-lg">
-            <i class="bi bi-journal-text me-2"></i> Journal
+            <i class="bi bi-journal-text me-2"></i> Articles
           </a>
 <!--          &lt;!&ndash; Bouton d'administration visible uniquement pour les admin &ndash;&gt;
           <a *ngIf="isAdmin" routerLink="/admin" class="btn btn-outline-danger btn-lg ms-2">
@@ -38,7 +37,7 @@
         <div class="zen-badge"><i class="bi bi-heart-pulse me-2"></i>Bien-être & Harmonie</div>
         <h1 class="hero-title">Bienvenue sur <span class="text-primary">CESIZen</span></h1>
         <h2 class="hero-subtitle">Votre compagnon de santé mentale quotidien</h2>
-        <p class="hero-text">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien. Notre approche combine des exercices de respiration, de méditation et un journal personnel pour vous aider à retrouver sérénité et équilibre.</p>
+        <p class="hero-text">Découvrez des outils pour améliorer votre bien-être mental et gérer efficacement votre stress quotidien. Notre approche combine des exercices de respiration, de méditation et des articles pour vous aider à retrouver sérénité et équilibre.</p>
 
         <!-- Boutons améliorés plus visibles -->
         <div class="cta-buttons">
@@ -49,7 +48,7 @@
             <i class="bi bi-lungs me-2"></i> Commencer maintenant
           </a>
           <a routerLink="/articles" class="btn btn-outline-primary btn-lg">
-            <i class="bi bi-journal-text me-2"></i> Journal
+            <i class="bi bi-journal-text me-2"></i> Articles
           </a>
           <!-- Bouton d'administration visible uniquement pour les admin -->
           <a *ngIf="isAdmin" routerLink="/admin" class="btn btn-outline-danger btn-lg ms-2">
@@ -94,10 +93,10 @@
             <div class="icon-container">
               <i class="bi bi-journal-text"></i>
             </div>
-            <h3>Journal personnel</h3>
-            <p>Suivez votre progression et prenez note de vos réflexions dans notre journal interactif pour un suivi personnalisé.</p>
+            <h3>Visiter les Articles</h3>
+            <p>Suivez votre progression et prenez note de vos réflexions dans nos articles pour un suivi personnalisé.</p>
             <a routerLink="/articles" class="btn btn-outline-primary">
-              Découvrir <i class="bi bi-arrow-right ms-1"></i>
+              <strong>Découvrir les articles</strong> <i class="bi bi-arrow-right ms-1"></i>
             </a>
           </div>
         </div>
@@ -113,6 +112,27 @@
             </a>
           </div>
         </div>-->
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <i class="fas fa-lungs fa-3x mb-3 text-primary"></i>
+              <h5 class="card-title">Exercices de Respiration</h5>
+              <p class="card-text">Découvrez nos exercices de respiration guidés pour vous aider à vous détendre et à gérer votre stress.</p>
+              <a routerLink="/respiration" class="btn btn-primary">Commencer</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <i class="fas fa-dumbbell fa-3x mb-3 text-success"></i>
+              <h5 class="card-title">Exercices Personnalisés</h5>
+              <p class="card-text">Créez et gérez vos propres exercices personnalisés pour votre bien-être.</p>
+              <a routerLink="/personal-exercises" class="btn btn-success">Voir mes exercices</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

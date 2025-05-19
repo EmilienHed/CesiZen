@@ -6,13 +6,14 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { LoadingController, AlertController, IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonicModule]
+  imports: [CommonModule, ReactiveFormsModule, IonicModule, RouterModule]
 })
 export class ProfilePage implements OnInit {
   profileForm: FormGroup;

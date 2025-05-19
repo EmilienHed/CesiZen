@@ -126,17 +126,23 @@ export class UserManagementComponent implements OnInit {
 
   // Méthode pour déterminer le rôle d'un utilisateur
   getUserRole(roleId: number | null | undefined): string {
-    if (roleId === 2) {
+    if (roleId === 0) {
       return 'Admin';
     } else if (roleId === 1) {
-      return 'User';
+      return 'Utilisateur';
     } else {
-      return 'User'; // Valeur par défaut
+      return 'Non défini';
     }
   }
 
   // Méthode pour obtenir la classe CSS du badge en fonction du rôle
   getRoleBadgeClass(roleId: number | null | undefined): string {
-    return roleId === 2 ? 'bg-danger' : 'bg-primary';
+    if (roleId === 0) {
+      return 'bg-warning';
+    } else if (roleId === 1) {
+      return 'bg-primary';
+    } else {
+      return 'bg-secondary';
+    }
   }
 }

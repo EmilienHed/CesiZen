@@ -37,22 +37,22 @@
 
   <!-- Contrôles et actions -->
   <div class="row mb-5">
-    <div class="col-md-8">
-      <div class="input-group">
-        <span class="input-group-text bg-white">
-          <i class="bi bi-search text-primary"></i>
-        </span>
-        <input type="text" class="form-control" [(ngModel)]="searchTerm" placeholder="Rechercher par nom, prénom ou email..." aria-label="Rechercher">
-        <button *ngIf="searchTerm" class="btn btn-outline-secondary" type="button" (click)="searchTerm = ''">
-          <i class="bi bi-x"></i>
+    <div class="col-12">
+      <div class="d-flex gap-3">
+        <div class="input-group flex-grow-1">
+          <span class="input-group-text bg-white">
+            <i class="bi bi-search text-primary"></i>
+          </span>
+          <input type="text" class="form-control" [(ngModel)]="searchTerm" placeholder="Rechercher par nom, prénom ou email..." aria-label="Rechercher">
+          <button *ngIf="searchTerm" class="btn btn-outline-secondary" type="button" (click)="searchTerm = ''">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <button class="btn btn-primary d-flex align-items-center" (click)="createUser()">
+          <i class="bi bi-person-plus me-2"></i>
+          Ajouter un utilisateur
         </button>
       </div>
-    </div>
-    <div class="col-md-4 text-end">
-      <button class="btn btn-primary d-flex align-items-center ms-auto" (click)="createUser()">
-        <i class="bi bi-person-plus me-2"></i>
-        Ajouter un utilisateur
-      </button>
     </div>
   </div>
 

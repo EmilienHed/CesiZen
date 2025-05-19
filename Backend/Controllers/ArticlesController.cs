@@ -123,13 +123,6 @@ namespace CesiZen.Controllers
                     return NotFound();
                 }
 
-                // Vérifier si l'utilisateur est admin ou si l'article est actif
-                bool isAdmin = User.IsInRole("Admin");
-                if (!isAdmin && !article.IsActive)
-                {
-                    return NotFound(); // Retourner 404 pour ne pas révéler l'existence de l'article
-                }
-
                 var articleDto = ConvertToDTO(article);
                 return Ok(articleDto);
             }
@@ -148,21 +141,7 @@ namespace CesiZen.Controllers
         {
             try
             {
-                IEnumerable<Article> articles;
-                bool isAdmin = User.IsInRole("Admin");
-                
-                if (isAdmin)
-                {
-                    // Récupérer tous les articles de la catégorie pour les admins
-                    articles = await _articleService.GetAllArticlesAsync();
-                    articles = articles.Where(a => a.CategoryId == categoryId);
-                }
-                else
-                {
-                    // Utiliser la méthode existante qui filtre déjà les articles inactifs
-                    articles = await _articleService.GetArticlesByCategoryAsync(categoryId);
-                }
-                
+                var articles = await _articleService.GetArticlesByCategoryAsync(categoryId);
                 var articleDtos = articles.Select(a => ConvertToDTO(a)).ToList();
                 return Ok(articleDtos);
             }
@@ -181,21 +160,7 @@ namespace CesiZen.Controllers
         {
             try
             {
-                IEnumerable<Article> articles;
-                bool isAdmin = User.IsInRole("Admin");
-                
-                if (isAdmin)
-                {
-                    // Récupérer tous les articles de l'utilisateur pour les admins
-                    articles = await _articleService.GetArticlesByUserAsync(userId);
-                }
-                else
-                {
-                    // Récupérer les articles de l'utilisateur mais filtrer pour ne garder que les actifs
-                    articles = await _articleService.GetArticlesByUserAsync(userId);
-                    articles = articles.Where(a => a.IsActive);
-                }
-                
+                var articles = await _articleService.GetArticlesByUserAsync(userId);
                 var articleDtos = articles.Select(a => ConvertToDTO(a)).ToList();
                 return Ok(articleDtos);
             }
