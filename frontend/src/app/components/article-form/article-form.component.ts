@@ -42,7 +42,6 @@ export class ArticleFormComponent implements OnInit {
     this.articleForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
       content: ['', [Validators.required]],
-      imageUrl: ['', [Validators.maxLength(255)]],
       categoryId: [null],
       isActive: [true]
     });
@@ -82,7 +81,6 @@ export class ArticleFormComponent implements OnInit {
           this.articleForm.patchValue({
             title: article.title,
             content: article.content,
-            imageUrl: article.imageUrl,
             categoryId: article.categoryId,
             isActive: article.isActive
           });
@@ -133,7 +131,6 @@ export class ArticleFormComponent implements OnInit {
       const userId = this.currentUser?.userId || 1;
       const title = this.articleForm.value.title || 'Article sans titre';
       const content = this.articleForm.value.content || 'Contenu à remplir';
-      const imageUrl = this.articleForm.value.imageUrl || '';
       const categoryId = this.articleForm.value.categoryId || null;
       const isActive = this.articleForm.value.isActive !== undefined ? this.articleForm.value.isActive : true;
 
@@ -143,7 +140,7 @@ export class ArticleFormComponent implements OnInit {
 
         const updateData: UpdateArticleDTO = {
           id: this.articleId,
-          title, content, imageUrl, categoryId, userId, isActive
+          title, content, categoryId, userId, isActive
         };
 
         this.articleService.updateArticle(updateData)
@@ -164,7 +161,7 @@ export class ArticleFormComponent implements OnInit {
         console.log('Mode création');
 
         const createData: ArticleDTO = {
-          title, content, imageUrl, categoryId, userId, isActive
+          title, content, categoryId, userId, isActive
         };
 
         this.articleService.createArticle(createData)

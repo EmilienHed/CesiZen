@@ -6,12 +6,20 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div *ngIf="error" class="error-container">
-    <ion-icon name="alert-circle"></ion-icon>
-    <p>{{ error }}</p>
-    <ion-button (click)="loadUserProfile()">Réessayer</ion-button>
+  <!-- Section pour les utilisateurs non connectés -->
+  <div *ngIf="!user" class="not-connected-container">
+    <div class="not-connected-content">
+      <ion-icon name="person-circle-outline" class="large-icon"></ion-icon>
+      <h2>Vous n'êtes pas connecté</h2>
+      <p>Connectez-vous pour accéder à votre profil et personnaliser votre expérience</p>
+      <ion-button expand="block" [routerLink]="['/login']" class="login-button">
+        <ion-icon name="log-in-outline" slot="start"></ion-icon>
+        Se connecter
+      </ion-button>
+    </div>
   </div>
 
+  <!-- Section pour les utilisateurs connectés -->
   <div *ngIf="user" class="profile-container">
     <div class="profile-header">
       <div class="avatar">

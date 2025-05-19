@@ -14,6 +14,9 @@ import { RespirationPracticeComponent } from './components/Respiration/respirati
 import { ArticleListComponent } from './components/article-list/article-list.component';
 import {ArticleDetailComponent} from './components/article-detail/article-detail.component';
 import {ArticleFormComponent} from './components/article-form/article-form.component';
+import { PersonalExerciseListComponent } from './components/PersonalExercise/personal-exercise-list/personal-exercise-list.component';
+import { PersonalExerciseFormComponent } from './components/PersonalExercise/personal-exercise-form/personal-exercise-form.component';
+import { PersonalExerciseDetailComponent } from './components/PersonalExercise/personal-exercise-detail/personal-exercise-detail.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import {ArticleFormComponent} from './components/article-form/article-form.compo
     // Ajout des nouveaux composants d'articles
     ArticleListComponent,
     ArticleDetailComponent,
-    ArticleFormComponent
+    ArticleFormComponent,
+    PersonalExerciseListComponent,
+    PersonalExerciseFormComponent,
+    PersonalExerciseDetailComponent
   ],
   providers: [],
   //bootstrap: [AppComponent]

@@ -4,6 +4,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { User } from '../Models/user.model';
+import { environment } from '../../environments/environment';
 
 const API_URL = 'http://localhost:5016'; // Assurez-vous que c'est la bonne URL de votre backend
 
@@ -14,6 +16,7 @@ export class UserService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   private isBrowser: boolean;
+  private apiUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -21,6 +24,7 @@ export class UserService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    this.apiUrl = `${environment.apiUrl}/users`;
 
     let userData = null;
     if (this.isBrowser) {
@@ -35,16 +39,14 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
-
   // Méthode d'inscription mise à jour pour correspondre à l'API backend
-  register(userData: any): Observable<any> {
+  register(userData: UserCreateDto): Observable<any> {
     return this.http.post<any>(`${API_URL}/api/Users/create`, userData);
   }
 
-
   // Récupérer les informations d'un utilisateur par ID
-  getUserById(id: number): Observable<any> {
-    return this.http.get<any>(`${API_URL}/api/Users/${id}`);
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
   // Récupérer la liste des utilisateurs (pour les admins)
@@ -69,8 +71,8 @@ export class UserService {
   }
 
   // Mettre à jour un utilisateur (pour les admins)
-  updateUser(id: number, userData: any): Observable<any> {
-    return this.http.put<any>(`${API_URL}/api/Users/${id}`, userData);
+  updateUser(id: number, userData: UserUpdateDto): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, userData);
   }
 
   // Supprimer un utilisateur (pour les admins)
@@ -100,6 +102,10 @@ export class UserService {
     }
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
+  }
+
+  updatePassword(userId: number, passwordData: { newPassword: string }): Observable<any> {
+    return this.http.put(`${API_URL}/api/Users/${userId}/change-password`, passwordData);
   }
 }
 

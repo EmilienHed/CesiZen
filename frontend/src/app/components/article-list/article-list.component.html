@@ -28,7 +28,7 @@
           </div>
           <p class="zen-card-text">{{ getPreview(article.content) }}</p>
           <div class="zen-card-meta">
-            <span><i class="bi bi-person"></i> {{ article.userName }}</span>
+            <span><i class="bi bi-person"></i> Par {{ article.userName }}</span>
             <span><i class="bi bi-calendar3"></i> {{ formatDate(article.createdAt) }}</span>
           </div>
         </div>
@@ -81,13 +81,9 @@
     <div class="zen-modal-body">
       <div *ngIf="selectedArticle" class="zen-article">
         <div class="zen-article-meta">
-          <span><i class="bi bi-person"></i> {{ selectedArticle.userName }}</span>
+          <span><i class="bi bi-person"></i> Par {{ selectedArticle.userName }}</span>
           <span><i class="bi bi-calendar3"></i> {{ formatDate(selectedArticle.createdAt) }}</span>
           <span *ngIf="selectedArticle.categoryName"><i class="bi bi-tag"></i> {{ selectedArticle.categoryName }}</span>
-        </div>
-
-        <div *ngIf="selectedArticle.imageUrl" class="zen-article-image">
-          <img [src]="selectedArticle.imageUrl" [alt]="selectedArticle.title">
         </div>
 
         <div class="zen-article-content" [innerHTML]="selectedArticle.content"></div>

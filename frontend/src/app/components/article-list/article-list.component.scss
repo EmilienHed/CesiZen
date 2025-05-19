@@ -529,8 +529,15 @@ $zen-text-light: #657764;
   }
 
   .zen-card {
+    width: 100%; // Définit la largeur à 100% du conteneur parent
     max-width: 480px;
     margin: 0 auto;
+  }
+
+  .zen-card-title {
+    width: 100%; // Assure que le titre prend toute la largeur
+    word-wrap: break-word; // Permet aux mots longs de se couper
+    hyphens: auto; // Ajoute des traits d'union si nécessaire
   }
 
   .zen-card-footer {

@@ -1,3 +1,4 @@
+/*
 // Main navbar styling
 .navbar {
   background-color: rgba(255, 255, 255, 0.97);
@@ -7,13 +8,11 @@
   width: 100%;
   margin: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
-  // Styles pour coller le header en haut et pleine largeur
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  border-radius: 0;
+  z-index: 1000;
 
   &.scrolled {
     padding: 0.3rem 0;
@@ -21,7 +20,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  // Ajuster le container pour aller jusqu'aux bords
   .container {
     max-width: 100%;
     padding-left: 1rem;
@@ -34,9 +32,11 @@
   .navbar-toggler {
     border: none;
     padding: 0.5rem;
-    border-radius: var(--radius);
+    border-radius: 8px;
     transition: all 0.2s ease;
-    background-color: rgba(79, 138, 139, 0.05);
+    background-color: transparent;
+    margin-left: auto;
+    margin-right: 0.5rem;
 
     &:hover {
       background-color: rgba(79, 138, 139, 0.1);
@@ -49,12 +49,47 @@
     }
 
     .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2879, 138, 139, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-      transition: transform 0.3s ease;
+      background-image: none;
+      position: relative;
+      width: 24px;
+      height: 2px;
+      background-color: var(--primary);
+      display: block;
+      transition: all 0.3s ease;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        background-color: var(--primary);
+        transition: all 0.3s ease;
+      }
+
+      &::before {
+        top: -8px;
+      }
+
+      &::after {
+        bottom: -8px;
+      }
     }
 
-    &[aria-expanded="true"] .navbar-toggler-icon {
-      transform: rotate(90deg);
+    &[aria-expanded="true"] {
+      .navbar-toggler-icon {
+        background-color: transparent;
+
+        &::before {
+          transform: rotate(45deg);
+          top: 0;
+        }
+
+        &::after {
+          transform: rotate(-45deg);
+          bottom: 0;
+        }
+      }
     }
   }
 }
@@ -73,9 +108,8 @@
 .auth-section {
   display: flex;
   align-items: center;
-  margin-left: auto; // Pousse la section tout à droite
-  
-  // Styles pour l'affichage du nom d'utilisateur
+  margin-left: auto;
+
   .user-name-display {
     display: flex;
     align-items: center;
@@ -84,14 +118,14 @@
     color: var(--gray-800);
     margin-right: 1rem;
     padding: 0.3rem 0.5rem;
-    border-radius: var(--radius);
+    border-radius: 8px;
     background-color: rgba(79, 138, 139, 0.08);
-    
+
     i {
       color: var(--primary);
       font-size: 1rem;
     }
-    
+
     span {
       max-width: 120px;
       white-space: nowrap;
@@ -99,54 +133,35 @@
       text-overflow: ellipsis;
     }
   }
-  
-  // Styles des boutons dans la section auth
+
   .btn {
     padding: 0.3rem 0.75rem;
     font-size: 0.9rem;
-    border-radius: var(--radius);
+    border-radius: 8px;
     transition: all 0.25s ease;
   }
-  
+
   .btn-outline-primary {
     border: 1px solid var(--primary);
-    
+
     &:hover {
       background-color: var(--primary);
       color: white;
     }
   }
-  
+
   .btn-primary {
     background-color: var(--primary);
     border-color: var(--primary);
-    
+    color: white;
+    font-weight: 500;
+
     &:hover {
       background-color: var(--primary-dark);
       border-color: var(--primary-dark);
-    }
-  }
-  
-  .logout-btn {
-    white-space: nowrap;
-  }
-  
-  // Style pour le bouton d'administration
-  .admin-btn {
-    font-weight: 600;
-    border-color: #dc3545;
-    color: #dc3545;
-    
-    &:hover {
-      background-color: #dc3545;
       color: white;
     }
   }
-}
-
-// Pour assurer que navbar-collapse ne prend pas toute la largeur
-.navbar-collapse {
-  flex-grow: 0;
 }
 
 // Brand/Logo styling
@@ -177,7 +192,7 @@
   color: var(--gray-800);
   padding: 0.3rem 0.75rem;
   margin: 0 0.25rem;
-  border-radius: var(--radius);
+  border-radius: 8px;
   transition: all 0.25s ease;
   position: relative;
   font-size: 0.9rem;
@@ -189,28 +204,10 @@
     text-decoration: none;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(79, 138, 139, 0.2);
-  }
-
   &.active {
     font-weight: 600;
     color: var(--primary) !important;
     background-color: rgba(79, 138, 139, 0.15);
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 2px;
-      background-color: var(--primary);
-      border-radius: 2px;
-    }
   }
 
   i {
@@ -220,137 +217,75 @@
   &:hover i {
     transform: translateY(-1px);
   }
-  
-  // Style spécifique pour le lien d'administration
-  &.admin-link {
-    font-weight: 600;
-    color: #dc3545; // Couleur rouge pour indiquer une section sensible
-    
-    i {
-      color: #dc3545;
-    }
-    
-    &:hover {
-      background-color: rgba(220, 53, 69, 0.08);
-      color: #dc3545;
-    }
-    
-    &.active {
-      background-color: rgba(220, 53, 69, 0.15);
-      color: #dc3545 !important;
-      
-      &::after {
-        background-color: #dc3545;
-      }
-    }
-  }
-}
-
-// User info section
-.user-info {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  color: var(--gray-800);
-  padding: 0.3rem 0.5rem;
-  border-radius: var(--radius);
-  background-color: rgba(79, 138, 139, 0.05);
-  transition: all 0.2s ease;
-  cursor: default;
-  font-size: 0.9rem;
-
-  &:hover {
-    background-color: rgba(79, 138, 139, 0.1);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(79, 138, 139, 0.2);
-    background-color: rgba(79, 138, 139, 0.1);
-  }
-
-  .user-avatar {
-    font-size: 1rem;
-    margin-right: 0.5rem;
-    color: var(--primary);
-    transition: transform 0.2s ease;
-  }
-
-  &:hover .user-avatar,
-  &:focus-visible .user-avatar {
-    transform: scale(1.1);
-  }
-
-  .user-name {
-    max-width: 120px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.2s ease;
-  }
-
-  &:hover .user-name,
-  &:focus-visible .user-name {
-    color: var(--primary);
-  }
 }
 
 // Mobile responsiveness
 @media (max-width: 992px) {
   .navbar-collapse {
-    padding: 1rem 0;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 60px;
     left: 0;
     right: 0;
     background-color: white;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex-grow: 1;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+
+    &.show {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
   }
-  
+
   .navbar-nav-horizontal {
     flex-direction: column;
     width: 100%;
+    padding: 1rem 0;
   }
 
   .nav-link {
     padding: 0.75rem 1rem;
     margin: 0.25rem 0;
     width: 100%;
-    text-align: center;
+    text-align: left;
+    display: flex;
+    align-items: center;
 
-    &.active::after {
-      display: none;
+    i {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
     }
   }
 
   .auth-section {
-    margin-top: 0;
-    justify-content: flex-end;
-    margin-right: 50px;
-    
-    .user-name-display {
-      max-width: 120px;
-      font-size: 0.8rem;
-      padding: 0.2rem 0.4rem;
-      
-      span {
-        max-width: 80px;
-      }
-    }
-  }
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 
-  .btn {
-    margin-bottom: 0;
-    white-space: nowrap;
+    .user-name-display {
+      width: 100%;
+      margin: 0 0 1rem 0;
+      justify-content: center;
+    }
+
+    .btn {
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
   }
 }
 
-// Animations for navbar elements
+// Animations
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -369,4 +304,619 @@
   animation: fadeIn 0.5s ease forwards;
   animation-delay: 0.4s;
   opacity: 0;
+}
+*/
+
+
+
+
+// Main navbar styling
+.navbar {
+  background-color: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  flex-direction: column;
+
+  &.scrolled {
+    padding: 0.3rem 0;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .container {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+// Brand/Logo styling
+.navbar-brand {
+  font-weight: 700;
+  transition: transform 0.2s ease;
+  padding: 0;
+  margin-right: 2rem;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.text-accent {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+// Desktop navigation - style horizontal
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  .nav-link {
+    margin-right: 1rem;
+  }
+}
+
+// Navigation links
+.nav-link {
+  font-weight: 500;
+  color: var(--gray-800);
+  padding: 0.3rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  position: relative;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  height: 38px;
+
+  &:hover {
+    color: var(--primary);
+    background-color: rgba(79, 138, 139, 0.08);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  &.active {
+    font-weight: 600;
+    color: var(--primary) !important;
+    background-color: rgba(79, 138, 139, 0.15);
+  }
+
+  i {
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover i {
+    transform: translateY(-1px);
+  }
+}
+
+// Auth section - alignée à droite
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .user-name-display {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    background-color: rgba(79, 138, 139, 0.08);
+
+    i {
+      color: var(--primary);
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    span {
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .btn {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  .btn-outline-primary {
+    border: 1px solid var(--primary);
+
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 500;
+
+    &:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      color: white;
+    }
+  }
+}
+
+// Améliorations pour le bouton hamburger
+.navbar-toggler {
+  display: block;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background-color: transparent;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  margin-left: 0.5rem;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .navbar-toggler-icon {
+    width: 22px;
+    height: 2px;
+    background-color: var(--primary);
+    display: block;
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    margin-top: -1px;
+    transition: all 0.25s ease-in-out;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 2px;
+      background-color: var(--primary);
+      transition: all 0.25s ease-in-out;
+    }
+
+    &::before {
+      top: -7px;
+    }
+
+    &::after {
+      bottom: -7px;
+    }
+  }
+
+  &[aria-expanded="true"] {
+    .navbar-toggler-icon {
+      background-color: transparent;
+
+      &::before {
+        transform: rotate(45deg);
+        top: 0;
+      }
+
+      &::after {
+        transform: rotate(-45deg);
+        bottom: 0;
+      }
+    }
+  }
+}
+
+// Nouveau containeur pour le menu mobile
+.mobile-nav-container {
+  width: 100%;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease-out;
+
+  &.show {
+    max-height: 90vh;
+    transition: max-height 0.5s ease-in;
+  }
+}
+
+// Contenu du menu mobile
+.mobile-menu-content {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// Liens de navigation mobile
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.mobile-nav-link {
+  padding: 0.75rem 0.5rem;
+  font-weight: 500;
+  color: var(--gray-800);
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  &:first-child {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  i {
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+    color: var(--primary);
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: var(--primary);
+    background-color: rgba(79, 138, 139, 0.05);
+    text-decoration: none;
+
+    i {
+      transform: translateX(2px);
+    }
+  }
+
+  &.active {
+    color: var(--primary);
+    font-weight: 600;
+    background-color: rgba(79, 138, 139, 0.1);
+  }
+}
+
+// Section d'authentification mobile
+.mobile-auth-section {
+  padding: 1rem;
+  border-top: 1px solid rgba(79, 138, 139, 0.1);
+  background: white;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  .mobile-user-info {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, rgba(79, 138, 139, 0.08), rgba(255, 193, 7, 0.08));
+    border-radius: 8px;
+    border: 1px solid rgba(79, 138, 139, 0.1);
+    width: 100%;
+    justify-content: center;
+
+    i {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: var(--primary);
+    }
+
+    span {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.1rem;
+    justify-content: center;
+    gap: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+
+    i {
+      font-size: 1.3rem;
+    }
+
+    &.btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+
+      &:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+    }
+
+    &.btn-primary {
+      background: linear-gradient(to right, var(--primary), #4f8a8b);
+      border: none;
+      color: white;
+
+      &:hover {
+        background: linear-gradient(to right, #4f8a8b, var(--primary));
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Media queries pour le responsive
+@media (min-width: 992px) {
+  .mobile-nav-container {
+    display: none !important;
+  }
+
+  .navbar-toggler {
+    display: none !important;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.desktop-nav .nav-link {
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+}
+
+.auth-section {
+  animation: fadeIn 0.5s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.mobile-nav-link {
+  animation: slideIn 0.3s ease forwards;
+  opacity: 0;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.15s; }
+  &:nth-child(3) { animation-delay: 0.2s; }
+  &:nth-child(4) { animation-delay: 0.25s; }
+}
+
+// Media queries pour le responsive
+@media (max-width: 992px) {
+  .navbar {
+    .container {
+      padding: 0.5rem 1rem;
+      background: linear-gradient(to right, rgba(79, 138, 139, 0.05), rgba(255, 193, 7, 0.05));
+    }
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .auth-section {
+    display: none;
+  }
+
+  .navbar-toggler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(79, 138, 139, 0.1);
+
+    &:hover {
+      background-color: rgba(79, 138, 139, 0.2);
+    }
+
+    .navbar-toggler-icon {
+      background-color: var(--primary);
+    }
+  }
+
+  .mobile-nav-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    border-top: 2px solid var(--primary);
+
+    &.show {
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+  }
+
+  .mobile-menu-content {
+    padding: 1rem;
+    background: linear-gradient(to bottom, rgba(79, 138, 139, 0.03), rgba(255, 193, 7, 0.03));
+  }
+
+  .mobile-nav-links {
+    margin-bottom: 1rem;
+  }
+
+  .mobile-nav-link {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(79, 138, 139, 0.1);
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    background: white;
+    margin: 0.25rem 0;
+    border-radius: 8px;
+
+    i {
+      margin-right: 1rem;
+      font-size: 1.3rem;
+      color: var(--primary);
+    }
+
+    &:hover {
+      background-color: rgba(79, 138, 139, 0.08);
+      transform: translateX(5px);
+    }
+
+    &.active {
+      background: linear-gradient(to right, rgba(79, 138, 139, 0.1), rgba(255, 193, 7, 0.1));
+      color: var(--primary);
+      font-weight: 600;
+      border-left: 4px solid var(--primary);
+    }
+  }
+
+  .mobile-auth-section {
+    padding: 1rem;
+    border-top: 1px solid rgba(79, 138, 139, 0.1);
+    background: white;
+    border-radius: 8px;
+    margin-top: 1rem;
+
+    .mobile-user-info {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, rgba(79, 138, 139, 0.08), rgba(255, 193, 7, 0.08));
+      border-radius: 8px;
+      border: 1px solid rgba(79, 138, 139, 0.1);
+
+      i {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        color: var(--primary);
+      }
+
+      span {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--primary);
+      }
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      justify-content: center;
+      gap: 0.75rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+
+      i {
+        font-size: 1.3rem;
+      }
+
+      &.btn-outline-primary {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+
+        &:hover {
+          background-color: var(--primary);
+          color: white;
+          transform: translateY(-2px);
+        }
+      }
+
+      &.btn-primary {
+        background: linear-gradient(to right, var(--primary), #4f8a8b);
+        border: none;
+        color: white;
+
+        &:hover {
+          background: linear-gradient(to right, #4f8a8b, var(--primary));
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
+
+// Optimisations pour les très petits écrans
+@media (max-width: 576px) {
+  .navbar {
+    .container {
+      padding: 0.5rem;
+    }
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+  }
+
+  .mobile-nav-container {
+    top: 50px;
+  }
+
+  .mobile-nav-link {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+
+  .mobile-auth-section {
+    .btn {
+      padding: 0.875rem;
+      font-size: 1rem;
+    }
+  }
 }

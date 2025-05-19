@@ -21,14 +21,10 @@
             </div>
             <h1 class="zen-article-title">{{ article.title }}</h1>
             <div class="zen-article-meta">
-              <span class="zen-meta-item"><i class="bi bi-person"></i> {{ article.userName }}</span>
+              <span class="zen-meta-item"><i class="bi bi-person"></i> Par {{ article.userName }}</span>
               <span class="zen-meta-item"><i class="bi bi-calendar3"></i> {{ article.createdAt | date:'longDate'}}</span>
               <span class="zen-meta-item" *ngIf="article.categoryName"><i class="bi bi-tag"></i> {{ article.categoryName }}</span>
             </div>
-          </div>
-
-          <div *ngIf="article.imageUrl" class="zen-article-featured-image">
-            <img [src]="article.imageUrl" [alt]="article.title">
           </div>
 
           <div class="zen-article-content" [innerHTML]="article.content"></div>
