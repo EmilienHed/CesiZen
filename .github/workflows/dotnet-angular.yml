@@ -51,6 +51,6 @@ jobs:
   
       #- name: Run unit tests
       #  run: npm test -- --watch=false --browsers=ChromeHeadless
-  
+
       - name: Build Angular app
-        run: npm run build -- --prod
+        run: npm run build -- --configuration production --verbose
