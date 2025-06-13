@@ -34,40 +34,23 @@ jobs:
 
       - name: Run backend tests
         run: dotnet test --no-build --verbosity normal
-
   build_frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
-    needs: build_backend
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - name: Checkout repository
+        uses: actions/checkout@v3
+  
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-
-      - name: Cache npm deps
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-
+  
       - name: Install dependencies
-        run: |
-          npm clean-install
-          npm ci --legacy-peer-deps
-
-      - name: Run backend server
-        run: |
-          nohup dotnet run --project ../Backend/CesiZen.Api/CesiZen.Api.csproj --urls=http://localhost:5016 & sleep 10
-
+        run: npm ci
+  
+      - name: Run unit tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+  
       - name: Build Angular app
-        run: npm run build -- --configuration production --verbose
-
-      - name: Run Angular tests
-        run: |
-          npm run test -- --watch=false --browsers=ChromeHeadless
+        run: npm run build -- --prod
