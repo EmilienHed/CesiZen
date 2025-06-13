@@ -1,3 +1,6 @@
+/* Import nécessaire pour les fonctions de manipulation des couleurs */
+@use "sass:color";
+
 /* Variables */
 $primary-color: #4CAF50; /* Vert */
 $accent-color: #FFC107; /* Jaune */
@@ -62,7 +65,7 @@ $transition: all 0.3s ease;
   transition: $transition;
 
   &:hover {
-    background-color: darken($background-color, 2%);
+    background-color: color.darken($background-color, 2%);
   }
 
   h2 {
@@ -142,7 +145,7 @@ $transition: all 0.3s ease;
     color: white;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: color.darken($primary-color, 10%);
     }
   }
 
@@ -151,7 +154,7 @@ $transition: all 0.3s ease;
     color: white;
 
     &:hover {
-      background-color: darken(#dc3545, 10%);
+      background-color: color.darken(#dc3545, 10%);
     }
   }
 
@@ -183,4 +186,4 @@ $transition: all 0.3s ease;
   .profile-header h1 {
     font-size: 1.5rem;
   }
-} 
+}
