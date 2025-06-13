@@ -1,0 +1,148 @@
+<div class="profile-container">
+  <!-- Section pour les utilisateurs non connectés -->
+  <div *ngIf="!user" class="not-connected-container">
+    <div class="not-connected-content">
+      <i class="fas fa-user-circle large-icon"></i>
+      <h2>Vous n'êtes pas connecté</h2>
+      <p>Connectez-vous pour accéder à votre profil et personnaliser votre expérience</p>
+      <button class="btn btn-primary" routerLink="/login">
+        <i class="fas fa-sign-in-alt"></i>
+        Se connecter
+      </button>
+    </div>
+  </div>
+
+  <!-- Section pour les utilisateurs connectés -->
+  <div *ngIf="user" class="profile-content">
+    <div class="profile-header">
+      <div class="avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h1>{{ user.prenom }} {{ user.nom }}</h1>
+      <p>{{ user.email }}</p>
+    </div>
+
+    <div class="profile-section">
+      <h2>Informations personnelles</h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="prenom">Prénom</label>
+          <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              id="prenom"
+              formControlName="prenom"
+              class="form-control"
+              [ngClass]="{'is-invalid': profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched}"
+            >
+          </div>
+          <div class="invalid-feedback" *ngIf="profileForm.get('prenom')?.invalid && profileForm.get('prenom')?.touched">
+            <span *ngIf="profileForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              id="nom"
+              formControlName="nom"
+              class="form-control"
+              [ngClass]="{'is-invalid': profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched}"
+            >
+          </div>
+          <div class="invalid-feedback" *ngIf="profileForm.get('nom')?.invalid && profileForm.get('nom')?.touched">
+            <span *ngIf="profileForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{'is-invalid': profileForm.get('email')?.invalid && profileForm.get('email')?.touched}"
+            >
+          </div>
+          <div class="invalid-feedback" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+            <span *ngIf="profileForm.get('email')?.errors?.['required']">L'email est requis</span>
+            <span *ngIf="profileForm.get('email')?.errors?.['email']">Format d'email invalide</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary update-button" [disabled]="profileForm.invalid || loading">
+          <i class="fas fa-save"></i>
+          {{ loading ? 'Mise à jour...' : 'Mettre à jour le profil' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- Nouvelle section pour la modification du mot de passe -->
+    <div class="profile-section">
+      <h2>Modifier le mot de passe</h2>
+      <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
+        <div class="form-group">
+          <label for="newPassword">Nouveau mot de passe</label>
+          <div class="input-group">
+            <i class="fas fa-key input-icon"></i>
+            <input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              class="form-control"
+              [ngClass]="{'is-invalid': passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched}"
+            >
+          </div>
+          <div class="invalid-feedback" *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched">
+            <span *ngIf="passwordForm.get('newPassword')?.errors?.['required']">Le nouveau mot de passe est requis</span>
+            <span *ngIf="passwordForm.get('newPassword')?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+          <div class="input-group">
+            <i class="fas fa-key input-icon"></i>
+            <input
+              type="password"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="form-control"
+              [ngClass]="{'is-invalid': passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched}"
+            >
+          </div>
+          <div class="invalid-feedback" *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched">
+            <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['required']">La confirmation du mot de passe est requise</span>
+            <span *ngIf="passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']">Les mots de passe ne correspondent pas</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary update-button" [disabled]="passwordForm.invalid || passwordLoading">
+          <i class="fas fa-key"></i>
+          {{ passwordLoading ? 'Modification...' : 'Modifier le mot de passe' }}
+        </button>
+      </form>
+    </div>
+
+    <div class="profile-section">
+      <h2>Paramètres du compte</h2>
+      <button class="btn btn-danger logout-button" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Déconnexion
+      </button>
+    </div>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="alert alert-danger error-message">
+    {{ error }}
+  </div>
+</div> 

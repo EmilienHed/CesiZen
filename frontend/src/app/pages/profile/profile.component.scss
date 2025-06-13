@@ -1,0 +1,186 @@
+/* Variables */
+$primary-color: #4CAF50; /* Vert */
+$accent-color: #FFC107; /* Jaune */
+$background-color: #f9f9f9;
+$text-color: #333;
+$border-radius: 12px;
+$box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+/* Container principal */
+.profile-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  transition: $transition;
+
+  &:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* En-tête du profil */
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+
+  .avatar {
+    font-size: 3.5rem;
+    color: $primary-color;
+    margin-bottom: 1rem;
+    transition: $transition;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  h1 {
+    color: $text-color;
+    font-size: 2.2rem;
+    margin: 0.5rem 0;
+    font-weight: 600;
+  }
+
+  p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+}
+
+/* Section du profil */
+.profile-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  transition: $transition;
+
+  &:hover {
+    background-color: darken($background-color, 2%);
+  }
+
+  h2 {
+    color: $primary-color;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+}
+
+/* Formulaire */
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: $text-color;
+    font-weight: 500;
+  }
+
+  .input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .input-icon {
+      position: absolute;
+      left: 10px;
+      color: #999;
+      transition: $transition;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid #ddd;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      transition: $transition;
+
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+
+      &.is-invalid {
+        border-color: #dc3545;
+      }
+    }
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+}
+
+/* Boutons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.btn-primary {
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    color: white;
+
+    &:hover {
+      background-color: darken(#dc3545, 10%);
+    }
+  }
+
+  &.update-button {
+    margin-top: 1rem;
+  }
+
+  &.logout-button {
+    margin-top: 1rem;
+  }
+}
+
+/* Message d'erreur */
+.error-message {
+  color: #dc3545;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: $border-radius;
+  background-color: rgba(220, 53, 69, 0.1);
+  transition: $transition;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-header h1 {
+    font-size: 1.5rem;
+  }
+} 
