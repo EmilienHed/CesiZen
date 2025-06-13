@@ -44,7 +44,11 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "@angular/animations",
+              "@angular/animations/browser"
+            ]
           },
           "configurations": {
             "production": {
