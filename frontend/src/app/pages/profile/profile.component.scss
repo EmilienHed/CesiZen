@@ -145,7 +145,7 @@ $transition: all 0.3s ease;
     color: white;
 
     &:hover {
-      background-color: color.darken($primary-color, 10%);
+      background-color: color.adjust($primary-color, $lightness: -10%);
     }
   }
 
@@ -154,7 +154,7 @@ $transition: all 0.3s ease;
     color: white;
 
     &:hover {
-      background-color: color.darken(#dc3545, 10%);
+      background-color: color.adjust(#dc3545, $lightness: -10%);
     }
   }
 
