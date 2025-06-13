@@ -19,7 +19,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.101'  # adapte si besoin
+          dotnet-version: '9.0.X'  # adapte si besoin
 
       - name: Cache NuGet deps
         uses: actions/cache@v3
@@ -31,13 +31,23 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release --no-restore
+          
+          
+  backend_test:
+    runs-on: ubuntu-latest
 
-      - name: Run backend tests
-        #run: dotnet test --no-build --verbosity normal
-        #run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
-        #run: dotnet test ./Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
-        run: dotnet test ./Backend.Tests --no-build --verbosity normal
-        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'  # adapte selon ta version .NET
+
+      - name: Run unit tests in backend-test folder
+        run: dotnet test ./Backend.Tests --verbosity normal --configuration Release
+
   build_frontend:
     runs-on: ubuntu-latest
     defaults:
