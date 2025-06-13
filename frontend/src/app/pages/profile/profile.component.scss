@@ -65,7 +65,7 @@ $transition: all 0.3s ease;
   transition: $transition;
 
   &:hover {
-    background-color: color.darken($background-color, 2%);
+    background-color: color.adjust($background-color, $lightness: -2%);
   }
 
   h2 {
