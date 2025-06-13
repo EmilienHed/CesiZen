@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, DatePipe],
+  imports: [CommonModule, FormsModule, RouterModule],
   providers: [DatePipe]
 })
 export class UserManagementComponent implements OnInit {
@@ -35,7 +35,7 @@ export class UserManagementComponent implements OnInit {
       this.router.navigate(['/']);
       return;
     }
-    
+
     this.loadUsers();
   }
 
@@ -110,11 +110,11 @@ export class UserManagementComponent implements OnInit {
     if (!this.searchTerm) {
       return this.users;
     }
-    
+
     const term = this.searchTerm.toLowerCase();
-    return this.users.filter(user => 
-      (user.nom?.toLowerCase().includes(term) || '') || 
-      (user.prenom?.toLowerCase().includes(term) || '') || 
+    return this.users.filter(user =>
+      (user.nom?.toLowerCase().includes(term) || '') ||
+      (user.prenom?.toLowerCase().includes(term) || '') ||
       (user.email?.toLowerCase().includes(term) || '')
     );
   }
