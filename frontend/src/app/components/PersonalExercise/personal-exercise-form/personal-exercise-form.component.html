@@ -1,0 +1,53 @@
+<div class="zen-practice-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="zen-form-card p-4 mb-4">
+          <h2 class="text-center mb-4">Créer un exercice personnalisé</h2>
+
+          <div class="mb-4">
+            <label for="inspirationRange" class="form-label">Durée d'inspiration: {{ inspirationDuration }} secondes</label>
+            <input type="range" class="form-range" id="inspirationRange" min="1" max="10"
+                   [(ngModel)]="inspirationDuration">
+          </div>
+
+          <div class="mb-4">
+            <label for="holdRange" class="form-label">Durée de rétention: {{ holdDuration }} secondes</label>
+            <input type="range" class="form-range" id="holdRange" min="0" max="10"
+                   [(ngModel)]="holdDuration">
+          </div>
+
+          <div class="mb-4">
+            <label for="expirationRange" class="form-label">Durée d'expiration: {{ expirationDuration }} secondes</label>
+            <input type="range" class="form-range" id="expirationRange" min="1" max="10"
+                   [(ngModel)]="expirationDuration">
+          </div>
+
+          <!-- Aperçu visuel du cycle -->
+          <div class="zen-rhythm-preview mb-4">
+            <div class="zen-rhythm-phase zen-rhythm-inspire" [style.flex]="inspirationDuration">
+              Inspiration ({{ inspirationDuration }}s)
+            </div>
+            <div *ngIf="holdDuration > 0" class="zen-rhythm-phase zen-rhythm-hold" [style.flex]="holdDuration">
+              Rétention ({{ holdDuration }}s)
+            </div>
+            <div class="zen-rhythm-phase zen-rhythm-expire" [style.flex]="expirationDuration">
+              Expiration ({{ expirationDuration }}s)
+            </div>
+          </div>
+          <p class="text-center mb-4">Durée totale du cycle: {{ totalDuration }} secondes</p>
+
+          <!-- Boutons d'action -->
+          <div class="d-grid gap-2">
+            <button (click)="startExercise()" class="btn btn-primary btn-lg">
+              <i class="bi bi-play-fill"></i> Commencer cet exercice
+            </button>
+            <button (click)="goBack()" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left"></i> Retour
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

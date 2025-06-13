@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Exercices Personnalisés</h2>
+    <button class="btn btn-primary" (click)="createNewExercise()">
+      <i class="fas fa-plus"></i> Nouvel Exercice
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="row">
+    <div *ngFor="let exercise of exercises" class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ exercise.name }}</h5>
+          <p class="card-text">{{ exercise.description }}</p>
+          <div class="mb-2">
+            <span class="badge bg-info me-2">{{ exercise.category }}</span>
+            <span class="badge bg-secondary">{{ exercise.difficulty }}</span>
+          </div>
+          <p class="card-text">
+            <small class="text-muted">Durée: {{ exercise.duration }} minutes</small>
+          </p>
+        </div>
+        <div class="card-footer bg-transparent border-top-0">
+          <div class="btn-group w-100">
+            <button class="btn btn-success" (click)="startExercise(exercise)">
+              <i class="fas fa-play"></i> Démarrer
+            </button>
+            <button class="btn btn-primary" (click)="editExercise(exercise)">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button class="btn btn-danger" (click)="deleteExercise(exercise.id)">
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error && exercises.length === 0" class="text-center mt-4">
+    <p>Aucun exercice personnalisé trouvé.</p>
+    <button class="btn btn-primary" (click)="createNewExercise()">
+      <i class="fas fa-plus"></i> Créer votre premier exercice
+    </button>
+  </div>
+</div> 

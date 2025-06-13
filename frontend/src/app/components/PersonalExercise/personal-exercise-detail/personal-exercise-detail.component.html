@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="mb-0">Détails de l'exercice</h2>
+          <button class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i> Retour
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+
+          <div *ngIf="!loading && !error && exercise" class="exercise-details">
+            <h3 class="card-title">{{ exercise.name }}</h3>
+            
+            <div class="mb-3">
+              <span class="badge bg-info me-2">{{ exercise.category }}</span>
+              <span class="badge bg-secondary">{{ exercise.difficulty }}</span>
+            </div>
+
+            <p class="card-text">{{ exercise.description }}</p>
+
+            <div class="exercise-info">
+              <p><strong>Durée:</strong> {{ exercise.duration }} minutes</p>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button class="btn btn-success" (click)="startExercise()">
+                <i class="fas fa-play"></i> Démarrer l'exercice
+              </button>
+              <button class="btn btn-primary" (click)="editExercise()">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="btn btn-danger" (click)="deleteExercise()">
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

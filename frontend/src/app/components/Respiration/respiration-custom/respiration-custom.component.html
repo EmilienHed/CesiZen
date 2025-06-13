@@ -1,0 +1,101 @@
+<div class="zen-custom-container">
+    <div class="zen-content">
+        <div class="zen-custom-header">
+            <h1 class="zen-title">Créer votre exercice de respiration</h1>
+            <p class="zen-lead">
+                Configurez les durées de chaque phase pour créer votre propre exercice de cohérence cardiaque.
+            </p>
+        </div>
+
+        <form [formGroup]="customForm" (ngSubmit)="onSubmit()" class="zen-custom-form">
+            <div class="zen-form-group">
+                <label for="name" class="zen-form-label">Nom de l'exercice</label>
+                <div class="zen-input-container">
+                    <input
+                            type="text"
+                            id="name"
+                            formControlName="name"
+                            class="zen-form-control"
+                            placeholder="Mon exercice personnalisé">
+                </div>
+            </div>
+
+            <div class="zen-form-row">
+                <div class="zen-form-group">
+                    <label for="inspirationDuration" class="zen-form-label">
+                        <i class="bi bi-arrow-down-circle"></i> Inspiration
+                    </label>
+                    <div class="zen-input-container">
+                        <input
+                                type="number"
+                                id="inspirationDuration"
+                                formControlName="inspirationDuration"
+                                class="zen-form-control zen-form-control-inspire"
+                                min="1"
+                                max="20">
+                        <span class="zen-unit">secondes</span>
+                    </div>
+                    <span class="zen-form-hint">Entre 1 et 20 secondes</span>
+                </div>
+
+                <div class="zen-form-group">
+                    <label for="holdDuration" class="zen-form-label">
+                        <i class="bi bi-pause-circle"></i> Rétention
+                    </label>
+                    <div class="zen-input-container">
+                        <input
+                                type="number"
+                                id="holdDuration"
+                                formControlName="holdDuration"
+                                class="zen-form-control zen-form-control-hold"
+                                min="0"
+                                max="20">
+                        <span class="zen-unit">secondes</span>
+                    </div>
+                    <span class="zen-form-hint">0 pour aucune rétention</span>
+                </div>
+
+                <div class="zen-form-group">
+                    <label for="expirationDuration" class="zen-form-label">
+                        <i class="bi bi-arrow-up-circle"></i> Expiration
+                    </label>
+                    <div class="zen-input-container">
+                        <input
+                                type="number"
+                                id="expirationDuration"
+                                formControlName="expirationDuration"
+                                class="zen-form-control zen-form-control-expire"
+                                min="1"
+                                max="20">
+                        <span class="zen-unit">secondes</span>
+                    </div>
+                    <span class="zen-form-hint">Entre 1 et 20 secondes</span>
+                </div>
+            </div>
+
+            <div class="zen-form-preview">
+                <h3 class="zen-preview-title">Aperçu du rythme</h3>
+                <div class="zen-rhythm-preview">
+                    <div class="zen-rhythm-bar zen-rhythm-inspire" [style.flex]="customForm.get('inspirationDuration')?.value || 4">
+                        Inspiration
+                    </div>
+                    <div *ngIf="(customForm.get('holdDuration')?.value || 0) > 0" class="zen-rhythm-bar zen-rhythm-hold" [style.flex]="customForm.get('holdDuration')?.value">
+                        Rétention
+                    </div>
+                    <div class="zen-rhythm-bar zen-rhythm-expire" [style.flex]="customForm.get('expirationDuration')?.value || 4">
+                        Expiration
+                    </div>
+                </div>
+            </div>
+
+            <div class="zen-form-actions">
+                <button type="button" class="zen-button zen-button-secondary" routerLink="/respiration">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </button>
+                <button type="submit" class="zen-button zen-button-primary" [disabled]="!customForm.valid">
+                    <i class="bi bi-play-circle"></i> Commencer l'exercice
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
