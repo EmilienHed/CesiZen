@@ -9,6 +9,9 @@ on:
 jobs:
   build_backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Backend
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,7 +19,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '7.0.x'  # adapte si besoin :contentReference[oaicite:1]{index=1}
+          dotnet-version: '9.0.101'  # adapte si besoin :contentReference[oaicite:1]{index=1}
 
       - name: Cache NuGet deps
         uses: actions/cache@v3
