@@ -43,7 +43,7 @@ jobs:
     needs: build_backend
     services:
       xvfb:
-        image: cirrusci/xvfb:latest
+        image: selenium/standalone-chrome:latest
         options: >-
           --entrypoint /usr/bin/Xvfb
     steps:
