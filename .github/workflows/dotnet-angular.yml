@@ -33,7 +33,8 @@ jobs:
           dotnet build --configuration Release --no-restore
 
       - name: Run backend tests
-        run: dotnet test --no-build --verbosity normal
+        #run: dotnet test --no-build --verbosity normal
+        run: dotnet test Backend.Tests/Backend.Tests.csproj --no-build --verbosity normal
         
   build_frontend:
     runs-on: ubuntu-latest
