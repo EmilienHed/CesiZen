@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   postgres:
     image: postgres:latest
@@ -12,6 +13,60 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cesizen
+
+  backend:
+    image: mcr.microsoft.com/dotnet/aspnet:9.0
+    container_name: backend
+    working_dir: /app
+    volumes:
+      - ./backend/publish:/app
+    expose:
+      - "5000"
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=postegres_db_CESIZen;Port=5432;Database=CesiZenDB;Username=CesiZenAdm;Password=CesiZenAdm59!
+    depends_on:
+      - postgres
+    networks:
+      - cesizen
+    command: ["dotnet", "Backend.dll"]
+
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    expose:
+      - "4000"  # SSR Angular écoute ici
+    depends_on:
+      - backend
+    networks:
+      - cesizen
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certs/server.crt:/etc/nginx/ssl/server.crt:ro
+      - ./nginx/certs/server.key:/etc/nginx/ssl/server.key:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - cesizen
 
 volumes:
   postgres_data:
+
+networks:
+  cesizen:
+    external:
+      name: cesizen_cesizen
