@@ -69,4 +69,4 @@ volumes:
 networks:
   cesizen:
     external:
-      name: cesizen_cesizen
+      name: cesizen
