@@ -17,4 +17,4 @@ COPY --from=build /app/publish ./
 
 EXPOSE 5000
 
-ENTRYPOINT ["dotnet", "MonApp.Backend.dll"]
+ENTRYPOINT ["dotnet", "Backend.dll"]
