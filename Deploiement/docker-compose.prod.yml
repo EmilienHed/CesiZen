@@ -53,7 +53,7 @@ services:
     expose:
       - "4000"  # SSR Angular écoute ici
     depends_on:
-      - backend
+      - backend-prod
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-prod`)"
