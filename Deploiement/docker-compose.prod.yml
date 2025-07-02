@@ -14,11 +14,13 @@ services:
     volumes:
       - postgres_prod_data:/var/lib/postgresql/data
     networks:
-      - backend-prod
+      - backend-prod-emilien
       - traefik
 
   backend-prod:
-    image: mcr.microsoft.com/dotnet/aspnet:9.0
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     container_name: backend-prod
     working_dir: /app
 #    volumes:
@@ -39,7 +41,7 @@ services:
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=le"
     networks:
-      - backend-prod
+      - backend-prod-emilien
       - traefik
     command: ["dotnet", "Backend.dll"]
 
@@ -47,7 +49,7 @@ services:
 
   frontend-prod:
     build:
-      context: ./frontend
+      context: ../frontend
       dockerfile: Dockerfile
     container_name: frontend-prod
     expose:
@@ -61,14 +63,14 @@ services:
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
     networks:
-      - frontend-prod
+      - frontend-prod-emilien
       - traefik
 
 volumes:
   postgres_prod_data:
 
 networks:
-  backend-prod:
-  frontend-prod:
+  backend-prod-emilien:
+  frontend-prod-emilien:
   traefik:
     external: true
