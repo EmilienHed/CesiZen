@@ -29,7 +29,7 @@ services:
       - ASPNETCORE_URLS=http://+:5000
       - ConnectionStrings__DefaultConnection=Host=postegres_db_CESIZen;Port=5432;Database=CesiZenDB;Username=CesiZenAdm;Password=CesiZenAdm59!
     depends_on:
-      - postgres
+      - postgres-prod
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-prod/api`)"
