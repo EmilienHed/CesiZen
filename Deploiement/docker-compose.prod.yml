@@ -19,7 +19,7 @@ services:
 
   backend-prod:
     build:
-      context: ../backend
+      context: ../Backend
       dockerfile: Dockerfile
     container_name: backend-prod
     working_dir: /app
