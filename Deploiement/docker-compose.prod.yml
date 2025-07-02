@@ -62,6 +62,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-prod`)"
+      - "traefik.http.middlewares.strip-emilien-prefix.stripprefix.prefixes=/emilien-prod"
+      - "traefik.http.routers.front.middlewares=strip-emilien-prefix"
       - "traefik.http.services.front.loadbalancer.server.port=4000"
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
