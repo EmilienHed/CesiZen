@@ -130,7 +130,6 @@ app.Run();*/
 
 
 
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -156,9 +155,8 @@ if (builder.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>();
 }
 
-// Récupérer la chaîne de connexion
+// Récupérer la chaîne de connexion en fonction de l'environnement
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -248,7 +246,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await DataSeeder.SeedData(services);
 }
-
 
 // Activer Swagger en dev
 if (app.Environment.IsDevelopment())
