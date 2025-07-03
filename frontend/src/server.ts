@@ -16,6 +16,16 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
+ * Configuration des types MIME
+ */
+app.use((req, res, next) => {
+  if (req.url.endsWith('.js') || req.url.endsWith('.mjs')) {
+    res.type('application/javascript');
+  }
+  next();
+});
+
+/**
  * Serve static files from /browser
  */
 app.use(
@@ -23,6 +33,12 @@ app.use(
     maxAge: '1y',
     index: false,
     redirect: false,
+    setHeaders: (res, path) => {
+      // S'assurer que les fichiers JS et MJS sont servis avec le bon type MIME
+      if (path.endsWith('.js') || path.endsWith('.mjs')) {
+        res.setHeader('Content-Type', 'application/javascript');
+      }
+    }
   }),
 );
 
