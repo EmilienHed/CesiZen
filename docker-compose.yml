@@ -39,11 +39,11 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     expose:
-      - "4000"  # SSR Angular écoute ici
+      - "80"  # Nginx écoute sur 80
     environment:
       - API_URL=/emilien-dev/api
     volumes:
-      - static_assets:/var/www/html
+      - static_assets:/usr/share/nginx/html/assets
     depends_on:
       - backend
     networks:

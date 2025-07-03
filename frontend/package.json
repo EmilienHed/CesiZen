@@ -5,8 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng build --configuration production",
-    "serve:ssr": "node dist/frontend/server/main.js",
+    "build:prod": "ng build --configuration production",
     "test": "ng test"
   },
   "private": true,

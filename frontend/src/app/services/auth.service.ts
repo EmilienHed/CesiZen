@@ -1,11 +1,10 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Router } from '@angular/router';
-
-const API_URL = 'http://localhost:5016'; // Assurez-vous que c'est la bonne URL de votre backend
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
   private isBrowser: boolean;
+  private isServer: boolean;
 
   constructor(
     private http: HttpClient,
@@ -21,6 +21,7 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    this.isServer = isPlatformServer(this.platformId);
 
     let userData = null;
     if (this.isBrowser) {
@@ -42,42 +43,113 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/Auth/login`, credentials)
-      .pipe(map(user => {
-        // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
-        if (this.isBrowser) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        }
-        this.currentUserSubject.next(user);
-        return user;
-      }));
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log('SSR: Skipping API call to login');
+      return of(null);
+    }
+    
+    return this.http.post<any>(`${environment.apiUrl}/Auth/login`, credentials)
+      .pipe(
+        map(user => {
+          // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
+          if (this.isBrowser) {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+          }
+          this.currentUserSubject.next(user);
+          return user;
+        }),
+        catchError(error => {
+          console.error('Erreur lors de la connexion:', error);
+          return of(null);
+        })
+      );
   }
 
   register(userData: UserCreateDto): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/Users/create`, userData);
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log('SSR: Skipping API call to register');
+      return of(null);
+    }
+    
+    return this.http.post<any>(`${environment.apiUrl}/Users/create`, userData)
+      .pipe(
+        catchError(error => {
+          console.error('Erreur lors de l\'inscription:', error);
+          return of(null);
+        })
+      );
   }
 
   // Méthode pour demander la réinitialisation du mot de passe
   requestPasswordReset(email: string): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/Users/forgot-password`, { email });
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log('SSR: Skipping API call to request password reset');
+      return of(null);
+    }
+    
+    return this.http.post<any>(`${environment.apiUrl}/Users/forgot-password`, { email })
+      .pipe(
+        catchError(error => {
+          console.error('Erreur lors de la demande de réinitialisation de mot de passe:', error);
+          return of(null);
+        })
+      );
   }
 
   // Méthode pour réinitialiser le mot de passe avec un token
   resetPassword(token: string, newPassword: string): Observable<any> {
-    return this.http.post<any>(`${API_URL}/api/Users/reset-password`, {
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log('SSR: Skipping API call to reset password');
+      return of(null);
+    }
+    
+    return this.http.post<any>(`${environment.apiUrl}/Users/reset-password`, {
       token,
       newPassword
-    });
+    }).pipe(
+      catchError(error => {
+        console.error('Erreur lors de la réinitialisation du mot de passe:', error);
+        return of(null);
+      })
+    );
   }
 
   // Récupérer les informations d'un utilisateur par ID
   getUserById(id: number): Observable<any> {
-    return this.http.get<any>(`${API_URL}/api/Users/${id}`);
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log(`SSR: Skipping API call to get user ${id}`);
+      return of(null);
+    }
+    
+    return this.http.get<any>(`${environment.apiUrl}/Users/${id}`)
+      .pipe(
+        catchError(error => {
+          console.error(`Erreur lors de la récupération de l'utilisateur ${id}:`, error);
+          return of(null);
+        })
+      );
   }
 
   // Récupérer la liste des utilisateurs (pour les admins)
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${API_URL}/api/Users`);
+    // Skip API calls during SSR
+    if (this.isServer) {
+      console.log('SSR: Skipping API call to get all users');
+      return of([]);
+    }
+    
+    return this.http.get<any[]>(`${environment.apiUrl}/Users`)
+      .pipe(
+        catchError(error => {
+          console.error('Erreur lors de la récupération des utilisateurs:', error);
+          return of([]);
+        })
+      );
   }
 
   logout() {

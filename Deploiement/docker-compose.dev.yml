@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: CesiZenAdm59!
       POSTGRES_DB: CesiZenDBDev
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
     networks:
@@ -57,7 +57,7 @@ services:
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
     ports:
-      - "4000:4000"  # SSR Angular Ã©coute ici
+      - "4000:80"  # Nginx écoute sur le port 80
     environment:
       - API_URL=/emilien-dev/api
     depends_on:
@@ -66,7 +66,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-dev`)"
-      - "traefik.http.services.front.loadbalancer.server.port=4000"
+      - "traefik.http.services.front.loadbalancer.server.port=80"
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
     networks:
