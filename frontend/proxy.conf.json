@@ -1,7 +1,10 @@
 {
-  "/api": {
+  "/emilien-dev/api": {
     "target": "https://localhost:5001",
     "secure": false,
-    "changeOrigin":true
+    "changeOrigin":true,
+    "pathRewrite": {
+      "^/emilien-dev/api": "/api"
+    }
   }
 }

@@ -56,6 +56,8 @@ services:
     container_name: frontend-prod
     expose:
       - "4000"  # SSR Angular Ã©coute ici
+    environment:
+      - API_URL=/emilien-prod/api
     depends_on:
       - backend-prod
     restart: unless-stopped

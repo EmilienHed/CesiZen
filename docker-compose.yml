@@ -40,6 +40,8 @@ services:
     container_name: frontend
     expose:
       - "4000"  # SSR Angular écoute ici
+    environment:
+      - API_URL=/emilien-dev/api
     volumes:
       - static_assets:/var/www/html
     depends_on:
