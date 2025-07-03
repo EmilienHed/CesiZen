@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { routes } from './app-routing.module';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig =
       provideHttpClient(withFetch()),
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
       provideClientHydration(),
-      provideAnimations()
+      provideAnimations(),
+      { provide: APP_BASE_HREF, useValue: '/emilien-dev/' }
     ],
   };
