@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from '../../services/auth.service';
+import { AssetService } from '../../services/asset.service';
 
 @Component({
   selector: 'app-home',
@@ -34,12 +35,15 @@ export class HomeComponent implements OnInit {
   isBrowser: boolean;
   isLoggedIn = false;
   isAdmin = false;
+  meditationImagePath: string;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService
+    private authService: AuthService,
+    private assetService: AssetService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    this.meditationImagePath = this.assetService.getAssetPath('assets/meditation.png');
   }
 
   ngOnInit() {
