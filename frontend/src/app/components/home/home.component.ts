@@ -4,6 +4,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from '../../services/auth.service';
 import { APP_BASE_HREF } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -35,16 +36,46 @@ export class HomeComponent implements OnInit {
   isBrowser: boolean;
   isLoggedIn = false;
   isAdmin = false;
-  meditationImagePath: string;
+  meditationImagePath: string = '';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
-    @Inject(APP_BASE_HREF) private baseHref: string
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    private router: Router
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    // Utiliser directement le baseHref injecté
-    this.meditationImagePath = `${this.baseHref}assets/meditation.png`;
+    this.determineImagePath();
+  }
+
+  /**
+   * Détermine le chemin de l'image en fonction de l'URL actuelle
+   */
+  private determineImagePath(): void {
+    // Par défaut, utiliser le baseHref injecté
+    let prefix = this.baseHref;
+    
+    if (this.isBrowser) {
+      // Obtenir le chemin de l'URL actuelle
+      const currentPath = window.location.pathname;
+      
+      // Déterminer le préfixe basé sur l'URL actuelle
+      if (currentPath.startsWith('/emilien-dev')) {
+        prefix = '/emilien-dev/';
+      } else if (currentPath.startsWith('/emilien-prod')) {
+        prefix = '/emilien-prod/';
+      }
+    }
+    
+    // S'assurer que le préfixe se termine par '/'
+    if (!prefix.endsWith('/')) {
+      prefix += '/';
+    }
+    
+    // Construire le chemin complet de l'image
+    this.meditationImagePath = `${prefix}assets/meditation.png`;
+    
+    console.log(`Image path set to: ${this.meditationImagePath}`);
   }
 
   ngOnInit() {
@@ -60,12 +91,10 @@ export class HomeComponent implements OnInit {
         this.isAdmin = this.authService.isAdmin();
       });
       
-      // Détecter le baseHref en fonction de l'URL si nécessaire
-      if (window.location.pathname.startsWith('/emilien-dev')) {
-        this.meditationImagePath = `/emilien-dev/assets/meditation.png`;
-      } else if (window.location.pathname.startsWith('/emilien-prod')) {
-        this.meditationImagePath = `/emilien-prod/assets/meditation.png`;
-      }
+      // Écouter les changements de route pour mettre à jour le chemin de l'image si nécessaire
+      this.router.events.subscribe(() => {
+        this.determineImagePath();
+      });
     }
   }
 

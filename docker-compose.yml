@@ -33,8 +33,6 @@ services:
       - cesizen
     command: ["dotnet", "Backend.dll"]
 
-
-
   frontend:
     build:
       context: ./frontend
@@ -42,6 +40,8 @@ services:
     container_name: frontend
     expose:
       - "4000"  # SSR Angular écoute ici
+    volumes:
+      - static_assets:/var/www/html
     depends_on:
       - backend
     networks:
@@ -57,6 +57,7 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/certs/server.crt:/etc/nginx/ssl/server.crt:ro
       - ./nginx/certs/server.key:/etc/nginx/ssl/server.key:ro
+      - static_assets:/var/www/html
     depends_on:
       - frontend
       - backend
@@ -65,6 +66,7 @@ services:
 
 volumes:
   postgres_data:
+  static_assets:
 
 networks:
   cesizen:
