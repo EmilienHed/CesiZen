@@ -4,13 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Category } from '../Models/categorie.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  // URL de l'API directement définie ici - URL en minuscules
-  private apiUrl = 'http://localhost:5016/api/categories';
+  // URL de l'API provenant de l'environnement
+  private apiUrl = `${environment.apiUrl}/categories`;
 
   constructor(
     private http: HttpClient,

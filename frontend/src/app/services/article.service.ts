@@ -5,13 +5,13 @@ import { Observable, map } from 'rxjs';
 import { Article } from '../Models/articles.model';
 import { ArticleDTO, UpdateArticleDTO } from '../Models/articles-dto.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
-  private baseUrl = 'http://localhost:5016'; // Assurez-vous que c'est la bonne URL de votre backend
-  private apiUrl = `${this.baseUrl}/api/articles`; // Url en minuscules
+  private apiUrl = `${environment.apiUrl}/articles`; // Url en minuscules
 
   constructor(
     private http: HttpClient,
