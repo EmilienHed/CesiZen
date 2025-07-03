@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { AssetPathDirective } from './directives/asset-path.directive';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +15,7 @@ import { AssetPathDirective } from './directives/asset-path.directive';
     CommonModule,
     RouterOutlet,
     HeaderComponent,
-    FooterComponent,
-    AssetPathDirective
+    FooterComponent
   ]
 })
 export class AppComponent implements OnInit {

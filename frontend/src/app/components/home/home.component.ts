@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from '../../services/auth.service';
-import { AssetService } from '../../services/asset.service';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -40,10 +40,11 @@ export class HomeComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
-    private assetService: AssetService
+    @Inject(APP_BASE_HREF) private baseHref: string
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.meditationImagePath = this.assetService.getAssetPath('assets/meditation.png');
+    // Utiliser directement le baseHref injecté
+    this.meditationImagePath = `${this.baseHref}assets/meditation.png`;
   }
 
   ngOnInit() {
@@ -58,6 +59,13 @@ export class HomeComponent implements OnInit {
         this.isLoggedIn = !!user;
         this.isAdmin = this.authService.isAdmin();
       });
+      
+      // Détecter le baseHref en fonction de l'URL si nécessaire
+      if (window.location.pathname.startsWith('/emilien-dev')) {
+        this.meditationImagePath = `/emilien-dev/assets/meditation.png`;
+      } else if (window.location.pathname.startsWith('/emilien-prod')) {
+        this.meditationImagePath = `/emilien-prod/assets/meditation.png`;
+      }
     }
   }
 
