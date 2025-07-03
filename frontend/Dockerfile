@@ -52,15 +52,8 @@ COPY --from=builder /app/package*.json ./
 # Copier les assets pour le serveur SSR
 COPY --from=assets-organizer /var/www/html /var/www/html
 
-# Script pour définir dynamiquement l'URL de l'API
-RUN echo '#!/bin/sh' > /app/start.sh && \
-    echo 'sed -i "s#apiUrl:.*#apiUrl: "${API_URL:-/api}",#g" /app/dist/frontend/server/main.server.mjs' >> /app/start.sh && \
-    echo 'sed -i "s#apiUrl:.*#apiUrl: "${API_URL:-/api}",#g" /app/dist/frontend/browser/main*.js' >> /app/start.sh && \
-    echo 'node /app/dist/frontend/server/server.mjs' >> /app/start.sh && \
-    chmod +x /app/start.sh
-
 RUN npm install --only=production --legacy-peer-deps
 
 EXPOSE 4000
 
-CMD ["/app/start.sh"]
+CMD ["node", "dist/frontend/server/server.mjs"]
