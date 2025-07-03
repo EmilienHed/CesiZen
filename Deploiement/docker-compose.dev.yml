@@ -56,8 +56,8 @@ services:
       args:
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
-    expose:
-      - "4000"  # SSR Angular Ã©coute ici
+    ports:
+      - "4000:4000"  # SSR Angular Ã©coute ici
     depends_on:
       - backend-dev
     restart: unless-stopped
