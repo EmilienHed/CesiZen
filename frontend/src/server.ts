@@ -43,7 +43,7 @@ app.use('/**', (req, res, next) => {
       providers: [
         {
           provide: APP_BASE_HREF,
-          useValue: baseHref,
+          useValue: baseHref, // Définir le baseHref dynamique
         },
       ],
     })
