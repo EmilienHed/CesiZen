@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres-dev:
     image: postgres:latest
-    container_name: postegres_db_CESIZen_dev
+    container_name: postgres_db_CESIZen_dev
     restart: always
     environment:
       POSTGRES_USER: CesiZenAdm
@@ -16,28 +16,32 @@ services:
     networks:
       - backend-dev-emilien
       - traefik
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U CesiZenAdm"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   backend-dev:
     build:
-        context: ../Backend
-        dockerfile: Dockerfile
+      context: ../Backend
+      dockerfile: Dockerfile
     container_name: backend-dev
     working_dir: /app
-#    volumes:
-#      - ./backend/publish:/app
     expose:
       - "5000"
     environment:
       - ASPNETCORE_URLS=http://+:5000
-      - ConnectionStrings__DefaultConnection=Host=postegres_db_CESIZen;Port=5432;Database=CesiZenDB;Username=CesiZenAdm;Password=CesiZenAdm59!
+      - ConnectionStrings__DefaultConnection=Host=postgres-dev;Port=5432;Database=CesiZenDBDev;Username=CesiZenAdm;Password=CesiZenAdm59!
     depends_on:
       - postgres-dev
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-dev/api`)"
       - "traefik.http.middlewares.api-strip.stripprefix.prefixes=/emilien-dev/api"
       - "traefik.http.routers.api.middlewares=api-strip"
-      - "traefik.http.services.api.loadbalancer.server.port=8080"
+      - "traefik.http.services.api.loadbalancer.server.port=5000"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=le"
     networks:
@@ -45,21 +49,22 @@ services:
       - traefik
     command: ["dotnet", "Backend.dll"]
 
-
-
   frontend-dev:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+      args:
+        BASE_HREF: /emilien-dev/
     container_name: frontend-dev
-    expose:
-      - "4000"  # SSR Angular écoute ici
+    ports:
+      - "4000:4000"  # SSR Angular Ã©coute ici
     depends_on:
       - backend-dev
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-dev`)"
-      - "traefik.http.services.front.loadbalancer.server.port=80"
+      - "traefik.http.services.front.loadbalancer.server.port=4000"
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
     networks:
