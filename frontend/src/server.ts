@@ -5,6 +5,7 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import { APP_BASE_HREF } from '@angular/common';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,18 +14,6 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
 
 /**
  * Serve static files from /browser
@@ -38,11 +27,26 @@ app.use(
 );
 
 /**
- * Handle all other requests by rendering the Angular application.
+ * SSR avec détection dynamique du base href
  */
 app.use('/**', (req, res, next) => {
+  // Détermination dynamique du base href selon l'URL
+  let baseHref = '/';
+  if (req.originalUrl.startsWith('/emilien-prod')) {
+    baseHref = '/emilien-prod/';
+  } else if (req.originalUrl.startsWith('/emilien-dev')) {
+    baseHref = '/emilien-dev/';
+  }
+
   angularApp
-    .handle(req)
+    .handle(req, {
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: baseHref, // Définir le baseHref dynamique
+        },
+      ],
+    })
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )
@@ -50,8 +54,7 @@ app.use('/**', (req, res, next) => {
 });
 
 /**
- * Start the server if this module is the main entry point.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ * Démarrage local
  */
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
@@ -61,6 +64,6 @@ if (isMainModule(import.meta.url)) {
 }
 
 /**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ * Handler exporté pour Firebase, etc.
  */
 export const reqHandler = createNodeRequestHandler(app);
