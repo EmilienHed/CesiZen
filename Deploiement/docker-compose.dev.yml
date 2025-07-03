@@ -53,6 +53,8 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+      args:
+        BASE_HREF: /emilien-dev/
     container_name: frontend-dev
     expose:
       - "4000"  # SSR Angular Ã©coute ici

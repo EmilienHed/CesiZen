@@ -28,10 +28,11 @@ FROM --platform=linux/arm64 node:20-alpine AS builder
 WORKDIR /app
 COPY . .
 
+ARG BASE_HREF="/"
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 RUN npm install --legacy-peer-deps
-RUN npm run build:ssr
+RUN npm run build:ssr -- --base-href $BASE_HREF
 
 # Étape 2 : Image finale pour exécution SSR, aussi alpine ARM64
 FROM --platform=linux/arm64 node:20-alpine
