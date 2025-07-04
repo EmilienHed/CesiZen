@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from '../Models/user.model';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +19,11 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private environmentService: EnvironmentService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.apiUrl = `${environment.apiUrl}/users`;
+    this.apiUrl = `${this.environmentService.apiUrl}/users`;
 
     let userData = null;
     if (this.isBrowser) {
@@ -39,7 +40,7 @@ export class UserService {
 
   // Méthode d'inscription mise à jour pour correspondre à l'API backend
   register(userData: UserCreateDto): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/Users/create`, userData);
+    return this.http.post<any>(`${this.environmentService.apiUrl}/Users/create`, userData);
   }
 
   // Récupérer les informations d'un utilisateur par ID
@@ -49,7 +50,7 @@ export class UserService {
 
   // Récupérer la liste des utilisateurs (pour les admins)
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any>(`${environment.apiUrl}/Users`).pipe(
+    return this.http.get<any>(`${this.environmentService.apiUrl}/Users`).pipe(
       map(response => {
         console.log('Réponse brute de l\'API:', response);
         
@@ -75,22 +76,22 @@ export class UserService {
 
   // Supprimer un utilisateur (pour les admins)
   deleteUser(id: number): Observable<any> {
-    return this.http.delete<any>(`${environment.apiUrl}/Users/${id}`);
+    return this.http.delete<any>(`${this.environmentService.apiUrl}/Users/${id}`);
   }
 
   // Changer le mot de passe d'un utilisateur (pour les admins)
   changeUserPassword(id: number, newPassword: string): Observable<any> {
-    return this.http.put<any>(`${environment.apiUrl}/Users/${id}/change-password`, { newPassword });
+    return this.http.put<any>(`${this.environmentService.apiUrl}/Users/${id}/change-password`, { newPassword });
   }
 
   // Réinitialisation de mot de passe (à implémenter selon votre API backend)
   requestPasswordReset(email: string): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/Users/request-password-reset`, { email });
+    return this.http.post<any>(`${this.environmentService.apiUrl}/Users/request-password-reset`, { email });
   }
 
   // Réinitialiser le mot de passe avec un token (à implémenter selon votre API backend)
   resetPassword(token: string, newPassword: string): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/Users/reset-password`, { token, newPassword });
+    return this.http.post<any>(`${this.environmentService.apiUrl}/Users/reset-password`, { token, newPassword });
   }
 
   logout() {
@@ -103,7 +104,7 @@ export class UserService {
   }
 
   updatePassword(userId: number, passwordData: { newPassword: string }): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/Users/${userId}/change-password`, passwordData);
+    return this.http.put(`${this.environmentService.apiUrl}/Users/${userId}/change-password`, passwordData);
   }
 }
 

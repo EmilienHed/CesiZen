@@ -5,7 +5,7 @@ import { ArticleService } from '../../services/article.service';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Category } from '../../Models/categorie.model';
-import { CategoryService } from '../../services/categorie.service';
+import { CategorieService } from '../../services/categorie.service';
 import { Article } from '../../Models/articles.model';
 import { ArticleDTO, UpdateArticleDTO } from '../../Models/articles-dto.model';
 
@@ -36,7 +36,7 @@ export class ArticleFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private articleService: ArticleService,
-    private categoryService: CategoryService,
+    private categoryService: CategorieService,
     private authService: AuthService
   ) {
     this.articleForm = this.fb.group({

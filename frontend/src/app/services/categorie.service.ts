@@ -4,19 +4,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Category } from '../Models/categorie.model';
 import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-  // URL de l'API provenant de l'environnement
-  private apiUrl = `${environment.apiUrl}/categories`;
+export class CategorieService {
+  private apiUrl: string;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private environmentService: EnvironmentService
+  ) {
+    this.apiUrl = `${this.environmentService.apiUrl}/categories`;
+  }
 
   // Méthode pour obtenir les en-têtes d'authentification
   private getAuthHeaders(): HttpHeaders {

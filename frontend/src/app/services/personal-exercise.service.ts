@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RespirationExercise } from '../Models/respiration-exercise.model';
 import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from './environment.service';
 import { isPlatformServer } from '@angular/common';
 
 // Type pour la création/mise à jour des exercices
@@ -21,14 +21,16 @@ interface ExerciseDTO {
   providedIn: 'root'
 })
 export class PersonalExerciseService {
-  private apiUrl = `${environment.apiUrl}/PersonalExercises`;
+  private apiUrl: string;
   private isServer: boolean;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private environmentService: EnvironmentService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    this.apiUrl = `${this.environmentService.apiUrl}/PersonalExercises`;
     this.isServer = isPlatformServer(platformId);
   }
 
