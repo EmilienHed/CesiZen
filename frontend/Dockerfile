@@ -5,10 +5,17 @@ WORKDIR /app
 COPY . .
 
 ARG BASE_HREF="/"
+ARG BUILD_CONFIG="production"
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 RUN npm install --legacy-peer-deps
-RUN npm run build:prod -- --base-href $BASE_HREF
+
+# Build avec la configuration appropriée
+RUN if [ "$BUILD_CONFIG" = "development" ]; then \
+        npm run build -- --configuration development --base-href $BASE_HREF; \
+    else \
+        npm run build -- --configuration production --base-href $BASE_HREF; \
+    fi
 
 # Étape 2 : Image nginx pour servir le contenu statique
 FROM --platform=linux/arm64 nginx:alpine
