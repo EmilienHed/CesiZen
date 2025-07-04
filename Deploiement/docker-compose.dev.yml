@@ -14,7 +14,6 @@ services:
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
     networks:
-      - backend-dev-emilien
       - traefik
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U CesiZenAdm"]
@@ -45,7 +44,6 @@ services:
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=le"
     networks:
-      - backend-dev-emilien
       - traefik
     command: ["dotnet", "Backend.dll"]
 
@@ -57,8 +55,8 @@ services:
         DEPLOY_ENV: development
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
-    ports:
-      - "4000:80"  # Nginx écoute sur le port 80
+    expose:
+      - "80"  # On expose le port 80 au lieu de le mapper
     environment:
       - API_URL=/emilien-dev/api
     depends_on:
@@ -73,14 +71,11 @@ services:
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
     networks:
-      - frontend-dev-emilien
       - traefik
 
 volumes:
   postgres_dev_data:
 
 networks:
-  backend-dev-emilien:
-  frontend-dev-emilien:
   traefik:
     external: true
