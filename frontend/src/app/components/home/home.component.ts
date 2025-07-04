@@ -3,12 +3,13 @@ import { RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AuthService } from '../../services/auth.service';
+import { APP_BASE_HREF } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  providers: [AuthService],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   animations: [
@@ -34,12 +35,46 @@ export class HomeComponent implements OnInit {
   isBrowser: boolean;
   isLoggedIn = false;
   isAdmin = false;
+  meditationImagePath: string = '';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    private router: Router
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    this.determineImagePath();
+  }
+
+  /**
+   * Détermine le chemin de l'image en fonction de l'URL actuelle
+   */
+  private determineImagePath(): void {
+    // Par défaut, utiliser le baseHref injecté
+    let prefix = this.baseHref;
+    
+    if (this.isBrowser) {
+      // Obtenir le chemin de l'URL actuelle
+      const currentPath = window.location.pathname;
+      
+      // Déterminer le préfixe basé sur l'URL actuelle
+      if (currentPath.startsWith('/emilien-dev')) {
+        prefix = '/emilien-dev/';
+      } else if (currentPath.startsWith('/emilien-prod')) {
+        prefix = '/emilien-prod/';
+      }
+    }
+    
+    // S'assurer que le préfixe se termine par '/'
+    if (!prefix.endsWith('/')) {
+      prefix += '/';
+    }
+    
+    // Construire le chemin complet de l'image
+    this.meditationImagePath = `${prefix}assets/meditation.png`;
+    
+    console.log(`Image path set to: ${this.meditationImagePath}`);
   }
 
   ngOnInit() {
@@ -53,6 +88,11 @@ export class HomeComponent implements OnInit {
       this.authService.currentUser.subscribe(user => {
         this.isLoggedIn = !!user;
         this.isAdmin = this.authService.isAdmin();
+      });
+      
+      // Écouter les changements de route pour mettre à jour le chemin de l'image si nécessaire
+      this.router.events.subscribe(() => {
+        this.determineImagePath();
       });
     }
   }

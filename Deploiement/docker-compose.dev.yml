@@ -10,11 +10,10 @@ services:
       POSTGRES_PASSWORD: CesiZenAdm59!
       POSTGRES_DB: CesiZenDBDev
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
     networks:
-      - backend-dev-emilien
       - traefik
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U CesiZenAdm"]
@@ -33,6 +32,9 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ConnectionStrings__DefaultConnection=Host=postgres-dev;Port=5432;Database=CesiZenDBDev;Username=CesiZenAdm;Password=CesiZenAdm59!
+      - Jwt__Key=CesiZenSecretKey2024ForJWTTokenGeneration
+      - Jwt__Issuer=CesiZen
+      - Jwt__Audience=CesiZenUsers
     depends_on:
       - postgres-dev
     restart: unless-stopped
@@ -45,7 +47,6 @@ services:
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=le"
     networks:
-      - backend-dev-emilien
       - traefik
     command: ["dotnet", "Backend.dll"]
 
@@ -54,28 +55,32 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
       args:
+        DEPLOY_ENV: development
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
-    ports:
-      - "4000:4000"  # SSR Angular Ã©coute ici
+    expose:
+      - "80"  # On expose le port 80 au lieu de le mapper
+    environment:
+      - API_URL=/emilien-dev/api
     depends_on:
       - backend-dev
     restart: unless-stopped
+    volumes:
+      - ../frontend/nginx.conf:/etc/nginx/conf.d/default.conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-dev`)"
-      - "traefik.http.services.front.loadbalancer.server.port=4000"
+      - "traefik.http.middlewares.front-strip.stripprefix.prefixes=/emilien-dev"
+      - "traefik.http.routers.front.middlewares=front-strip"
+      - "traefik.http.services.front.loadbalancer.server.port=80"
       - "traefik.http.routers.front.entrypoints=websecure"
       - "traefik.http.routers.front.tls.certresolver=le"
     networks:
-      - frontend-dev-emilien
       - traefik
 
 volumes:
   postgres_dev_data:
 
 networks:
-  backend-dev-emilien:
-  frontend-dev-emilien:
   traefik:
     external: true

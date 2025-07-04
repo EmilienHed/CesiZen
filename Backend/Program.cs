@@ -90,13 +90,16 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Configuration CORS simplifiée
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular",
-        policy => policy
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200", "http://localhost:4000", "http://localhost:5001", "https://rasphubert.ddns.net")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 // Injection des services
@@ -126,8 +129,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Middleware
-app.UseCors("AllowAngular");
+// Middleware CORS - doit être avant UseRouting
+app.UseCors();
 
 app.UseAuthentication(); // ✅ Auth JWT activée ici
 app.UseAuthorization();

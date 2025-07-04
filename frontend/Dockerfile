@@ -1,49 +1,31 @@
-## Étape 1 : Build Angular avec SSR
-#FROM node:20 AS builder
-#
-#WORKDIR /app
-#COPY . .
-#
-#RUN npm install --legacy-peer-deps
-#RUN npm run build:ssr
-#
-## Étape 2 : Image finale pour exécution SSR
-#FROM node:20
-#
-#WORKDIR /app
-#
-#COPY --from=builder /app/dist /app/dist
-#COPY --from=builder /app/package*.json ./
-#
-#RUN npm install --only=production --legacy-peer-deps
-#
-#EXPOSE 4000
-#
-## CMD pour lancer le serveur SSR (adapté selon Angular 17+ avec "server.mjs")
-#CMD ["node", "dist/frontend/server/server.mjs"]
-
-# Étape 1 : Build Angular SSR avec Node ARM64 Alpine
-FROM --platform=linux/arm64 node:20-alpine AS builder
+# Étape 1 : Build de l'app Angular
+FROM node:20-alpine AS builder
 
 WORKDIR /app
+
+# Copier les fichiers de dépendances d'abord (pour le cache Docker)
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
+
+# Copier le reste du code
 COPY . .
 
+# ARG pour choisir l'environnement et le baseHref
+ARG DEPLOY_ENV=production
 ARG BASE_HREF="/"
-ENV NODE_OPTIONS="--max-old-space-size=1024"
 
-RUN npm install --legacy-peer-deps
-RUN npm run build:ssr -- --base-href $BASE_HREF
+# Build avec la configuration appropriée
+RUN npm run build -- --configuration=$DEPLOY_ENV --base-href=$BASE_HREF
 
-# Étape 2 : Image finale pour exécution SSR, aussi alpine ARM64
-FROM --platform=linux/arm64 node:20-alpine
+# Étape 2 : Image nginx pour servir les fichiers statiques
+FROM nginx:alpine
 
-WORKDIR /app
+# Copier le build de l'application
+COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/package*.json ./
+# Copier la configuration nginx (optionnel, peut être montée en volume)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN npm install --only=production --legacy-peer-deps
+EXPOSE 80
 
-EXPOSE 4000
-
-CMD ["node", "dist/frontend/server/server.mjs"]
+CMD ["nginx", "-g", "daemon off;"]
