@@ -27,8 +27,8 @@ services:
       dockerfile: Dockerfile
     container_name: backend-dev
     working_dir: /app
-    expose:
-      - "5000"
+    ports:
+      - "5002:5000"
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ConnectionStrings__DefaultConnection=Host=postgres-dev;Port=5432;Database=CesiZenDBDev;Username=CesiZenAdm;Password=CesiZenAdm59!
@@ -55,8 +55,8 @@ services:
         DEPLOY_ENV: development
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
-    expose:
-      - "80"  # On expose le port 80 au lieu de le mapper
+    ports:
+      - "4000:80"  # On remappe le port pour pouvoir tester localement
     environment:
       - API_URL=/emilien-dev/api
     depends_on:
