@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  providers: [AuthService],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   animations: [
