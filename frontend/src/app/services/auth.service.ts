@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Router } from '@angular/router';
 import { EnvironmentService } from './environment.service';
@@ -24,7 +24,7 @@ export class AuthService {
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.isServer = isPlatformServer(this.platformId);
-    this.apiUrl = this.environmentService.apiUrl;
+    this.apiUrl = `${this.environmentService.apiUrl}`;
 
     let userData = null;
     if (this.isBrowser) {
@@ -47,6 +47,24 @@ export class AuthService {
     return user ? user.token : null;
   }
 
+  // Méthode privée pour gérer les erreurs HTTP
+  private handleError(error: HttpErrorResponse) {
+    console.error('Erreur HTTP:', error);
+    
+    if (error.error instanceof ErrorEvent) {
+      // Erreur côté client
+      console.error('Erreur côté client:', error.error.message);
+    } else {
+      // Erreur côté serveur
+      console.error(
+        `Code d'erreur ${error.status}, ` +
+        `Corps: ${JSON.stringify(error.error)}`);
+    }
+    
+    // Retourner un message d'erreur convivial
+    return throwError(() => error);
+  }
+
   login(credentials: { email: string; password: string }): Observable<any> {
     // Skip API calls during SSR
     if (this.isServer) {
@@ -54,20 +72,34 @@ export class AuthService {
       return of(null);
     }
     
-    console.log(`AuthService: Tentative de connexion à ${this.apiUrl}/Auth/login`);
+    console.log(`AuthService: Tentative de connexion à ${this.apiUrl}/Auth/login avec email: ${credentials.email}`);
     return this.http.post<any>(`${this.apiUrl}/Auth/login`, credentials)
       .pipe(
+        tap(response => console.log('Réponse brute du serveur:', response)),
         map(user => {
-          // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
-          if (this.isBrowser) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+          // Vérifier si la réponse est valide
+          if (user && user.token) {
+            console.log('Connexion réussie, token reçu');
+            // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
+            if (this.isBrowser) {
+              localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+            this.currentUserSubject.next(user);
+            return user;
+          } else {
+            console.error('Réponse de connexion invalide:', user);
+            return null;
           }
-          this.currentUserSubject.next(user);
-          return user;
         }),
         catchError(error => {
           console.error('Erreur lors de la connexion:', error);
-          return of(null);
+          
+          // Si l'erreur est 401 Unauthorized, c'est probablement des identifiants invalides
+          if (error.status === 401) {
+            return throwError(() => new Error('Email ou mot de passe incorrect'));
+          }
+          
+          return throwError(() => new Error('Erreur de connexion au serveur'));
         })
       );
   }

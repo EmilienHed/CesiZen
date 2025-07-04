@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: '/emilien-dev/api'
+  apiUrl: 'http://localhost:5016/api'
 }; 

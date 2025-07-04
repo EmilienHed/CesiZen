@@ -58,19 +58,35 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
+    console.log('Tentative de connexion avec:', {
+      email: this.f['email'].value,
+      password: '******'
+    });
+
     this.authService.login({
       email: this.f['email'].value,
       password: this.f['password'].value
     })
       .pipe(first())
       .subscribe({
-        next: () => {
-          // Naviguer vers la page d'accueil après connexion réussie
-          this.router.navigate(['/']);
+        next: (user) => {
+          console.log('Réponse de login:', user);
+          if (user) {
+            // Naviguer vers la page d'accueil après connexion réussie
+            this.router.navigate(['/']);
+          } else {
+            // Si la réponse est null, afficher une erreur
+            this.error = 'Email ou mot de passe incorrect';
+            this.loading = false;
+          }
         },
         error: error => {
+          console.error('Erreur de connexion:', error);
           this.error = error.error?.message || 'Une erreur est survenue lors de la connexion';
           this.loading = false;
+        },
+        complete: () => {
+          console.log('Observable de login complété');
         }
       });
   }
