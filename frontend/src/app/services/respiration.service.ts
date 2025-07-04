@@ -3,21 +3,24 @@ import { Observable, of } from 'rxjs';
 import { RespirationExercise } from '../Models/respiration-exercise.model';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
 import { isPlatformServer } from '@angular/common';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RespirationService {
-  private apiUrl = `${environment.apiUrl}/RespirationExercises`;
+  private apiUrl: string;
   private isServer: boolean;
 
   constructor(
     private http: HttpClient,
+    private environmentService: EnvironmentService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isServer = isPlatformServer(platformId);
+    this.apiUrl = `${this.environmentService.apiUrl}/RespirationExercises`;
+    console.log(`RespirationService: Initialisation avec apiUrl = ${this.apiUrl}`);
   }
 
   getExercises(): Observable<RespirationExercise[]> {

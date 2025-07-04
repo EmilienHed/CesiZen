@@ -5,18 +5,22 @@ import { Observable, map } from 'rxjs';
 import { Article } from '../Models/articles.model';
 import { ArticleDTO, UpdateArticleDTO } from '../Models/articles-dto.model';
 import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
-  private apiUrl = `${environment.apiUrl}/articles`; // Url en minuscules
+  private apiUrl: string;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private environmentService: EnvironmentService
+  ) {
+    this.apiUrl = `${this.environmentService.apiUrl}/articles`; // Url en minuscules
+    console.log(`ArticleService: Initialisation avec apiUrl = ${this.apiUrl}`);
+  }
 
   // Méthode pour obtenir les en-têtes d'authentification
   private getAuthHeaders(): HttpHeaders {

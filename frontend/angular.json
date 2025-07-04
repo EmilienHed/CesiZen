@@ -40,7 +40,6 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "outputMode": "static",
             "allowedCommonJsDependencies": [
               "@angular/animations",
               "@angular/animations/browser"

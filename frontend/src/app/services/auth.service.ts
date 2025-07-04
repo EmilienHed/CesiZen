@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,17 @@ export class AuthService {
   public currentUser: Observable<any>;
   private isBrowser: boolean;
   private isServer: boolean;
+  private apiUrl: string;
 
   constructor(
     private http: HttpClient,
     private router: Router,
+    private environmentService: EnvironmentService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.isServer = isPlatformServer(this.platformId);
+    this.apiUrl = this.environmentService.apiUrl;
 
     let userData = null;
     if (this.isBrowser) {
@@ -30,6 +33,8 @@ export class AuthService {
 
     this.currentUserSubject = new BehaviorSubject<any>(userData);
     this.currentUser = this.currentUserSubject.asObservable();
+    
+    console.log(`AuthService: Initialisation avec apiUrl = ${this.apiUrl}`);
   }
 
   public get currentUserValue(): any {
@@ -49,7 +54,8 @@ export class AuthService {
       return of(null);
     }
     
-    return this.http.post<any>(`${environment.apiUrl}/Auth/login`, credentials)
+    console.log(`AuthService: Tentative de connexion à ${this.apiUrl}/Auth/login`);
+    return this.http.post<any>(`${this.apiUrl}/Auth/login`, credentials)
       .pipe(
         map(user => {
           // Stocker les détails de l'utilisateur et le token JWT dans le stockage local
@@ -73,7 +79,7 @@ export class AuthService {
       return of(null);
     }
     
-    return this.http.post<any>(`${environment.apiUrl}/Users/create`, userData)
+    return this.http.post<any>(`${this.apiUrl}/Users/create`, userData)
       .pipe(
         catchError(error => {
           console.error('Erreur lors de l\'inscription:', error);
@@ -90,7 +96,7 @@ export class AuthService {
       return of(null);
     }
     
-    return this.http.post<any>(`${environment.apiUrl}/Users/forgot-password`, { email })
+    return this.http.post<any>(`${this.apiUrl}/Users/forgot-password`, { email })
       .pipe(
         catchError(error => {
           console.error('Erreur lors de la demande de réinitialisation de mot de passe:', error);
@@ -107,7 +113,7 @@ export class AuthService {
       return of(null);
     }
     
-    return this.http.post<any>(`${environment.apiUrl}/Users/reset-password`, {
+    return this.http.post<any>(`${this.apiUrl}/Users/reset-password`, {
       token,
       newPassword
     }).pipe(
@@ -126,7 +132,7 @@ export class AuthService {
       return of(null);
     }
     
-    return this.http.get<any>(`${environment.apiUrl}/Users/${id}`)
+    return this.http.get<any>(`${this.apiUrl}/Users/${id}`)
       .pipe(
         catchError(error => {
           console.error(`Erreur lors de la récupération de l'utilisateur ${id}:`, error);
@@ -143,7 +149,7 @@ export class AuthService {
       return of([]);
     }
     
-    return this.http.get<any[]>(`${environment.apiUrl}/Users`)
+    return this.http.get<any[]>(`${this.apiUrl}/Users`)
       .pipe(
         catchError(error => {
           console.error('Erreur lors de la récupération des utilisateurs:', error);
