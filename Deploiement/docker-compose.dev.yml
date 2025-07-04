@@ -63,6 +63,8 @@ services:
     depends_on:
       - backend-dev
     restart: unless-stopped
+    volumes:
+      - ../frontend/nginx.conf:/etc/nginx/conf.d/default.conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.front.rule=Host(`rasphubert.ddns.net`) && PathPrefix(`/emilien-dev`)"
