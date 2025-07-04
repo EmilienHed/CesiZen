@@ -54,6 +54,7 @@ services:
       context: ../frontend
       dockerfile: Dockerfile
       args:
+        DEPLOY_ENV: development
         BASE_HREF: /emilien-dev/
     container_name: frontend-dev
     ports:
